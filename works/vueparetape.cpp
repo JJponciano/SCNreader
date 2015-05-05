@@ -217,17 +217,26 @@ void VueParEtape::keyPressEvent(QKeyEvent *keyEvent)
         this->lZ--;
     }
     else if(keyEvent->key()==Qt::Key_D){
-        this->pX++;
-        this->lX++;
-    }
-    else if(keyEvent->key()==Qt::Key_A){
         this->pX--;
         this->lX--;
     }
+    else if(keyEvent->key()==Qt::Key_A){
+        this->pX++;
+        this->lX++;
+    }
     else if(keyEvent->key()==Qt::Key_Q){
-        this->scnreaderFond.setMaxX(this->scnreaderFond.getMaxX()*0.8);
-        this->scnreaderFond.setMaxY(this->scnreaderFond.getMaxY()*0.8);
-        this->scnreaderFond.setMaxZ(this->scnreaderFond.getMaxZ()*0.8);
+        this->pY++;
+        this->lY++;
+    }
+    else if(keyEvent->key()==Qt::Key_E){
+        this->pY--;
+        this->lY--;
+    }
+    else if(keyEvent->key()==Qt::Key_8){
+        this->lY++;
+    }
+    else if(keyEvent->key()==Qt::Key_5){
+        this->lY--;
     }
     else if(keyEvent->key()==Qt::Key_J){
         if( this->scnreaderFond.getClouds().size()>0)

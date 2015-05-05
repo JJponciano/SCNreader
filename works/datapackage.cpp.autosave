@@ -31,7 +31,7 @@ Datapackage::Datapackage()
 
 Datapackage::~Datapackage()
 {
-
+    
 }
 void Datapackage::readDataFile(std::string pathname){
     QFile fichier( QString(pathname.c_str()) );
@@ -42,14 +42,14 @@ void Datapackage::readDataFile(std::string pathname){
     this->end=288;
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
     //create stream without  data hearder
-
+    
     qint8 header[288];
     for(int i=0;i<  this->end;i++){
         qint8 size; // Since the size you're trying to read appears to be 2 bytes
         ds >> size;
         header[i]=size;
     }
-
+    
     // ================================= OK=================================
     qint8 size; // Since the size you're trying to read appears to be 2 bytes
     ds >> size;
@@ -67,7 +67,7 @@ void Datapackage::readDataFile(std::string pathname){
     quint8 byte1;
     quint8 byte2;
     quint8 byte3;
-
+    
     ds >> byte1 >> byte0;
     result = (byte0 << 8) + byte1;
     byte0=0;byte1=0;byte2=0;byte3=0;
@@ -114,9 +114,9 @@ void Datapackage::readDataFile(std::string pathname){
     b32 = (byte0 << 24) + (byte1 << 16)+ (byte2 << 8)+ (byte3);
     byte0=0;byte1=0;byte2=0;byte3=0;
     this->pointCount=b32;
-
+    
     this->end+=29;// number of bytes previously readed
-
+    
     std::cout<<this->id.toStdString()<<std::endl;
     std::cout<<this->version.toStdString()<<std::endl;
     std::cout<<this->radius<<std::endl;
@@ -131,7 +131,7 @@ void Datapackage::readDataFile(std::string pathname){
     std::cout<<this->nglRightBanking<<std::endl;
     std::cout<<this->nglRightGauge<<std::endl;
     std::cout<<this->pointCount<<std::endl;
-
+    
     // Fill in the cloud data
     /* cloud->width    = this->pointCount;
     cloud->height   = 1;
@@ -146,13 +146,13 @@ void Datapackage::readDataFile(std::string pathname){
         //read point
         ds >>y;
         ds >>z;
-
+        
        // cloud->push_back(pcl::PointXYZ(0,y,z));
     }*/
     this->end+=this->pointCount;
     //affectation new cloud at the current cloud
     this->cloud=cloud;
-
+    
 }
 /*void Datapackage::readData(QByteArray datas,int start){
     this->end=start;
@@ -187,9 +187,9 @@ void Datapackage::readDataFile(std::string pathname){
     ds >> b16;this->nglRightBanking=b16;b16=0;
     ds >> b16;this->nglRightGauge=b16;b16=0;
     ds >> b32; this->pointCount=b32;b32=0;
-
+    
     this->end+=29;// number of bytes previously readed
-
+    
     std::cout<<this->id.toStdString()<<std::endl;
     std::cout<<this->version.toStdString()<<std::endl;
     std::cout<<this->radius<<std::endl;
@@ -204,7 +204,7 @@ void Datapackage::readDataFile(std::string pathname){
     std::cout<<this->nglRightBanking<<std::endl;
     std::cout<<this->nglRightGauge<<std::endl;
     std::cout<<this->pointCount<<std::endl;
-
+    
     // Fill in the cloud data
     /* cloud->width    = this->pointCount;
     cloud->height   = 1;
@@ -219,17 +219,17 @@ void Datapackage::readDataFile(std::string pathname){
         //read point
         ds >>y;
         ds >>z;
-
+        
        // cloud->push_back(pcl::PointXYZ(0,y,z));
     }*
     this->end+=this->pointCount;
     //affectation new cloud at the current cloud
     this->cloud=cloud;
-
+    
 }
 //*/
 void Datapackage::readData(QByteArray datas,int start){
-
+    
     this->end=start;
     // pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
     //create stream without  data hearder
@@ -243,7 +243,7 @@ void Datapackage::readData(QByteArray datas,int start){
             header[i]=size;
         }
     }
-
+    
     // ================================= OK=================================
     qint8 size; // Since the size you're trying to read appears to be 2 bytes
     ds >> size;
@@ -267,11 +267,11 @@ void Datapackage::readData(QByteArray datas,int start){
         //read structure's size
         ds >> byte3 >> byte2 >> byte1 >> byte0;
         this->structuresize = (byte0 << 24) + (byte1 << 16)+ (byte2 << 8)+ (byte3);
-
+        
         //read footpulse
         ds >> byte3 >> byte2 >> byte1 >> byte0;
         this->footpulse = (byte0 << 24) + (byte1 << 16)+ (byte2 << 8)+ (byte3);
-
+        
         //read 12 unknown bytes
         for(int i=0;i<  12;i++){
             qint8 size; // Since the size you're trying to read appears to be 2 bytes
@@ -281,9 +281,9 @@ void Datapackage::readData(QByteArray datas,int start){
         //read numbers of points
         ds >> byte1 >> byte0;
         this->pointCount = (byte0 << 8) + byte1;
-
+        
         //read 150 other unknown bytes
-
+        
         for(int i=0;i<  150;i++){
             qint8 size; // Since the size you're trying to read appears to be 2 bytes
             ds >> size;
@@ -304,13 +304,13 @@ void Datapackage::readData(QByteArray datas,int start){
             this->originHor = (unknownbytes2[31] << 24) +(unknownbytes2[30] << 16) +(unknownbytes2[29] << 8) + unknownbytes2[28];
             this->originVert = (unknownbytes2[35] << 24) +(unknownbytes2[34] << 16) +(unknownbytes2[33] << 8) + unknownbytes2[32];
         }
-else  if(choix==4){
-
+        else  if(choix==4){
+            
             this->originHor =(unknownbytes2[33] << 8) + unknownbytes2[32];
             this->originVert =(unknownbytes2[35] << 8) + unknownbytes2[34];
         }
         //  ---------- end try
-
+        
         //read distance and intensity for all points
         for(int i=0;i<this->pointCount;i++){
             ds >> byte1 >> byte0;
@@ -344,7 +344,58 @@ void Datapackage::setX(const QVector<double> &value)
     x = value;
 }
 
+void Datapackage::decompression(){
+    /////////////////////////////////////////////////////////////////
+    // Profil dekomprimieren
+    int pn = 0; // Punktnummer in tyHSPRESULT
+    // Zeiger innerhalb tyPOMSDATAHEADER
+   
+    // Dekomprimierung
+    for(int i=0; i < this->intensity.size(); i++) {
+        
+        // ------ get the adress of point intensity and distance for modifing it
+        
+        unsigned char* iv = &this->intensity.at(i); // nächster Intensitätswert
+        unsigned short* dv = &this->distance.at(i); // nächster Abstandswert
+        // i: Punktindex innerhalb tyPOMSDATAHEADER
+            if(pn >= HSPPOINTS) // Notbremse
+            break;
+        // iv: Zeiger auf Intensität; (*iv): Intensitätswert
+        // ------ if the value intensity is 0, set the distance to 0
+        if((*iv)==0) { // Ungültige Messpunkte
+            // n: Anzahl der ungültigen Messpunkte
+            unsigned short n = (*dv);
+            if(n==0) n=1; // mindestens ein Messpunkt
+            // n ungültige Messpunkte in tyHSPRESULT eintragen
+            for(int j=0; j < n; j++) {
+                // Ungültige Messpunkte eintragen
+                profile.radDist[pn] = 0;
+                profile.sqrtInt[pn] = 0;
+                pn++;
+            }
+            // Nächster Messpunkt in tyPOMSDATAHEADER
+            iv++; // Intensität
+            dv++; // Radius
+        }
+        else { // Gültiger Abstandswert
+            // Gültigen Messpunkt kopieren
+            profile.radDist[pn] = (*dv);
+            profile.sqrtInt[pn] = (*iv);
+            // Nächster Messpunkt in tyPOMSDATAHEADER
+            iv++; // Intensität
+            dv++; // Radius
+            // Nächster Messpunkt in tyHSPRESULT
+            pn++;
+        }
+    }
+    // Anzahl der Punkte überprüfen
+    if(i == pointsComp)
+        return 0; // O.K.
+    else
+        return -2; // Fehler bei der Dekomprimierung
+}
 
+}
 
 // Transformation eines Profils vom Typ tyHSPRESULT in kartesischen
 // Koordinaten
@@ -362,15 +413,15 @@ void Datapackage::update(){
     double angle = 0; // Winkel zur negativen Vertikalachse
     for (int i=0; i<HSPPOINTS; i++) {
         // Gültigkeit des Messpunktes abfragen
-       /* if(this->intensity.at(i)!='0')
+        /* if(this->intensity.at(i)!='0')
         {*/
-            // Radius des Messpunktes [m]
-            double r = double(this->distance.at(i))*0.001;
-            // Koordinatentransformation Polar -> Kartesisch
-            x.push_back(ox + r*qSin(angle));
-            y.push_back(oy - r*qCos(angle));
-            //points++;
-       // }
+        // Radius des Messpunktes [m]
+        double r = double(this->distance.at(i))*0.001;
+        // Koordinatentransformation Polar -> Kartesisch
+        x.push_back(ox + r*qSin(angle));
+        y.push_back(oy - r*qCos(angle));
+        //points++;
+        // }
         angle += step; // Winkel des nächsten Punktes
     }
     /*
@@ -391,7 +442,7 @@ int Datapackage::bytesToInt(const char *buffer, int size)
         ds.setByteOrder(QDataStream::LittleEndian);
     else
         ds.setByteOrder(QDataStream::BigEndian);
-
+    
     int ret;
     if(size == 2){
         qint16 tmp;
@@ -411,9 +462,9 @@ int Datapackage::bytesToInt(const char *buffer, int size)
 int Datapackage::bytesToInt( QByteArray arbuffer, int size,char *buffer)
 {
     QDataStream input(arbuffer);
-
+    
     input.readRawData(buffer, sizeof(buffer));
-
+    
     QByteArray byteArr(buffer,size);
     QDataStream ds(&byteArr,QIODevice::ReadOnly);
     bool little_endian_usage=1;
@@ -421,7 +472,7 @@ int Datapackage::bytesToInt( QByteArray arbuffer, int size,char *buffer)
         ds.setByteOrder(QDataStream::LittleEndian);
     else
         ds.setByteOrder(QDataStream::BigEndian);
-
+    
     int ret;
     if(size == 2){
         qint16 tmp;
@@ -444,10 +495,10 @@ void Datapackage::readData(QByteArray datas,int start){
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
     //create stream without  data hearder
     //QDataStream ds(datas.right(datas.size()-start));
-
+    
     //create buffer for read all datas one by one
     QByteArray buffer;
-
+    
     // ------- read id
     //fill the buffer
     buffer.append(datas.at(start+0));
@@ -471,7 +522,7 @@ void Datapackage::readData(QByteArray datas,int start){
     //load data
     char cbuf[2];
     this->radius=this->bytesToInt(buffer,2,cbuf);
-
+    
     //empty the buffer
     buffer.clear();
     // ------- read radienkorrektur
@@ -569,13 +620,13 @@ void Datapackage::readData(QByteArray datas,int start){
     buffer.append(datas.at(start+26));
     buffer.append(datas.at(start+27));
     buffer.append(datas.at(start+28));
-
+    
      QDataStream input2(buffer);
  cbuf[4];
      input2.readRawData(cbuf, sizeof(cbuf));
     this->pointCount=this->bytesToInt(cbuf,4);
       buffer.clear();
-
+      
     this->end+=29;// number of bytes previously readed
     std::cout<<this->id.toStdString()<<std::endl;
     std::cout<<this->version.toStdString()<<std::endl;
@@ -591,7 +642,7 @@ void Datapackage::readData(QByteArray datas,int start){
     std::cout<<this->nglRightBanking<<std::endl;
     std::cout<<this->nglRightGauge<<std::endl;
     std::cout<<this->pointCount<<std::endl;
-
+    
     // Fill in the cloud data
 /* cloud->width    = this->pointCount;
     cloud->height   = 1;
@@ -606,13 +657,13 @@ void Datapackage::readData(QByteArray datas,int start){
         //read point
       //  ds >>y;
        // ds >>z;
-
+       
        // cloud->push_back(pcl::PointXYZ(0,y,z));
     }//*//*
     this->end+=this->pointCount;
     //affectation new cloud at the current cloud
     this->cloud=cloud;
-
+    
 }*/
 
 void Datapackage::Print(std::ostream& O) const
@@ -630,7 +681,7 @@ void Datapackage::Print(std::ostream& O) const
         O << "      x: "<<this->x.at(i)<<std::endl;
         O << "      y "<<this->y.at(i)<<std::endl;
         O << "      z "<<this->footpulse<<std::endl;
-
+        
     }
 }
 
@@ -640,7 +691,7 @@ std::ostream& operator << (std::ostream& O, const Datapackage& B)
     return O;
 }
 std::string Datapackage::toString() const{
-
+    
     std::stringstream ss;
     this->Print(ss);
     std::string myString = ss.str();

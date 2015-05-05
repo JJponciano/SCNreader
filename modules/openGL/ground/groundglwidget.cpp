@@ -28,7 +28,7 @@ groundGLWidget::groundGLWidget(QWidget *parent)
    this->pY=10;
    this->pZ=-10;
    this->lX=0;
-   this->lY=0;
+   this->lY=10;
    this->lZ=0;
 }
 groundGLWidget::~groundGLWidget()
