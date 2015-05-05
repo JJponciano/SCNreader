@@ -257,22 +257,15 @@ void ScnData::saveToTXT(int i)const{
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr ScnData::getcloud(){
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
-
-    //get count of points
-    int countPoints=0;
-    //for all package
-    for(int i=0;i<this->packages.size();i++)
-        //get each count of point for each packages
-        countPoints+=this->packages.at(i).getPointCount();
-
     //add point for each points of each package
-    for(int i=0;i<this->packages.size();i++)
-        for(int j=0;j<this->packages.at(i).getPointCount();j++){
+    for(int i=0;i<this->packages.size();i++){
+        for(int j=0;j<this->packages.at(i).getX().size();j++){
             cloud->push_back(pcl::PointXYZ(this->packages.at(i).getX().at(j),
                                            this->packages.at(i).getY().at(j),
                                            this->packages.at(i).getFootpulse())
                              );
         }
+    }
     return cloud;
 }
 

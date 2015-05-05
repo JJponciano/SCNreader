@@ -66,39 +66,15 @@ void VueParEtape::paintGL()
 
     for(int j=0;j<this->scnreaderFond.getClouds().size();j++)
     {
-        bool continu = true;
-        int i=this->pCourant;
-        while(continu && (i<this->scnreaderFond.getClouds(j)->points.size()))
-        {
-            int pz=this->scnreaderFond.getClouds(j)->points[i].z;
-            if(pz>=this->ftpCourant && pz<(this->ftpCourant+this->step))
-            {
-
+         for (int i=0;i<this->scnreaderFond.getClouds(j)->points.size();i++){
                 glColor3f(1.0/(float)(j+1),1.0/(float)(this->scnreaderFond.getClouds().size()-j),1.0);
                 //normalizes points with model->max of cordinates previously finded
                 float x=this->scnreaderFond.getClouds(j)->points[i].x;//scnreaderFond.getMaxX()*10;
                 float y=this->scnreaderFond.getClouds(j)->points[i].y;//scnreaderFond.getMaxY()*10;
-                float z=(this->scnreaderFond.getClouds(j)->points[i].z-this->ftpCourant)*0.1;//scnreaderFond.getMaxZ()*10;
+                float z=(this->scnreaderFond.getClouds(j)->points[i].z)*0.01;//scnreaderFond.getMaxZ()*10;
                 glVertex3f(x,y,z);
             }
-            else
-                continu=false;
-
-            i++;
-        }
-        this->pSuiv=i;
     }
-    glEnd();
-
-    glPointSize(10);
-
-    glBegin(GL_POINTS);
-    for(int j=this->ftpCourant;j<(this->ftpCourant+this->step);j++)
-    {
-        glColor3f(0.0,0.0,1.0);
-        glVertex3f(0.0,0.0,(j-this->ftpCourant)*0.1);
-    }
-
     glEnd();
     glPopMatrix();
     //----------------------------------------------------------------------*/
@@ -115,8 +91,7 @@ void VueParEtape::loadCloudFromTXT(){
         if (!fileName.isEmpty())
         {
             this->scnreaderFond.addCloudFromTXT(fileName.toStdString());
-            this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
-            this->ftpCourant=this->scnreaderFond.getClouds(0)->points[0].z;
+
         }
 
     }catch(std::exception const& e){
@@ -182,8 +157,7 @@ void VueParEtape::loadFromSCN(){
         {
             std::cout<<"start"<<std::endl;
             this->scnreaderFond.loadFromSCN(fileName.toStdString());
-            this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
-            this->ftpCourant=this->scnreaderFond.getClouds(0)->points[0].z;
+
             std::cout<<"end"<<std::endl;
         }
     }catch(std::exception const& e){

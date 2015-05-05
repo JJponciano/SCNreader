@@ -43,6 +43,7 @@ void scnreader_view::paintGL()
     glBegin(GL_POINTS);
     for(int j=0;j<this->scnreaderFond.getClouds().size();j++)
         for (int i=0;i<this->scnreaderFond.getClouds(j)->points.size();i++){
+
             glColor3f(1.0/(float)(j+1),1.0/(float)(this->scnreaderFond.getClouds().size()-j),1.0);
             //normalizes points with model->max of cordinates previously finded
             glVertex3f(this->scnreaderFond.getClouds(j)->points[i].x/scnreaderFond.getMaxX(),
