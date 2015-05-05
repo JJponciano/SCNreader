@@ -84,7 +84,9 @@ void scnreader_model::loadFromSCN(std::string pathname){
     //add this data created
     this->datas.push_back(data);
     //save the first package in data to txt file format ( only for debuging)
-        this->datas.at(0).saveToTXT(0);
+     this->datas.at(0).saveToTXT(0);
+     this->datas.at(0).saveToTXT(1);
+     this->datas.at(0).saveToTXT(8);
 }
 
 

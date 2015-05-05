@@ -253,60 +253,75 @@ void Datapackage::readData(QByteArray datas,int start){
     this->version.append(QChar(size));
     ds >> size;
     this->version.append(QChar(size));
-    // ===================================================================
-    quint8 byte0;
-    quint8 byte1;
-    quint8 byte2;
-    quint8 byte3;
-    //read structure's size
-    ds >> byte3 >> byte2 >> byte1 >> byte0;
-    this->structuresize = (byte0 << 24) + (byte1 << 16)+ (byte2 << 8)+ (byte3);
-
-    //read footpulse
-    ds >> byte3 >> byte2 >> byte1 >> byte0;
-    this->footpulse = (byte0 << 24) + (byte1 << 16)+ (byte2 << 8)+ (byte3);
-
-    //read 12 unknown bytes
-    for(int i=0;i<  12;i++){
-        qint8 size; // Since the size you're trying to read appears to be 2 bytes
-        ds >> size;
-        unknownbytes[i]=size;
+    if(this->id!="PD"||this->version!="00"){
+        std::cout<<this->id.toStdString() <<this->version.toStdString()<<" The data to reading is not a valid package."<<std::endl;
+        this->end=datas.size();//4+4;throw Erreur("The data to reading is not a valid package.");
     }
-    //read numbers of points
-    ds >> byte1 >> byte0;
-    this->pointCount = (byte0 << 8) + byte1;
+    else{
+        // ===================================================================
+        quint8 byte0;
+        quint8 byte1;
+        quint8 byte2;
+        quint8 byte3;
+        //read structure's size
+        ds >> byte3 >> byte2 >> byte1 >> byte0;
+        this->structuresize = (byte0 << 24) + (byte1 << 16)+ (byte2 << 8)+ (byte3);
 
-    //read 150 other unknown bytes
+        //read footpulse
+        ds >> byte3 >> byte2 >> byte1 >> byte0;
+        this->footpulse = (byte0 << 24) + (byte1 << 16)+ (byte2 << 8)+ (byte3);
 
-    for(int i=0;i<  150;i++){
-        qint8 size; // Since the size you're trying to read appears to be 2 bytes
-        ds >> size;
-        unknownbytes2[i]=size;
-    }
-    //  ---------- try to find the origin coordinate
-    //    this->originHor = (unknownbytes2[40] << 8) + unknownbytes2[39];
-    //    this->originVert = (unknownbytes2[42] << 8) + unknownbytes2[41];
-//    this->originHor = (unknownbytes2[46] << 8) + unknownbytes2[45];
-//    this->originVert = (unknownbytes2[48] << 8) + unknownbytes2[47];
-//    this->originHor = (unknownbytes2[59] << 24) +(unknownbytes2[58] << 16) +(unknownbytes2[57] << 8) + unknownbytes2[56];
-//    this->originVert = (unknownbytes2[63] << 24) +(unknownbytes2[62] << 16) +(unknownbytes2[61] << 8) + unknownbytes2[60];
-//    this->originHor = (unknownbytes2[31] << 24) +(unknownbytes2[30] << 16) +(unknownbytes2[29] << 8) + unknownbytes2[28];
-//    this->originVert = (unknownbytes2[35] << 24) +(unknownbytes2[34] << 16) +(unknownbytes2[33] << 8) + unknownbytes2[32];
-    this->originHor =(unknownbytes2[33] << 8) + unknownbytes2[32];
-    this->originVert =(unknownbytes2[35] << 8) + unknownbytes2[34];
-    //  ---------- end try
-
-    //read distance and intensity for all points
-    for(int i=0;i<this->pointCount;i++){
+        //read 12 unknown bytes
+        for(int i=0;i<  12;i++){
+            qint8 size; // Since the size you're trying to read appears to be 2 bytes
+            ds >> size;
+            unknownbytes[i]=size;
+        }
+        //read numbers of points
         ds >> byte1 >> byte0;
-        unsigned short dist= (byte0 << 8) + byte1;
-        this->distance.push_back(dist);
-        ds >> byte2;
-        char inte=byte2;
-        this->intensity.push_back(inte);
+        this->pointCount = (byte0 << 8) + byte1;
+
+        //read 150 other unknown bytes
+
+        for(int i=0;i<  150;i++){
+            qint8 size; // Since the size you're trying to read appears to be 2 bytes
+            ds >> size;
+            unknownbytes2[i]=size;
+        }
+        //  ---------- try to find the origin coordinate
+        int choix=4;
+        if(choix==0){
+            this->originHor = (unknownbytes2[40] << 8) + unknownbytes2[39];
+            this->originVert = (unknownbytes2[42] << 8) + unknownbytes2[41];
+        }else  if(choix==1){
+            this->originHor = (unknownbytes2[46] << 8) + unknownbytes2[45];
+            this->originVert = (unknownbytes2[48] << 8) + unknownbytes2[47];
+        }else  if(choix==2){
+            this->originHor = (unknownbytes2[59] << 24) +(unknownbytes2[58] << 16) +(unknownbytes2[57] << 8) + unknownbytes2[56];
+            this->originVert = (unknownbytes2[63] << 24) +(unknownbytes2[62] << 16) +(unknownbytes2[61] << 8) + unknownbytes2[60];
+        }else  if(choix==3){
+            this->originHor = (unknownbytes2[31] << 24) +(unknownbytes2[30] << 16) +(unknownbytes2[29] << 8) + unknownbytes2[28];
+            this->originVert = (unknownbytes2[35] << 24) +(unknownbytes2[34] << 16) +(unknownbytes2[33] << 8) + unknownbytes2[32];
+        }
+else  if(choix==4){
+
+            this->originHor =(unknownbytes2[33] << 8) + unknownbytes2[32];
+            this->originVert =(unknownbytes2[35] << 8) + unknownbytes2[34];
+        }
+        //  ---------- end try
+
+        //read distance and intensity for all points
+        for(int i=0;i<this->pointCount;i++){
+            ds >> byte1 >> byte0;
+            unsigned short dist= (byte0 << 8) + byte1;
+            this->distance.push_back(dist);
+            ds >> byte2;
+            char inte=byte2;
+            this->intensity.push_back(inte);
+        }
+        this->end+=4+4+4+12+2+150+this->pointCount*3;// number of bytes previously readed
+        this->update();
     }
-    this->end+=4+4+4+12+2+150+this->pointCount*3;// number of bytes previously readed
-    this->update();
 }
 QVector<double> Datapackage::getY() const
 {
@@ -340,19 +355,19 @@ void Datapackage::update(){
     double ox = double(this->originHor)*0.001;
     double oy = double(this->originVert)*0.001;
     // Winkelauflösung des Profils
-    double step = 2*M_PI/HSPPOINTS;
+    double step = 2*M_PI/(HSPPOINTS*10);
     int points = 0; // Anzahl der gültigen Messpunkte
     double angle = 0; // Winkel zur negativen Vertikalachse
     for (int i=0; i<HSPPOINTS; i++) {
         // Gültigkeit des Messpunktes abfragen
-        if(this->intensity.at(i) > 0) {
+       // if(int(this->intensity.at(i)>0)) {
             // Radius des Messpunktes [m]
             double r = double(this->distance.at(i))*0.001;
             // Koordinatentransformation Polar -> Kartesisch
             x.push_back(ox + r*sin(angle));
             y.push_back(oy - r*cos(angle));
             points++;
-        }
+     //   }
         angle += step; // Winkel des nächsten Punktes
     }
     /*

@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     works/scnreader_view.cpp \
     works/scnreader_model.cpp \
     works/scndata.cpp \
-    works/datapackage.cpp
+    works/datapackage.cpp \
+    works/vueparetape.cpp
 
 # if you use openGL
 opengl {
@@ -63,6 +64,7 @@ HEADERS  += mainwindow.h \
     works/scnreader_model.h \
     works/scndata.h \
     works/datapackage.h \
+    works/vueparetape.h
 
 # if you use openGL
 opengl {

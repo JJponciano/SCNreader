@@ -189,10 +189,11 @@ void ScnData::loadFromSCN(std::string pathname){
     if(!fichier.open(QIODevice::ReadOnly)){
         throw Erreur("the file "+pathname +"have not been opened!");
     }
-    else
+    else{
         this->alldatas=fichier.readAll();
-    //  dp.readDataFile(pathname);
-    this->assigningDatas();
+        //  dp.readDataFile(pathname);
+        this->assigningDatas();
+    }
 }
 //assigning of datas
 void ScnData::assigningDatas(){
@@ -200,45 +201,57 @@ void ScnData::assigningDatas(){
     this->indexreader=288;
     //read all data's packet;
     //as long as it still a given package
-    while(this->indexreader<this->alldatas.size()){
+    // create progress dialog to inform the user of progress if the task has done is too long
+    QProgressDialog progress("Loading cloud...", "Stop loading", 0, this->alldatas.size(), 0);
+    //said that the window is modal
+    progress.setWindowModality(Qt::WindowModal);
+    progress.setValue(0);
+     while(this->indexreader<this->alldatas.size()){
+          //if(indexreader%(this->alldatas.size()/100)==0||indexreader<(this->alldatas.size()/100))
+        progress.setValue(indexreader);
         //read block of byte and create a data package
         Datapackage dp(this->alldatas,this->indexreader);
         //update index reader
         this->indexreader=dp.getEnd();
         // this->indexreader+=10948;
         // add package
+
+
+
         this->packages.push_back(dp);
-        std::cout<<this->indexreader<<std::endl;
-
-
-       break; // break only for debug datapackage because i have not debugger
-    }std::cout<<"count of paquages: "<<this->packages.size()<<std::endl;
+        //if user want to stop loading, the reading is finished
+       // std::cout<< this->packages.size()<<std::endl;
+        if (progress.wasCanceled())
+            break;
+    }
+     std::cout<< this->packages.size()<<std::endl;
+    progress.setValue(this->alldatas.size());
 }
 
 void ScnData::save_all_toTXT()const{
     //save all packages
     for(int i=0;i<this->packages.size();i++){
-      this->saveToTXT(i);
+        this->saveToTXT(i);
     }
 }
 void ScnData::saveToTXT(int i)const{
+    if(i>=this->packages.size())throw Erreur("The number of package to save in txt is to big.");
     //save  ith package
-        // Création d'un objet QFile
-        QString name=QString::number(i);
-        name+=".txt";
-        QFile file(name);
-        // On ouvre notre fichier en lecture seule et on vérifie l'ouverture
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-            throw Erreur("the file "+name.toStdString() +"have not been opened!");
+    // Création d'un objet QFile
+    QString name=QString::number(i);
+    name+=".txt";
+    QFile file(name);
+    // On ouvre notre fichier en lecture seule et on vérifie l'ouverture
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        throw Erreur("the file "+name.toStdString() +"have not been opened!");
 
-        // Création d'un objet QTextStream à partir de notre objet QFile
-        QTextStream flux(&file);
-        // On choisit le codec correspondant au jeu de caractère que l'on souhaite ; ici, UTF-8
-        flux.setCodec("UTF-8");
-        // Écriture des différentes lignes dans le fichier
-
-        flux <<QString::fromStdString(this->packages.at(i).toString());
-        file.close();
+    // Création d'un objet QTextStream à partir de notre objet QFile
+    QTextStream flux(&file);
+    // On choisit le codec correspondant au jeu de caractère que l'on souhaite ; ici, UTF-8
+    flux.setCodec("UTF-8");
+    // Écriture des différentes lignes dans le fichie
+    flux <<QString::fromStdString(this->packages.at(i).toString());
+    file.close();
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr ScnData::getcloud(){
@@ -251,19 +264,14 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr ScnData::getcloud(){
         //get each count of point for each packages
         countPoints+=this->packages.at(i).getPointCount();
 
-    // Fill in the cloud data
-    cloud->width    = countPoints;
-    cloud->height   = 1;
-    cloud->is_dense = false;
-    cloud->points.resize (cloud->width * cloud->height);
-
-     //add point for each points of each package
+    //add point for each points of each package
     for(int i=0;i<this->packages.size();i++)
-         for(int j=0;j<this->packages.at(i).getPointCount();j++){
-        cloud->points[i].x = this->packages.at(i).getX().at(j);
-        cloud->points[i].y =this->packages.at(i).getY().at(j);
-        cloud->points[i].z = this->packages.at(i).getFootpulse();
-    }
+        for(int j=0;j<this->packages.at(i).getPointCount();j++){
+            cloud->push_back(pcl::PointXYZ(this->packages.at(i).getX().at(j),
+                                           this->packages.at(i).getY().at(j),
+                                           this->packages.at(i).getFootpulse())
+                             );
+        }
     return cloud;
 }
 
