@@ -169,7 +169,12 @@ public:
     void setY(const QVector<double> &value);
 
 private:
-    void Datapackage::update();
+    void update();
+    /**
+     * @brief decompression remove unuse point
+     */
+    void decompression() ;
+ void read(QByteArray datas, int start);
     int bytesToInt(const char *buffer, int size);
     int bytesToInt(QByteArray arbuffer, int size, char *buffer);
 
@@ -178,7 +183,9 @@ private:
     QString version;
     int radius;
     QVector<unsigned short> distance;
-    QVector<char> intensity;
+    QVector< char> intensity;
+    QVector<unsigned short>radDist;
+    QVector<unsigned char>sqrtInt;
     QVector<double>x;
     QVector<double>y;
     int radienkorrektur;
