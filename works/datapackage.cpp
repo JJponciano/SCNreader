@@ -355,19 +355,20 @@ void Datapackage::update(){
     double ox = double(this->originHor)*0.001;
     double oy = double(this->originVert)*0.001;
     // Winkelauflösung des Profils
-    double step = 2*M_PI/(HSPPOINTS*10);
+    double step = 2*M_PI/(HSPPOINTS);
     int points = 0; // Anzahl der gültigen Messpunkte
     double angle = 0; // Winkel zur negativen Vertikalachse
     for (int i=0; i<HSPPOINTS; i++) {
         // Gültigkeit des Messpunktes abfragen
-       // if(int(this->intensity.at(i)>0)) {
+       /* if(this->intensity.at(i)!='0')
+        {*/
             // Radius des Messpunktes [m]
             double r = double(this->distance.at(i))*0.001;
             // Koordinatentransformation Polar -> Kartesisch
             x.push_back(ox + r*sin(angle));
             y.push_back(oy - r*cos(angle));
             points++;
-     //   }
+       // }
         angle += step; // Winkel des nächsten Punktes
     }
     /*

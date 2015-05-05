@@ -24,7 +24,7 @@
 
 #include <QObject>
 #include <QWidget>
-#include "../modules/openGL/ground/view/view_ground_GL.h"
+#include "../modules/openGL/ground/groundglwidget.h"
 #include <cstdlib>
 #include <QMouseEvent>
 #include <QList>
@@ -52,7 +52,7 @@
 #include "scnreader_model.h"
 
 
-class VueParEtape: public View_ground_GL
+class VueParEtape: public groundGLWidget
 {
 public:
     VueParEtape(QWidget *parent = 0);

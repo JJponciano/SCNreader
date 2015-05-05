@@ -62,11 +62,17 @@ public:
      */
     virtual void paintGL();
 
-
     virtual void keyPressEvent( QKeyEvent *keyEvent );
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
+protected:
+    float pX;
+    float pY;
+    float pZ;
+    float lX;
+    float lY;
+    float lZ;
 };
 
 #endif // groundGLWidget_H

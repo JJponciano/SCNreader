@@ -21,7 +21,7 @@
  */
 #include "vueparetape.h"
 
-VueParEtape::VueParEtape(QWidget *parent): View_ground_GL(parent)
+VueParEtape::VueParEtape(QWidget *parent): groundGLWidget(parent)
 {
     this->step=500;
     this->pCourant=0;
@@ -42,20 +42,20 @@ VueParEtape::~VueParEtape()
 // ------------------------------------------ OPENGL Functions ------------------------------------------
 void VueParEtape::initializeGL()
 {
-    View_ground_GL::initializeGL();
+    groundGLWidget::initializeGL();
     glDisable(GL_LIGHTING);
 }
 
 void VueParEtape::resizeGL(int width, int height)
 {
-    View_ground_GL::resizeGL( width,  height);
+    groundGLWidget::resizeGL( width,  height);
 }
 
 void VueParEtape::paintGL()
 {
     //call the superclass function
-    View_ground_GL::paintGL();
-
+    groundGLWidget::paintGL();
+    this->setCamera(pX,pY,pZ,lX,lY,lZ);
     //------------------------------------------------------------------
     // definition size dot
     glPointSize(1);
@@ -209,9 +209,20 @@ void VueParEtape::keyPressEvent(QKeyEvent *keyEvent)
 {
 
     if(keyEvent->key()==Qt::Key_W){
-        this->scnreaderFond.setMaxX(this->scnreaderFond.getMaxX()*1.2);
-        this->scnreaderFond.setMaxY(this->scnreaderFond.getMaxY()*1.2);
-        this->scnreaderFond.setMaxZ(this->scnreaderFond.getMaxZ()*1.2);
+        this->pZ++;
+        this->lZ++;
+    }
+    else if(keyEvent->key()==Qt::Key_S){
+        this->pZ--;
+        this->lZ--;
+    }
+    else if(keyEvent->key()==Qt::Key_D){
+        this->pX++;
+        this->lX++;
+    }
+    else if(keyEvent->key()==Qt::Key_A){
+        this->pX--;
+        this->lX--;
     }
     else if(keyEvent->key()==Qt::Key_Q){
         this->scnreaderFond.setMaxX(this->scnreaderFond.getMaxX()*0.8);
@@ -246,14 +257,14 @@ void VueParEtape::keyPressEvent(QKeyEvent *keyEvent)
             this->pPrec.clear();
         }
     }
-    else View_ground_GL::keyPressEvent(keyEvent);
+    else groundGLWidget::keyPressEvent(keyEvent);
 }
 void VueParEtape::mouseMoveEvent(QMouseEvent *event){
-    View_ground_GL::mouseMoveEvent(event);
+    groundGLWidget::mouseMoveEvent(event);
 }
 void VueParEtape::mousePressEvent(QMouseEvent *event){
-    View_ground_GL::mousePressEvent(event);
+    groundGLWidget::mousePressEvent(event);
 }
 void VueParEtape::mouseReleaseEvent(QMouseEvent *event){
-    View_ground_GL::mouseReleaseEvent(event);
+    groundGLWidget::mouseReleaseEvent(event);
 }

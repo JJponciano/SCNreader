@@ -24,6 +24,12 @@
 groundGLWidget::groundGLWidget(QWidget *parent)
     : View_ground_GL(parent)
 {
+    this->pX=0;
+   this->pY=10;
+   this->pZ=-10;
+   this->lX=0;
+   this->lY=0;
+   this->lZ=0;
 }
 groundGLWidget::~groundGLWidget()
 {
@@ -33,6 +39,7 @@ groundGLWidget::~groundGLWidget()
 void groundGLWidget::initializeGL()
 {
     View_ground_GL::initializeGL();
+     this->setCamera(pX,pY,pZ,lX,lY,lZ);
      glDisable(GL_LIGHTING);
 }
 
@@ -46,6 +53,7 @@ void groundGLWidget::paintGL()
     //call the superclass function
     View_ground_GL::paintGL();
 }
+
 
 //===============================================
 //             Keyboard and mouse events

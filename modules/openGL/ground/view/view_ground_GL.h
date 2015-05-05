@@ -40,10 +40,11 @@ public:
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void setCamera(float pX, float pY, float pZ, float lX, float lY, float lZ);
+
 private:
     controller_ground_GL *controller;
     model_ground_GL *model;
-
     GLfloat ratio;
 };
 
