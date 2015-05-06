@@ -33,127 +33,6 @@ Datapackage::~Datapackage()
 {
 
 }
-void Datapackage::readDataFile(std::string pathname){
-    QFile fichier( QString(pathname.c_str()) );
-    if(!fichier.open(QIODevice::ReadOnly)){
-        throw Erreur("the file "+pathname +"have not been opened!");
-    }
-    QDataStream ds(&fichier);  ds.setByteOrder(QDataStream::LittleEndian);
-    this->end=288;
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
-    //create stream without  data hearder
-
-    qint8 header[288];
-    for(int i=0;i<  this->end;i++){
-        qint8 size; // Since the size you're trying to read appears to be 2 bytes
-        ds >> size;
-        header[i]=size;
-    }
-
-    // ================================= OK=================================
-    qint8 size; // Since the size you're trying to read appears to be 2 bytes
-    ds >> size;
-    this->id.append(QChar(size));
-    ds >> size;
-    this->id.append(QChar(size));
-    ds >> size;
-    this->version.append(QChar(size));
-    ds >> size;
-    this->version.append(QChar(size));
-    // ==================================================================
-    quint16 result;
-    int b32;// Since the size you're trying to read appears to be 2 bytes
-    quint8 byte0;
-    quint8 byte1;
-    quint8 byte2;
-    quint8 byte3;
-
-    ds >> byte1 >> byte0;
-    result = (byte0 << 8) + byte1;
-    byte0=0;byte1=0;byte2=0;byte3=0;
-    this->radius=result;
-    ds >> byte0;
-    this->radienkorrektur=byte0;
-    ds >> byte1 >> byte0;
-    result = (byte0 << 8) + byte1;
-    byte0=0;byte1=0;byte2=0;byte3=0;
-    this->spurweite=result;
-    ds >> byte1 >> byte0;
-    result = (byte0 << 8) + byte1;
-    byte0=0;byte1=0;byte2=0;byte3=0;
-    this->nglLeftHorizontal=result;
-    ds >> byte1 >> byte0;
-    result = (byte0 << 8) + byte1;
-    byte0=0;byte1=0;byte2=0;byte3=0;
-    this->nglLeftVertical=result;
-    ds >> byte1 >> byte0;
-    result = (byte0 << 8) + byte1;
-    byte0=0;byte1=0;byte2=0;byte3=0;
-    this->nglLeftBanking=result;
-    ds >> byte1 >> byte0;
-    result = (byte0 << 8) + byte1;
-    byte0=0;byte1=0;byte2=0;byte3=0;
-    this->nglLeftGauge=result;
-    ds >> byte1 >> byte0;
-    result = (byte0 << 8) + byte1;
-    byte0=0;byte1=0;byte2=0;byte3=0;
-    this->nglRightHorizontal=result;
-    ds >> byte1 >> byte0;
-    result = (byte0 << 8) + byte1;
-    byte0=0;byte1=0;byte2=0;byte3=0;
-    this->nglRightVertical=result;
-    ds >> byte1 >> byte0;
-    result = (byte0 << 8) + byte1;
-    byte0=0;byte1=0;byte2=0;byte3=0;
-    this->nglRightBanking=result;
-    ds >> byte1 >> byte0;
-    result = (byte0 << 8) + byte1;
-    byte0=0;byte1=0;byte2=0;byte3=0;
-    this->nglRightGauge=result;
-    ds >> byte3 >> byte2 >> byte1 >> byte0;
-    b32 = (byte0 << 24) + (byte1 << 16)+ (byte2 << 8)+ (byte3);
-    byte0=0;byte1=0;byte2=0;byte3=0;
-    this->pointCount=b32;
-
-    this->end+=29;// number of bytes previously readed
-
-    std::cout<<this->id.toStdString()<<std::endl;
-    std::cout<<this->version.toStdString()<<std::endl;
-    std::cout<<this->radius<<std::endl;
-    std::cout<<this->radienkorrektur<<std::endl;
-    std::cout<<this->spurweite<<std::endl;
-    std::cout<<this->nglLeftHorizontal<<std::endl;
-    std::cout<<this->nglLeftVertical<<std::endl;
-    std::cout<<this->nglLeftBanking<<std::endl;
-    std::cout<<this->nglLeftGauge<<std::endl;
-    std::cout<<this->nglRightHorizontal<<std::endl;
-    std::cout<<this->nglRightVertical<<std::endl;
-    std::cout<<this->nglRightBanking<<std::endl;
-    std::cout<<this->nglRightGauge<<std::endl;
-    std::cout<<this->pointCount<<std::endl;
-
-    // Fill in the cloud data
-    /* cloud->width    = this->pointCount;
-    cloud->height   = 1;
-    cloud->is_dense = false;
-    cloud->points.resize (cloud->width * cloud->height);
-*
-
-    for(INT32 i=0;i<this->pointCount;i++)
-    {
-       INT16 y;
-        INT16 z;
-        //read point
-        ds >>y;
-        ds >>z;
-
-       // cloud->push_back(pcl::PointXYZ(0,y,z));
-    }*/
-    this->end+=this->pointCount;
-    //affectation new cloud at the current cloud
-    this->cloud=cloud;
-
-}
 void Datapackage::read(QByteArray datas,int start){
 
     this->end=start;
@@ -243,7 +122,7 @@ void Datapackage::read(QByteArray datas,int start){
             quint16 dist= (byte0 << 8) + byte1;
             this->distance.push_back(dist);
             ds >> byte2;
-             char inte=byte2;
+             quint8 inte=byte2;
             this->intensity.push_back(inte);
         }/*
         this->pointCount=0;
@@ -276,42 +155,42 @@ void Datapackage::readData(QByteArray datas,int start){
 
 //remove unuse point
 void Datapackage::decompression(){
+    this->radDist =this->distance; // nächster Abstandswer
+    this->sqrtInt=this->intensity; // nächster Intensitätswert
     int HSPPOINTS = 3600;
     int pn = 0;
    // std::cout<<"nombre de point a lire: "<<this->pointCount<<std::endl;
     for(int i=0; i < this->pointCount; i++) {
         quint8 iv =this->intensity.at(i); // nächster Intensitätswert
         quint16 dv =this->distance.at(i); // nächster Abstandswert
-        bool ok=(iv!=0);
-std::cout<<dv<<" , " <<ok<<std::endl;
         // i: Punktindex innerhalb tyPOMSDATAHEADER
-        if(pn >= HSPPOINTS) // Notbremse
-            break;
+       /* if(pn >= HSPPOINTS) // Notbremse
+            break;*/
         // iv: Zeiger auf Intensität; (*iv): Intensitätswert
         if((iv)==0) { // Ungültige Messpunkte
             // n: Anzahl der ungültigen Messpunkte
-            quint16 n = (0);//std::cout<<"n: "<<n<<std::endl;
+            quint16 n = (dv);//std::cout<<"n: "<<n<<std::endl;
             if(n==0) n=1; // mindestens ein Messpunkt
             // n ungültige Messpunkte in tyHSPRESULT eintragen
 
              for(int j=0; j < n; j++) {
                 // Ungültige Messpunkte eintragen
-                    this->radDist.push_back(dv);
-                    this->sqrtInt.push_back(0);
+                  /*  this->radDist.push_back(dv);
+                    this->sqrtInt.push_back(0);*/
                     pn++;
             }
             // Nächster Messpunkt in tyPOMSDATAHEADER
         }
         else { // Gültiger Abstandswert
             // Gültigen Messpunkt kopieren
-            this->radDist.push_back(dv);
-            this->sqrtInt.push_back(iv);
+          /*  this->radDist.push_back(dv);
+            this->sqrtInt.push_back(iv);*/
             // Nächster Messpunkt in tyPOMSDATAHEADER
             // Nächster Messpunkt in tyHSPRESULT
             pn++;
         }
     }this->pointCount=pn;//std::cout<<"nbn: "<<nbN<<std::endl;
-    // Anzahl
+    // Anzahl*/
 
 }
 
@@ -321,7 +200,7 @@ void Datapackage::update(){
     // Berechnung der kartesichen Koordinaten eines Profils
     // innerhalb der Scanebene
    double HSPPOINTS = 3600;
-    // double HSPPOINTS = this->sqrtInt.size();
+   //  double HSPPOINTS = this->pointCount;
     //double x[HSPPOINTS]; // Horizontale Position [m]
     // double y[HSPPOINTS]; // Vertikale Position [m]
     // Ursprung der Polarkoordinaten in Schienenkoordinaten [m]
@@ -333,7 +212,12 @@ void Datapackage::update(){
     double angle = 0; // Winkel zur negativen Vertikalachse
     for (int i=0; i<HSPPOINTS; i++) {
         // Gültigkeit des Messpunktes abfragen
-        if(i<this->sqrtInt.size())
+        if(i<this->sqrtInt.size()){
+             if(this->sqrtInt.at(i) == 0){
+                 quint16 n = (this->radDist.at(i));//std::cout<<"n: "<<n<<std::endl;
+                 if(n==0) n=1;
+                 angle += step;
+             }else
             if(this->sqrtInt.at(i) > 0) {
                 // Radius des Messpunktes [m]
                 double r = double(this->radDist.at(i))*0.001;
@@ -341,8 +225,9 @@ void Datapackage::update(){
                 x.push_back(ox + r*sin(angle));
                 y.push_back(oy - r*cos(angle));
                 //  points++;
+                angle += step;// Winkel des nächsten Punktes
             }
-        angle += step;// Winkel des nächsten Punktes
+        }
     }
 }
 
