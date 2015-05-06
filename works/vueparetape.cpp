@@ -61,6 +61,7 @@ void VueParEtape::paintGL()
     glPointSize(1);
     //draw clouds step by step
     glPushMatrix();
+    //glRotatef(-90,0,0,1);
     glBegin(GL_POINTS);
 
 
@@ -71,7 +72,7 @@ void VueParEtape::paintGL()
                 //normalizes points with model->max of cordinates previously finded
                 float x=this->scnreaderFond.getClouds(j)->points[i].x;//scnreaderFond.getMaxX()*10;
                 float y=this->scnreaderFond.getClouds(j)->points[i].y;//scnreaderFond.getMaxY()*10;
-                float z=(this->scnreaderFond.getClouds(j)->points[i].z)*0.01;//scnreaderFond.getMaxZ()*10;
+                float z=(this->scnreaderFond.getClouds(j)->points[i].z-this->ftpdeDepart)*0.01;//scnreaderFond.getMaxZ()*10;
                 glVertex3f(x,y,z);
             }
     }
@@ -157,7 +158,7 @@ void VueParEtape::loadFromSCN(){
         {
             std::cout<<"start"<<std::endl;
             this->scnreaderFond.loadFromSCN(fileName.toStdString());
-
+this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
             std::cout<<"end"<<std::endl;
         }
     }catch(std::exception const& e){
