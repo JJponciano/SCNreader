@@ -258,7 +258,7 @@ void Datapackage::read(QByteArray datas,int start){
                 this->pointCount++;
                 unsigned short dist= (byte0 << 8) + byte1;
                 this->distance.push_back(dist);
-                char inte=byte2;
+                quint8 inte=byte2;
                 this->intensity.push_back(inte);
                 this->end+=3;
             }
@@ -268,7 +268,7 @@ void Datapackage::read(QByteArray datas,int start){
 }
 void Datapackage::readData(QByteArray datas,int start){
     this->read(datas,start);
-    //this->decompression();
+    this->decompression();
     this->update();
 
 }
@@ -276,47 +276,40 @@ void Datapackage::readData(QByteArray datas,int start){
 
 //remove unuse point
 void Datapackage::decompression(){
-    // Profil dekomprimieren
-    // Zeiger innerhalb tyPOMSDATAHEADER
-    // Dekomprimierung
-    //----- for each point
+    int HSPPOINTS = 3600;
+    int pn = 0;
+   // std::cout<<"nombre de point a lire: "<<this->pointCount<<std::endl;
     for(int i=0; i < this->pointCount; i++) {
-
-        // ------ get the intensity and the distance
-        char iv =this->intensity.at(i); // nächster Intensitätswert
+        quint8 iv =this->intensity.at(i); // nächster Intensitätswert
         unsigned short dv =this->distance.at(i); // nächster Abstandswert
         // i: Punktindex innerhalb tyPOMSDATAHEADER
+        if(pn >= HSPPOINTS) // Notbremse
+            break;
         // iv: Zeiger auf Intensität; (*iv): Intensitätswert
-        // ------ test if intensity is null
-        if(iv==0){ // Ungültige Messpunkte
+        if((iv)==0) { // Ungültige Messpunkte
             // n: Anzahl der ungültigen Messpunkte
-            // ------  if itensity is null, reset the number of point equals the value of the corresponding distance
-           // unsigned short n = (this->distance.at(i);
-          //  if(n==0) n=1; // mindestens ein Messpunkt
-
+            unsigned short n = (dv);//std::cout<<"n: "<<n<<std::endl;
+            if(n==0) n=1; // mindestens ein Messpunkt
             // n ungültige Messpunkte in tyHSPRESULT eintragen
-           // for(int j=0; j < n; j++) {
+
+             for(int j=0; j < n; j++) {
                 // Ungültige Messpunkte eintragen
-            this->radDist.push_back(dv);
-            this->sqrtInt.push_back(0);
-           // }
+                    this->radDist.push_back(0);
+                    this->sqrtInt.push_back(0);
+                    pn++;
+            }
             // Nächster Messpunkt in tyPOMSDATAHEADER
-            //            iv++; // Intensität
-            //            dv++; // Radius
-           // i+=n-1;
         }
-        else {
-            // ------ add the distance and intensity
-            // Gültiger Abstandswert
+        else { // Gültiger Abstandswert
             // Gültigen Messpunkt kopieren
             this->radDist.push_back(dv);
             this->sqrtInt.push_back(iv);
             // Nächster Messpunkt in tyPOMSDATAHEADER
-            //            iv++; // Intensität
-            //            dv++; // Radius
             // Nächster Messpunkt in tyHSPRESULT
+            pn++;
         }
-    }
+    }this->pointCount=pn;//std::cout<<"nbn: "<<nbN<<std::endl;
+    // Anzahl
 
 }
 
@@ -325,40 +318,32 @@ void Datapackage::decompression(){
 void Datapackage::update(){
     // Berechnung der kartesichen Koordinaten eines Profils
     // innerhalb der Scanebene
-    double  HSPPOINTS =radDist.size();// this->pointCount;std::cout<<this->pointCount<<std::endl;
+   double HSPPOINTS = 3600;
+    // double HSPPOINTS = this->sqrtInt.size();
+    //double x[HSPPOINTS]; // Horizontale Position [m]
+    // double y[HSPPOINTS]; // Vertikale Position [m]
     // Ursprung der Polarkoordinaten in Schienenkoordinaten [m]
     double ox = double(this->originHor)*0.001;
     double oy = double(this->originVert)*0.001;
     // Winkelauflösung des Profils
-    double pi2=2*M_PI;
-    double step = pi2/(HSPPOINTS);
-    int points = 0; // Anzahl der gültigen Messpunkte
+    double step = 2.0*M_PI/HSPPOINTS;
+    // int points = 0; // Anzahl der gültigen Messpunkte
     double angle = 0; // Winkel zur negativen Vertikalachse
-    for (int i=0; i<radDist.size(); i++) {
+    for (int i=0; i<HSPPOINTS; i++) {
         // Gültigkeit des Messpunktes abfragen
-         if(this->sqrtInt.at(i) > 0) {
-        // Radius des Messpunktes [m]
-        double r = double(this->radDist.at(i))*0.001;
-        // Koordinatentransformation Polar -> Kartesisch
-        double valx=ox + (r*qSin(angle));
-        double valy=oy - r*qCos(angle);
-        x.push_back(valx);
-        y.push_back(valy);
-        points++;
-
-      }else{
-             angle+=this->radDist.at(i);
-         }
-    angle += step;
-        // Winkel des nächsten Punktes
+        if(i<this->sqrtInt.size())
+            if(this->sqrtInt.at(i) > 0) {
+                // Radius des Messpunktes [m]
+                double r = double(this->radDist.at(i))*0.001;
+                // Koordinatentransformation Polar -> Kartesisch
+                x.push_back(ox + r*sin(angle));
+                y.push_back(oy - r*cos(angle));
+                //  points++;
+            }
+        angle += step;// Winkel des nächsten Punktes
     }
-    /*
-// Anzeige des Profils im Graph
-this->setCurveData(curveProfile, &x[0], &y[0], points);
-this->setCurveStyle(curveProfile, QwtCurve::Dots);
-this->setCurvePen(curveProfile,QPen::green);
-this->replot();*/
 }
+
 
 QVector<double> Datapackage::getY() const
 {
