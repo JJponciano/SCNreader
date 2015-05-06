@@ -25,10 +25,10 @@ groundGLWidget::groundGLWidget(QWidget *parent)
     : View_ground_GL(parent)
 {
     this->pX=0;
-   this->pY=10;
+   this->pY=0;
    this->pZ=-10;
    this->lX=0;
-   this->lY=10;
+   this->lY=0;
    this->lZ=0;
 }
 groundGLWidget::~groundGLWidget()

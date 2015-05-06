@@ -214,7 +214,7 @@ void Datapackage::read(QByteArray datas,int start){
             qint8 size; // Since the size you're trying to read appears to be 2 bytes
             ds >> size;
             unknownbytes2[i]=size;
-        }
+        }this->end+=4+4+4+12+2+150;
         //  ---------- try to find the origin coordinate
         int choix=4;
         if(choix==0){
@@ -237,17 +237,17 @@ void Datapackage::read(QByteArray datas,int start){
         }
         //  ---------- end try
 
-        /*/read distance and intensity for all points
+        //read distance and intensity for all points
         for(int i=0;i<this->pointCount;i++){
             ds >> byte1 >> byte0;
-            unsigned short dist= (byte0 << 8) + byte1;
+            quint16 dist= (byte0 << 8) + byte1;
             this->distance.push_back(dist);
             ds >> byte2;
              char inte=byte2;
             this->intensity.push_back(inte);
-        }*/
+        }/*
         this->pointCount=0;
-        this->end+=4+4+4+12+2+150;
+
         bool again=true;
         while(again&&end<datas.size()){
             ds >> byte1 >> byte0;
@@ -256,14 +256,14 @@ void Datapackage::read(QByteArray datas,int start){
                 again=false;
             else{
                 this->pointCount++;
-                unsigned short dist= (byte0 << 8) + byte1;
+                quint16 dist= (byte0 << 8) + byte1;
                 this->distance.push_back(dist);
                 quint8 inte=byte2;
                 this->intensity.push_back(inte);
                 this->end+=3;
             }
         }
-        //  this->end+=this->pointCount*3;// number of bytes previously readed
+        //*/  this->end+=this->pointCount*3;// number of bytes previously readed
     }
 }
 void Datapackage::readData(QByteArray datas,int start){
@@ -281,20 +281,22 @@ void Datapackage::decompression(){
    // std::cout<<"nombre de point a lire: "<<this->pointCount<<std::endl;
     for(int i=0; i < this->pointCount; i++) {
         quint8 iv =this->intensity.at(i); // nächster Intensitätswert
-        unsigned short dv =this->distance.at(i); // nächster Abstandswert
+        quint16 dv =this->distance.at(i); // nächster Abstandswert
+        bool ok=(iv!=0);
+std::cout<<dv<<" , " <<ok<<std::endl;
         // i: Punktindex innerhalb tyPOMSDATAHEADER
         if(pn >= HSPPOINTS) // Notbremse
             break;
         // iv: Zeiger auf Intensität; (*iv): Intensitätswert
         if((iv)==0) { // Ungültige Messpunkte
             // n: Anzahl der ungültigen Messpunkte
-            unsigned short n = (dv);//std::cout<<"n: "<<n<<std::endl;
+            quint16 n = (0);//std::cout<<"n: "<<n<<std::endl;
             if(n==0) n=1; // mindestens ein Messpunkt
             // n ungültige Messpunkte in tyHSPRESULT eintragen
 
              for(int j=0; j < n; j++) {
                 // Ungültige Messpunkte eintragen
-                    this->radDist.push_back(0);
+                    this->radDist.push_back(dv);
                     this->sqrtInt.push_back(0);
                     pn++;
             }
@@ -606,12 +608,12 @@ void Datapackage::setId(const QString &value)
 }
 
 
-QVector<unsigned short> Datapackage::getDistance() const
+QVector<quint16> Datapackage::getDistance() const
 {
     return distance;
 }
 
-void Datapackage::setDistance(const QVector<unsigned short> &value)
+void Datapackage::setDistance(const QVector<quint16> &value)
 {
     distance = value;
 }
