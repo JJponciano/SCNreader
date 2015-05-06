@@ -183,9 +183,9 @@ private:
     QString version;
     int radius;
     QVector<unsigned short> distance;
-    QVector< char> intensity;
+    QVector<quint8> intensity;
     QVector<unsigned short>radDist;
-    QVector<unsigned char>sqrtInt;
+    QVector<quint8>sqrtInt;
     QVector<double>x;
     QVector<double>y;
     int radienkorrektur;
