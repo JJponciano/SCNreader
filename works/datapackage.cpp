@@ -268,7 +268,7 @@ void Datapackage::read(QByteArray datas,int start){
 }
 void Datapackage::readData(QByteArray datas,int start){
     this->read(datas,start);
-    this->decompression();
+    //this->decompression();
     this->update();
 
 }
@@ -298,7 +298,7 @@ void Datapackage::decompression(){
            // for(int j=0; j < n; j++) {
                 // Ungültige Messpunkte eintragen
             this->radDist.push_back(dv);
-            this->sqrtInt.push_back(iv);
+            this->sqrtInt.push_back(0);
            // }
             // Nächster Messpunkt in tyPOMSDATAHEADER
             //            iv++; // Intensität
@@ -336,7 +336,7 @@ void Datapackage::update(){
     double angle = 0; // Winkel zur negativen Vertikalachse
     for (int i=0; i<radDist.size(); i++) {
         // Gültigkeit des Messpunktes abfragen
-       //   if(this->sqrtInt.at(i) > 0) {
+         if(this->sqrtInt.at(i) > 0) {
         // Radius des Messpunktes [m]
         double r = double(this->radDist.at(i))*0.001;
         // Koordinatentransformation Polar -> Kartesisch
@@ -346,7 +346,9 @@ void Datapackage::update(){
         y.push_back(valy);
         points++;
 
-    //    }
+      }else{
+             angle+=this->radDist.at(i);
+         }
     angle += step;
         // Winkel des nächsten Punktes
     }
