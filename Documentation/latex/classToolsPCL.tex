@@ -1,0 +1,444 @@
+\hypertarget{classToolsPCL}{\section{Tools\-P\-C\-L Class Reference}
+\label{classToolsPCL}\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}}
+}
+
+
+The \hyperlink{classToolsPCL}{Tools\-P\-C\-L} class for manage pcl This class is used to loading, reading and processing of point clouds.  
+
+
+
+
+{\ttfamily \#include $<$Tools\-P\-C\-L.\-h$>$}
+
+Inheritance diagram for Tools\-P\-C\-L\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classToolsPCL}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classToolsPCL_a2917407255ebacff1f473337ec45f235}{{\bfseries Tools\-P\-C\-L} (pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr cloud)}\label{classToolsPCL_a2917407255ebacff1f473337ec45f235}
+
+\item 
+void \hyperlink{classToolsPCL_ad99c261b21f228056cadade75f04a533}{extraction\-Cloud} (int i)
+\begin{DoxyCompactList}\small\item\em extraction\-Cloud create new clouds representing different parts of the cloud located at the ith position in the clouds vector \end{DoxyCompactList}\item 
+void \hyperlink{classToolsPCL_a4461f092363e7c30da969950aa6df1a7}{planar\-Segmentation} (int i)
+\begin{DoxyCompactList}\small\item\em planar\-Segmentation create a new cloud representing the most larger plan of the cloud located at the ith position in the clouds vector \end{DoxyCompactList}\item 
+void \hyperlink{classToolsPCL_a3e2207bc60d537209ef2540b8e23a2ef}{add\-Cloud} (std\-::string pathname)
+\begin{DoxyCompactList}\small\item\em add\-Cloud load a cloud from a \char`\"{}pcd\char`\"{} format file and add it in clouds \end{DoxyCompactList}\item 
+void \hyperlink{classToolsPCL_a21cf7571eb47821481550218fe292c1b}{add\-Cloud\-From\-T\-X\-T} (std\-::string pathname)
+\begin{DoxyCompactList}\small\item\em add\-Cloud load a cloud from a \char`\"{}txt\char`\"{} format file and add it in clouds \end{DoxyCompactList}\item 
+void \hyperlink{classToolsPCL_ac81260d8b719c58f84eaf8674691ad12}{save\-Clouds\-From\-T\-X\-T} (std\-::string pathname)
+\begin{DoxyCompactList}\small\item\em save\-Clouds\-From\-T\-X\-T save all clouds in \char`\"{}txt\char`\"{} format file \end{DoxyCompactList}\item 
+void \hyperlink{classToolsPCL_a181bbd4a2e39bb12dd66b74dbc58425d}{save\-Clouds} (std\-::string pathname)
+\begin{DoxyCompactList}\small\item\em save\-Clouds save all clouds in \char`\"{}pcd\char`\"{} format file \end{DoxyCompactList}\item 
+Q\-Vector$<$ pcl\-::\-Point\-Cloud\\*
+$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr $>$ \hyperlink{classToolsPCL_a1eb7da1d719387cb33f75827367ef9f4}{get\-Clouds} ()
+\begin{DoxyCompactList}\small\item\em get\-Clouds getter of clouds \end{DoxyCompactList}\item 
+pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\\*
+\-::Ptr \hyperlink{classToolsPCL_a15e8d38bafcdcf59bbdeb0d8de5fc7d1}{get\-Clouds} (int i)
+\begin{DoxyCompactList}\small\item\em get\-Clouds get the cloud has the index i \end{DoxyCompactList}\item 
+\hypertarget{classToolsPCL_a4f0f28905620a7ee5f4b0e90980b0334}{void \hyperlink{classToolsPCL_a4f0f28905620a7ee5f4b0e90980b0334}{clear} ()}\label{classToolsPCL_a4f0f28905620a7ee5f4b0e90980b0334}
+
+\begin{DoxyCompactList}\small\item\em clear remove all clouds \end{DoxyCompactList}\item 
+\hypertarget{classToolsPCL_a90c5602b7c710f8712fe777e36fe90a8}{float {\bfseries get\-Max\-X} () const }\label{classToolsPCL_a90c5602b7c710f8712fe777e36fe90a8}
+
+\item 
+\hypertarget{classToolsPCL_a9f3bf7d917292cc3fca90e98efe57095}{void {\bfseries set\-Max\-X} (float value)}\label{classToolsPCL_a9f3bf7d917292cc3fca90e98efe57095}
+
+\item 
+\hypertarget{classToolsPCL_ae29f540eb43bf81e27a449be015b708b}{float {\bfseries get\-Max\-Y} () const }\label{classToolsPCL_ae29f540eb43bf81e27a449be015b708b}
+
+\item 
+\hypertarget{classToolsPCL_a4d1993759b3829340585b55d60f4acaf}{void {\bfseries set\-Max\-Y} (float value)}\label{classToolsPCL_a4d1993759b3829340585b55d60f4acaf}
+
+\item 
+\hypertarget{classToolsPCL_ac03e32ac82d4ba54d6adeeec55db39f1}{float {\bfseries get\-Max\-Z} () const }\label{classToolsPCL_ac03e32ac82d4ba54d6adeeec55db39f1}
+
+\item 
+\hypertarget{classToolsPCL_a1a55b6282fb5e4d6e92282a554422cd5}{void {\bfseries set\-Max\-Z} (float value)}\label{classToolsPCL_a1a55b6282fb5e4d6e92282a554422cd5}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static pcl\-::\-Point\-Cloud\\*
+$<$ pcl\-::\-Point\-X\-Y\-Z\-R\-G\-B $>$\-::Ptr \hyperlink{classToolsPCL_ad7cc79166abda2af6583a6e6033ac003}{get\-Cloud\-Gray} (std\-::string pathname)
+\begin{DoxyCompactList}\small\item\em get\-Cloud\-Gray load a gray cloud from file which format is\-: X Y Z grayscale \end{DoxyCompactList}\item 
+static pcl\-::\-Point\-Cloud\\*
+$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr \hyperlink{classToolsPCL_a99f419d563640af3422e5b964d7f9220}{load\-Cloud\-From\-T\-X\-T} (std\-::string pathname)
+\begin{DoxyCompactList}\small\item\em load\-Cloud\-From\-T\-X\-T load a cloud from a \char`\"{}txt\char`\"{} format file \end{DoxyCompactList}\item 
+static void \hyperlink{classToolsPCL_a247180362526813879137c9dda16d1dc}{save\-Cloud} (pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr cloud, std\-::string new\-Name)
+\begin{DoxyCompactList}\small\item\em save\-Cloud save all clouds in \char`\"{}pcd\char`\"{} format file \end{DoxyCompactList}\item 
+static void \hyperlink{classToolsPCL_a86b4d1d3f38ebfa68eba60c67f8ec0f6}{save\-Cloud\-From\-T\-X\-T} (pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr cloud, std\-::string pathname)
+\begin{DoxyCompactList}\small\item\em save\-Cloud\-From\-T\-X\-T save all clouds in \char`\"{}txt\char`\"{} format file \end{DoxyCompactList}\item 
+static pcl\-::\-Point\-Cloud\\*
+$<$ pcl\-::\-Point\-X\-Y\-Z\-R\-G\-B $>$\-::Ptr \hyperlink{classToolsPCL_a787a46c37f74aa83e51e7aafdb009b51}{load\-Cloud\-R\-G\-B} (std\-::string pathname)
+\begin{DoxyCompactList}\small\item\em load\-Cloud\-R\-G\-B \end{DoxyCompactList}\item 
+static pcl\-::\-Point\-Cloud\\*
+$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr \hyperlink{classToolsPCL_a852f0884ba496b7b2a3a77aabf3923f5}{load\-Cloud} (std\-::string pathname)
+\begin{DoxyCompactList}\small\item\em load\-Cloud \end{DoxyCompactList}\item 
+static pcl\-::\-Point\-Cloud\\*
+$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr \hyperlink{classToolsPCL_a302c666bcdd57fd901da32b4581dec5b}{planar\-\_\-segmentation} (pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr cloud)
+\begin{DoxyCompactList}\small\item\em planar\-\_\-segmentation create a new cloud representing the most larger plan of the cloud \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classToolsPCL_a748c8d7a5d782653d3a2afd16d264c21}{float {\bfseries max\-X}}\label{classToolsPCL_a748c8d7a5d782653d3a2afd16d264c21}
+
+\item 
+\hypertarget{classToolsPCL_a77aa641be7ca591bfe112d42d3fe84fd}{float {\bfseries max\-Y}}\label{classToolsPCL_a77aa641be7ca591bfe112d42d3fe84fd}
+
+\item 
+\hypertarget{classToolsPCL_a5d716f4c7228045bd41d347b262e0e85}{float {\bfseries max\-Z}}\label{classToolsPCL_a5d716f4c7228045bd41d347b262e0e85}
+
+\item 
+\hypertarget{classToolsPCL_abeb013b3aadaeedc362e7cf136459e96}{Q\-Vector$<$ pcl\-::\-Point\-Cloud\\*
+$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr $>$ {\bfseries clouds}}\label{classToolsPCL_abeb013b3aadaeedc362e7cf136459e96}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classToolsPCL}{Tools\-P\-C\-L} class for manage pcl This class is used to loading, reading and processing of point clouds. 
+
+\hypertarget{classToolsPCL_s1}{}\subsection{How to use}\label{classToolsPCL_s1}
+\hypertarget{classToolsPCL_subs1}{}\subsubsection{Load cloud}\label{classToolsPCL_subs1}
+\hypertarget{classToolsPCL_subs2}{}\paragraph{From pcd file format}\label{classToolsPCL_subs2}
+if you want load a cloud from a pcd file format\-: 
+\begin{DoxyCode}
+std::string pathname=\textcolor{stringliteral}{"myfile.pcd"};
+pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=\hyperlink{classToolsPCL_a852f0884ba496b7b2a3a77aabf3923f5}{ToolsPCL::loadCloud}(pathname.c\_str());
+\end{DoxyCode}
+\hypertarget{classToolsPCL_subs3}{}\paragraph{From T\-X\-T file format}\label{classToolsPCL_subs3}
+if you want load a cloud from a T\-X\-T file format\-: 
+\begin{DoxyCode}
+std::string pathname=\textcolor{stringliteral}{"myfile.TXT"};
+pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=\hyperlink{classToolsPCL_a99f419d563640af3422e5b964d7f9220}{ToolsPCL::loadCloudFromTXT}(pathname.
+      c\_str());
+\end{DoxyCode}
+\hypertarget{classToolsPCL_subs4}{}\subsubsection{Save cloud}\label{classToolsPCL_subs4}
+\hypertarget{classToolsPCL_subs5}{}\paragraph{To pcd file format}\label{classToolsPCL_subs5}
+if you want save a cloud to a pcd file format\-: 
+\begin{DoxyCode}
+ pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (\textcolor{keyword}{new} pcl::PointCloud<pcl::PointXYZ>);
+\hyperlink{classToolsPCL_a247180362526813879137c9dda16d1dc}{ToolsPCL::saveCloud}(cloud,\textcolor{stringliteral}{"myfile.pcd"});
+\end{DoxyCode}
+\hypertarget{classToolsPCL_subs6}{}\paragraph{To T\-X\-T file format}\label{classToolsPCL_subs6}
+if you want save a cloud to a T\-X\-T file format\-: 
+\begin{DoxyCode}
+ pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (\textcolor{keyword}{new} pcl::PointCloud<pcl::PointXYZ>);
+\hyperlink{classToolsPCL_a86b4d1d3f38ebfa68eba60c67f8ec0f6}{ToolsPCL::saveCloudFromTXT}(cloud,\textcolor{stringliteral}{"myfile.TXT"});
+\end{DoxyCode}
+\hypertarget{classToolsPCL_subs7}{}\subsubsection{Processing}\label{classToolsPCL_subs7}
+\hypertarget{classToolsPCL_subs8}{}\paragraph{Planar segmentation}\label{classToolsPCL_subs8}
+if you want to execute a planar segmentation\-: 
+\begin{DoxyCode}
+std::string pathname=\textcolor{stringliteral}{"myfile.pcd"};
+pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=\hyperlink{classToolsPCL_a852f0884ba496b7b2a3a77aabf3923f5}{ToolsPCL::loadCloud}(pathname.c\_str());
+pcl::PointCloud<pcl::PointXYZ>::Ptr plan=this->\hyperlink{classToolsPCL_a302c666bcdd57fd901da32b4581dec5b}{planar\_segmentation}(cloud);
+\end{DoxyCode}
+\hypertarget{classToolsPCL_subs9}{}\paragraph{Extraction cluster}\label{classToolsPCL_subs9}
+if you want to execute a extraction of different cluser in a cloud\-: 
+\begin{DoxyCode}
+std::string pathname=\textcolor{stringliteral}{"myfile.pcd"};
+pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=\hyperlink{classToolsPCL_a852f0884ba496b7b2a3a77aabf3923f5}{ToolsPCL::loadCloud}(pathname.c\_str());
+QStringList cloudsName= this->extractionCloudInList(cloud);
+\end{DoxyCode}
+ After, you can load all clusters created by using of load\-Cloud with each element in clouds\-Name. Or you can use \hyperlink{classToolsPCL_ad99c261b21f228056cadade75f04a533}{extraction\-Cloud(int i)}. See also exemple\hypertarget{classToolsPCL_subs10}{}\subsubsection{Exemple}\label{classToolsPCL_subs10}
+These functions use a array of cloud ( \char`\"{}clouds\char`\"{} in parameters ). You can access this array through \hyperlink{classToolsPCL_a15e8d38bafcdcf59bbdeb0d8de5fc7d1}{get\-Clouds(int i)} or \hyperlink{classToolsPCL_a1eb7da1d719387cb33f75827367ef9f4}{get\-Clouds()} functions. You load a cloud and apply a extraction after a planar segmentation.
+
+
+\begin{DoxyCode}
+  std::string pathname=\textcolor{stringliteral}{"myfile.pcd"};
+ \textcolor{comment}{// load cloud}
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=\hyperlink{classToolsPCL_a852f0884ba496b7b2a3a77aabf3923f5}{ToolsPCL::loadCloud}(pathname.c\_str());
+\textcolor{comment}{//apply planar segmentation}
+  pcl::PointCloud<pcl::PointXYZ>::Ptr plan=this->\hyperlink{classToolsPCL_a302c666bcdd57fd901da32b4581dec5b}{planar\_segmentation}(cloud);
+\textcolor{comment}{// save in file}
+ \hyperlink{classToolsPCL_a86b4d1d3f38ebfa68eba60c67f8ec0f6}{ToolsPCL::saveCloudFromTXT}(plan,\textcolor{stringliteral}{"myfile.TXT"});
+\textcolor{comment}{// add this plan in array of cloud}
+ \hyperlink{classToolsPCL}{ToolsPCL} tools();
+tools.addCloudFromTXT(\textcolor{stringliteral}{"myfile.TXT"});
+\textcolor{comment}{// apply extraction}
+tools.extractionCloud(0);
+\textcolor{comment}{//get the original cloud and all cluster created}
+QVector<pcl::PointCloud<pcl::PointXYZ>::Ptr> clustersAndcloud= \hyperlink{classToolsPCL_a1eb7da1d719387cb33f75827367ef9f4}{getClouds}();\textcolor{comment}{// the original cloud
+       is at position 0}
+\textcolor{comment}{// for fun, save all clouds int txt and pcd files formats}
+  \hyperlink{classToolsPCL_ac81260d8b719c58f84eaf8674691ad12}{saveCloudsFromTXT}(\textcolor{stringliteral}{"allc.TXT"});
+  \hyperlink{classToolsPCL_a181bbd4a2e39bb12dd66b74dbc58425d}{saveClouds}(\textcolor{stringliteral}{"allc.pcd"});
+\end{DoxyCode}
+ 
+
+\subsection{Member Function Documentation}
+\hypertarget{classToolsPCL_a3e2207bc60d537209ef2540b8e23a2ef}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!add\-Cloud@{add\-Cloud}}
+\index{add\-Cloud@{add\-Cloud}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{add\-Cloud}]{\setlength{\rightskip}{0pt plus 5cm}void Tools\-P\-C\-L\-::add\-Cloud (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{pathname}
+\end{DoxyParamCaption}
+)}}\label{classToolsPCL_a3e2207bc60d537209ef2540b8e23a2ef}
+
+
+add\-Cloud load a cloud from a \char`\"{}pcd\char`\"{} format file and add it in clouds 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pathname} & path of the file for load cloud. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classToolsPCL_a21cf7571eb47821481550218fe292c1b}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!add\-Cloud\-From\-T\-X\-T@{add\-Cloud\-From\-T\-X\-T}}
+\index{add\-Cloud\-From\-T\-X\-T@{add\-Cloud\-From\-T\-X\-T}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{add\-Cloud\-From\-T\-X\-T}]{\setlength{\rightskip}{0pt plus 5cm}void Tools\-P\-C\-L\-::add\-Cloud\-From\-T\-X\-T (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{pathname}
+\end{DoxyParamCaption}
+)}}\label{classToolsPCL_a21cf7571eb47821481550218fe292c1b}
+
+
+add\-Cloud load a cloud from a \char`\"{}txt\char`\"{} format file and add it in clouds 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pathname} & path of the file for load cloud. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classToolsPCL_ad99c261b21f228056cadade75f04a533}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!extraction\-Cloud@{extraction\-Cloud}}
+\index{extraction\-Cloud@{extraction\-Cloud}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{extraction\-Cloud}]{\setlength{\rightskip}{0pt plus 5cm}void Tools\-P\-C\-L\-::extraction\-Cloud (
+\begin{DoxyParamCaption}
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}}\label{classToolsPCL_ad99c261b21f228056cadade75f04a533}
+
+
+extraction\-Cloud create new clouds representing different parts of the cloud located at the ith position in the clouds vector 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index of the cloud position in this Qvector clouds \\
+\hline
+\end{DoxyParams}
+\hypertarget{classToolsPCL_ad7cc79166abda2af6583a6e6033ac003}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!get\-Cloud\-Gray@{get\-Cloud\-Gray}}
+\index{get\-Cloud\-Gray@{get\-Cloud\-Gray}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{get\-Cloud\-Gray}]{\setlength{\rightskip}{0pt plus 5cm}pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z\-R\-G\-B $>$\-::Ptr Tools\-P\-C\-L\-::get\-Cloud\-Gray (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{pathname}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classToolsPCL_ad7cc79166abda2af6583a6e6033ac003}
+
+
+get\-Cloud\-Gray load a gray cloud from file which format is\-: X Y Z grayscale 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pathname} & path of the file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+rgb cloud with r=g=b 
+\end{DoxyReturn}
+\hypertarget{classToolsPCL_a1eb7da1d719387cb33f75827367ef9f4}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!get\-Clouds@{get\-Clouds}}
+\index{get\-Clouds@{get\-Clouds}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{get\-Clouds}]{\setlength{\rightskip}{0pt plus 5cm}Q\-Vector$<$ pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr $>$ Tools\-P\-C\-L\-::get\-Clouds (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classToolsPCL_a1eb7da1d719387cb33f75827367ef9f4}
+
+
+get\-Clouds getter of clouds 
+
+\begin{DoxyReturn}{Returns}
+a copy of all clouds 
+\end{DoxyReturn}
+\hypertarget{classToolsPCL_a15e8d38bafcdcf59bbdeb0d8de5fc7d1}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!get\-Clouds@{get\-Clouds}}
+\index{get\-Clouds@{get\-Clouds}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{get\-Clouds}]{\setlength{\rightskip}{0pt plus 5cm}pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr Tools\-P\-C\-L\-::get\-Clouds (
+\begin{DoxyParamCaption}
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}}\label{classToolsPCL_a15e8d38bafcdcf59bbdeb0d8de5fc7d1}
+
+
+get\-Clouds get the cloud has the index i 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index of the clouds in class's vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the cloud located at index i of the vector 
+\end{DoxyReturn}
+\hypertarget{classToolsPCL_a852f0884ba496b7b2a3a77aabf3923f5}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!load\-Cloud@{load\-Cloud}}
+\index{load\-Cloud@{load\-Cloud}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{load\-Cloud}]{\setlength{\rightskip}{0pt plus 5cm}pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr Tools\-P\-C\-L\-::load\-Cloud (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{pathname}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classToolsPCL_a852f0884ba496b7b2a3a77aabf3923f5}
+
+
+load\-Cloud 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pathname} & the path of the load file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the cloud save loaded 
+\end{DoxyReturn}
+\hypertarget{classToolsPCL_a99f419d563640af3422e5b964d7f9220}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!load\-Cloud\-From\-T\-X\-T@{load\-Cloud\-From\-T\-X\-T}}
+\index{load\-Cloud\-From\-T\-X\-T@{load\-Cloud\-From\-T\-X\-T}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{load\-Cloud\-From\-T\-X\-T}]{\setlength{\rightskip}{0pt plus 5cm}pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr Tools\-P\-C\-L\-::load\-Cloud\-From\-T\-X\-T (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{pathname}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classToolsPCL_a99f419d563640af3422e5b964d7f9220}
+
+
+load\-Cloud\-From\-T\-X\-T load a cloud from a \char`\"{}txt\char`\"{} format file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pathname} & path of the file for load cloud. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+cloud 
+\end{DoxyReturn}
+\hypertarget{classToolsPCL_a787a46c37f74aa83e51e7aafdb009b51}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!load\-Cloud\-R\-G\-B@{load\-Cloud\-R\-G\-B}}
+\index{load\-Cloud\-R\-G\-B@{load\-Cloud\-R\-G\-B}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{load\-Cloud\-R\-G\-B}]{\setlength{\rightskip}{0pt plus 5cm}pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z\-R\-G\-B $>$\-::Ptr Tools\-P\-C\-L\-::load\-Cloud\-R\-G\-B (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{pathname}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classToolsPCL_a787a46c37f74aa83e51e7aafdb009b51}
+
+
+load\-Cloud\-R\-G\-B 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pathname} & the path of the loqd file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the cloud loaded 
+\end{DoxyReturn}
+\hypertarget{classToolsPCL_a302c666bcdd57fd901da32b4581dec5b}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!planar\-\_\-segmentation@{planar\-\_\-segmentation}}
+\index{planar\-\_\-segmentation@{planar\-\_\-segmentation}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{planar\-\_\-segmentation}]{\setlength{\rightskip}{0pt plus 5cm}pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr Tools\-P\-C\-L\-::planar\-\_\-segmentation (
+\begin{DoxyParamCaption}
+\item[{pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr}]{cloud}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classToolsPCL_a302c666bcdd57fd901da32b4581dec5b}
+
+
+planar\-\_\-segmentation create a new cloud representing the most larger plan of the cloud 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cloud} & input cloud \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A cloud representing the most larger plan of the input cloud in cloud 
+\end{DoxyReturn}
+\hypertarget{classToolsPCL_a4461f092363e7c30da969950aa6df1a7}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!planar\-Segmentation@{planar\-Segmentation}}
+\index{planar\-Segmentation@{planar\-Segmentation}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{planar\-Segmentation}]{\setlength{\rightskip}{0pt plus 5cm}void Tools\-P\-C\-L\-::planar\-Segmentation (
+\begin{DoxyParamCaption}
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}}\label{classToolsPCL_a4461f092363e7c30da969950aa6df1a7}
+
+
+planar\-Segmentation create a new cloud representing the most larger plan of the cloud located at the ith position in the clouds vector 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index of the cloud position in this Qvector clouds \\
+\hline
+\end{DoxyParams}
+\hypertarget{classToolsPCL_a247180362526813879137c9dda16d1dc}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!save\-Cloud@{save\-Cloud}}
+\index{save\-Cloud@{save\-Cloud}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{save\-Cloud}]{\setlength{\rightskip}{0pt plus 5cm}void Tools\-P\-C\-L\-::save\-Cloud (
+\begin{DoxyParamCaption}
+\item[{pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr}]{cloud, }
+\item[{std\-::string}]{new\-Name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classToolsPCL_a247180362526813879137c9dda16d1dc}
+
+
+save\-Cloud save all clouds in \char`\"{}pcd\char`\"{} format file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cloud} & the cloud save \\
+\hline
+{\em new\-Name} & the path of the backup file \\
+\hline
+\end{DoxyParams}
+\hypertarget{classToolsPCL_a86b4d1d3f38ebfa68eba60c67f8ec0f6}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!save\-Cloud\-From\-T\-X\-T@{save\-Cloud\-From\-T\-X\-T}}
+\index{save\-Cloud\-From\-T\-X\-T@{save\-Cloud\-From\-T\-X\-T}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{save\-Cloud\-From\-T\-X\-T}]{\setlength{\rightskip}{0pt plus 5cm}void Tools\-P\-C\-L\-::save\-Cloud\-From\-T\-X\-T (
+\begin{DoxyParamCaption}
+\item[{pcl\-::\-Point\-Cloud$<$ pcl\-::\-Point\-X\-Y\-Z $>$\-::Ptr}]{cloud, }
+\item[{std\-::string}]{pathname}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}}\label{classToolsPCL_a86b4d1d3f38ebfa68eba60c67f8ec0f6}
+
+
+save\-Cloud\-From\-T\-X\-T save all clouds in \char`\"{}txt\char`\"{} format file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cloud} & the cloud save \\
+\hline
+{\em pathname} & the path of the backup file \\
+\hline
+\end{DoxyParams}
+\hypertarget{classToolsPCL_a181bbd4a2e39bb12dd66b74dbc58425d}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!save\-Clouds@{save\-Clouds}}
+\index{save\-Clouds@{save\-Clouds}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{save\-Clouds}]{\setlength{\rightskip}{0pt plus 5cm}void Tools\-P\-C\-L\-::save\-Clouds (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{pathname}
+\end{DoxyParamCaption}
+)}}\label{classToolsPCL_a181bbd4a2e39bb12dd66b74dbc58425d}
+
+
+save\-Clouds save all clouds in \char`\"{}pcd\char`\"{} format file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pathname} & the file path \\
+\hline
+\end{DoxyParams}
+\hypertarget{classToolsPCL_ac81260d8b719c58f84eaf8674691ad12}{\index{Tools\-P\-C\-L@{Tools\-P\-C\-L}!save\-Clouds\-From\-T\-X\-T@{save\-Clouds\-From\-T\-X\-T}}
+\index{save\-Clouds\-From\-T\-X\-T@{save\-Clouds\-From\-T\-X\-T}!ToolsPCL@{Tools\-P\-C\-L}}
+\subsubsection[{save\-Clouds\-From\-T\-X\-T}]{\setlength{\rightskip}{0pt plus 5cm}void Tools\-P\-C\-L\-::save\-Clouds\-From\-T\-X\-T (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{pathname}
+\end{DoxyParamCaption}
+)}}\label{classToolsPCL_ac81260d8b719c58f84eaf8674691ad12}
+
+
+save\-Clouds\-From\-T\-X\-T save all clouds in \char`\"{}txt\char`\"{} format file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pathname} & the file path \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/pcl/ground/\hyperlink{ToolsPCL_8h}{Tools\-P\-C\-L.\-h}\item 
+modules/pcl/ground/Tools\-P\-C\-L.\-cpp\end{DoxyCompactItemize}

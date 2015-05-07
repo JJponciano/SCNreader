@@ -1,34 +1,36 @@
-/**
-* @copyright 2015 Jean-Jacques PONCIANO, Claire PRUDHOMME
-* All rights reserved.
-* This file is part of scn reader.
-*
-* scn reader is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* scn reader is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Foobar.  If not, see <http://www.gnu.org/licenses/>
-* @author Jean-Jacques PONCIANO and Claire PRUDHOMME
-* Contact: ponciano.jeanjacques@gmail.com
-* @version 0.1
-*/
 #ifndef VIEW_PCL_H
 #define VIEW_PCL_H
 
-#include "../../openGL/ground/groundglwidget.h"
+#include <QObject>
+#include <QWidget>
+#include "../../openGL/ground/view/view_ground_GL.h"
+#include <cstdlib>
+#include <QMouseEvent>
+#include <QList>
+#include <QString>
+#include <QStringList>
+#include "GL/glut.h"
+#include "GL/freeglut_std.h"
+#include "GL/freeglut.h"
 #include "../../exceptions/erreur.h"
+#include <QVector>
+
+#include <pcl/ModelCoefficients.h>
+#include <pcl/point_types.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/filters/extract_indices.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/features/normal_3d.h>
+#include <pcl/kdtree/kdtree.h>
+#include <pcl/sample_consensus/method_types.h>
+#include <pcl/sample_consensus/model_types.h>
+#include <pcl/segmentation/sac_segmentation.h>
+#include <pcl/segmentation/extract_clusters.h>
 #include "../ground/ToolsPCL.h"
 
 
 
-class View_pcl : public groundGLWidget
+class View_pcl : public View_ground_GL
 {
     Q_OBJECT
 public:
@@ -36,7 +38,7 @@ public:
     ~View_pcl();
     void resizeGL(int ratio, int height);
     void initializeGL();
-    void paintGL();
+    virtual void paintGL();
     virtual void keyPressEvent( QKeyEvent *keyEvent );
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
@@ -68,15 +70,15 @@ public:
      * @brief loadCloudFromTXT  Opens a window allowing the user to select the file to load and load the cloud from file.
      * The format of the file is "text"
      */
-    void loadCloudFromTXT();
+  virtual  void  loadCloudFromTXT();
     /**
      * @brief saveCloudsFromTXT Opens a window allowing the user to select destination to save all clouds in "txt" format file and save it
      */
-    void saveCloudsFromTXT();
+   virtual void  saveCloudsFromTXT();
     /**
      * @brief saveClouds  Opens a window allowing the user to select destination to save all clouds in "pcd" format file and save it
      */
-    void saveClouds();
+ virtual   void saveClouds();
 protected:
     ToolsPCL toolspcl;
     int sizeCloud;

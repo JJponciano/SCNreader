@@ -1,0 +1,101 @@
+\hypertarget{classSCirculaire}{\section{S\-Circulaire Class Reference}
+\label{classSCirculaire}\index{S\-Circulaire@{S\-Circulaire}}
+}
+
+
+{\ttfamily \#include $<$S\-Circulaire.\-h$>$}
+
+Inheritance diagram for S\-Circulaire\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classSCirculaire}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSCirculaire_abc30b845fc9a038cf3f2d7c3748e2013}{S\-Circulaire} (std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ c, int n, float rayon)
+\begin{DoxyCompactList}\small\item\em Constructeur d'une surface circulaire. \end{DoxyCompactList}\item 
+\hypertarget{classSCirculaire_a9cf5f1017dce1bfc41f01562ea57e835}{{\bfseries S\-Circulaire} (const \hyperlink{classSCirculaire}{S\-Circulaire} \&orig)}\label{classSCirculaire_a9cf5f1017dce1bfc41f01562ea57e835}
+
+\item 
+\hypertarget{classSCirculaire_aa8cdc58cf4f3c565e9de501552a7b56c}{virtual \hyperlink{classSCirculaire_aa8cdc58cf4f3c565e9de501552a7b56c}{$\sim$\-S\-Circulaire} ()}\label{classSCirculaire_aa8cdc58cf4f3c565e9de501552a7b56c}
+
+\begin{DoxyCompactList}\small\item\em destructeur de la classe qui détruit tous les pointeurs \end{DoxyCompactList}\item 
+\hypertarget{classSCirculaire_ab9f9027637a9d0e85061a4d80623fac2}{void \hyperlink{classSCirculaire_ab9f9027637a9d0e85061a4d80623fac2}{Creation} ()}\label{classSCirculaire_ab9f9027637a9d0e85061a4d80623fac2}
+
+\begin{DoxyCompactList}\small\item\em Construction de la surface par ajout des points dans \hyperlink{classSurface}{Surface} L'ajout se fait selon l'ordre suivant\-: Pour chaque points de la courbe on donne tous les points du cercle correspondant au niveau du point de la courbe ($<$=$>$ parallèle par parallèle) méridiens=courbe parallèle=cercle. \end{DoxyCompactList}\item 
+void \hyperlink{classSCirculaire_a7db7e11fa18f5e00b870d7c062427572}{construction} ()
+\item 
+\hypertarget{classSCirculaire_ae1efd417c1a56b007746371e1534a94c}{float {\bfseries Calcul\-Theta} (\hyperlink{classPointGL}{Point\-G\-L} $\ast$p)}\label{classSCirculaire_ae1efd417c1a56b007746371e1534a94c}
+
+\item 
+\hypertarget{classSCirculaire_ab7a783cb6bb3e7f9abe1a131503b6292}{float {\bfseries Calcul\-Phi} (\hyperlink{classPointGL}{Point\-G\-L} $\ast$p)}\label{classSCirculaire_ab7a783cb6bb3e7f9abe1a131503b6292}
+
+\item 
+\hypertarget{classSCirculaire_a8adc636b41bb85c1340fa98f1c939f56}{std\-::vector$<$ \hyperlink{classFace}{Face} $\ast$ $>$ \hyperlink{classSCirculaire_a8adc636b41bb85c1340fa98f1c939f56}{get\-Face} ()}\label{classSCirculaire_a8adc636b41bb85c1340fa98f1c939f56}
+
+\begin{DoxyCompactList}\small\item\em Fonction permettant l'affichage de la surface. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classSCirculaire_abc30b845fc9a038cf3f2d7c3748e2013}{\index{S\-Circulaire@{S\-Circulaire}!S\-Circulaire@{S\-Circulaire}}
+\index{S\-Circulaire@{S\-Circulaire}!SCirculaire@{S\-Circulaire}}
+\subsubsection[{S\-Circulaire}]{\setlength{\rightskip}{0pt plus 5cm}S\-Circulaire\-::\-S\-Circulaire (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$}]{c, }
+\item[{int}]{n, }
+\item[{float}]{rayon}
+\end{DoxyParamCaption}
+)}}\label{classSCirculaire_abc30b845fc9a038cf3f2d7c3748e2013}
+
+
+Constructeur d'une surface circulaire. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & vecteur de points correspondant au points appartenant à la courbe de référence sur laquelle repose la surface. Exemple\-: 
+\begin{DoxyCode}
+\hyperlink{classBezier}{Bezier}* b=\textcolor{keyword}{new} \hyperlink{classBezier}{Bezier}(10);
+b->\hyperlink{classBezier_a3973f77432e3a02a7971d6a524668aef}{Trace}(vectorPtsControleC, nbp);
+\hyperlink{classSCirculaire}{SCirculaire}* sl=\textcolor{keyword}{new} \hyperlink{classSCirculaire_abc30b845fc9a038cf3f2d7c3748e2013}{SCirculaire}(b.\hyperlink{classBezier_ac428660e18d25b27a4e60b911c10320e}{getP}(), nbp2, centre);
+\end{DoxyCode}
+ \\
+\hline
+{\em n} & nombre de méridien pour la surface \\
+\hline
+{\em centre} & est le centre de la rotation effectuée par la courbe pour créer la surface \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classSCirculaire_a7db7e11fa18f5e00b870d7c062427572}{\index{S\-Circulaire@{S\-Circulaire}!construction@{construction}}
+\index{construction@{construction}!SCirculaire@{S\-Circulaire}}
+\subsubsection[{construction}]{\setlength{\rightskip}{0pt plus 5cm}void S\-Circulaire\-::construction (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classSCirculaire_a7db7e11fa18f5e00b870d7c062427572}
+Calcule tous les points de l'objet 
+
+Reimplemented from \hyperlink{classObjet3D_adeb89dbb10335cd671378377818c1f71}{Objet3\-D}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/tools\-\_\-models/\-Surfaces/S\-Circulaire.\-h\item 
+modules/open\-G\-L/tools\-\_\-models/\-Surfaces/S\-Circulaire.\-cpp\end{DoxyCompactItemize}

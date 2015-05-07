@@ -1,0 +1,174 @@
+\hypertarget{classFace}{\section{Face Class Reference}
+\label{classFace}\index{Face@{Face}}
+}
+
+
+{\ttfamily \#include $<$Face.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFace_afdb634bc2d5287ba0d62e46b57e9dc2e}{Face} ()
+\item 
+\hyperlink{classFace_a88e0725fb26500f174570372df28d6bf}{Face} (const \hyperlink{classFace}{Face} \&orig)
+\item 
+void \hyperlink{classFace_af060c26d3c550669b1796df41f08aed0}{add} (\hyperlink{classPointGL}{Point\-G\-L} $\ast$p, \hyperlink{classTexel}{Texel} $\ast$t)
+\item 
+void \hyperlink{classFace_a18e74dbfbb4bde83cc890c1664ce094b}{remove} ()
+\item 
+void \hyperlink{classFace_aaef76e86d3cc05d4ffe0fd34ae711a3b}{set\-Couleur} (float r, float g, float b)
+\item 
+void \hyperlink{classFace_a89341dffe04ab3d4ce3f64ea48039e54}{set\-Couleur} (const \hyperlink{classCouleur}{Couleur} \&c)
+\item 
+void \hyperlink{classFace_a624ad3f0698d8ece2db54edce2f1497a}{afficher} (bool lisage)
+\item 
+void \hyperlink{classFace_a3a318395a3017afbec8704e8fb0df918}{afficher\-Points} ()
+\item 
+bool \hyperlink{classFace_a2deb053f5ffee2ed5393ef39754466cf}{contain} (\hyperlink{classPointGL}{Point\-G\-L} $\ast$p) const 
+\item 
+std\-::vector$<$ float $>$ \hyperlink{classFace_a75e299e2d14ba3f888272edd9a8c866f}{get\-Normal} () const 
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classFace_afdb634bc2d5287ba0d62e46b57e9dc2e}{\index{Face@{Face}!Face@{Face}}
+\index{Face@{Face}!Face@{Face}}
+\subsubsection[{Face}]{\setlength{\rightskip}{0pt plus 5cm}Face\-::\-Face (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classFace_afdb634bc2d5287ba0d62e46b57e9dc2e}
+Constructeur \hypertarget{classFace_a88e0725fb26500f174570372df28d6bf}{\index{Face@{Face}!Face@{Face}}
+\index{Face@{Face}!Face@{Face}}
+\subsubsection[{Face}]{\setlength{\rightskip}{0pt plus 5cm}Face\-::\-Face (
+\begin{DoxyParamCaption}
+\item[{const {\bf Face} \&}]{orig}
+\end{DoxyParamCaption}
+)}}\label{classFace_a88e0725fb26500f174570372df28d6bf}
+Constructeur de copie 
+\begin{DoxyParams}{Parameters}
+{\em orig} & face à copier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+renvoie la face copiée 
+\end{DoxyReturn}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classFace_af060c26d3c550669b1796df41f08aed0}{\index{Face@{Face}!add@{add}}
+\index{add@{add}!Face@{Face}}
+\subsubsection[{add}]{\setlength{\rightskip}{0pt plus 5cm}void Face\-::add (
+\begin{DoxyParamCaption}
+\item[{{\bf Point\-G\-L} $\ast$}]{p, }
+\item[{{\bf Texel} $\ast$}]{t}
+\end{DoxyParamCaption}
+)}}\label{classFace_af060c26d3c550669b1796df41f08aed0}
+Ajout un point à la face 
+\begin{DoxyParams}{Parameters}
+{\em p} & point à ajouter \\
+\hline
+\end{DoxyParams}
+\hypertarget{classFace_a624ad3f0698d8ece2db54edce2f1497a}{\index{Face@{Face}!afficher@{afficher}}
+\index{afficher@{afficher}!Face@{Face}}
+\subsubsection[{afficher}]{\setlength{\rightskip}{0pt plus 5cm}void Face\-::afficher (
+\begin{DoxyParamCaption}
+\item[{bool}]{lisage}
+\end{DoxyParamCaption}
+)}}\label{classFace_a624ad3f0698d8ece2db54edce2f1497a}
+Affiche la face en couleur 
+\begin{DoxyCode}
+\textcolor{comment}{//affichage avec lissage de phong:}
+ \hyperlink{classFace_a624ad3f0698d8ece2db54edce2f1497a}{afficher}(\textcolor{keyword}{true});
+\end{DoxyCode}
+ 
+\begin{DoxyParams}{Parameters}
+{\em lisage} & affiche avec ou sans le lissage \\
+\hline
+\end{DoxyParams}
+\hypertarget{classFace_a3a318395a3017afbec8704e8fb0df918}{\index{Face@{Face}!afficher\-Points@{afficher\-Points}}
+\index{afficher\-Points@{afficher\-Points}!Face@{Face}}
+\subsubsection[{afficher\-Points}]{\setlength{\rightskip}{0pt plus 5cm}void Face\-::afficher\-Points (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classFace_a3a318395a3017afbec8704e8fb0df918}
+Affiche les points de la face \hypertarget{classFace_a2deb053f5ffee2ed5393ef39754466cf}{\index{Face@{Face}!contain@{contain}}
+\index{contain@{contain}!Face@{Face}}
+\subsubsection[{contain}]{\setlength{\rightskip}{0pt plus 5cm}bool Face\-::contain (
+\begin{DoxyParamCaption}
+\item[{{\bf Point\-G\-L} $\ast$}]{p}
+\end{DoxyParamCaption}
+) const}}\label{classFace_a2deb053f5ffee2ed5393ef39754466cf}
+Test si le point p appartient à la face 
+\begin{DoxyParams}{Parameters}
+{\em p} & point à tester \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+vrai si le point appartient à la face, faux sinon 
+\end{DoxyReturn}
+\hypertarget{classFace_a75e299e2d14ba3f888272edd9a8c866f}{\index{Face@{Face}!get\-Normal@{get\-Normal}}
+\index{get\-Normal@{get\-Normal}!Face@{Face}}
+\subsubsection[{get\-Normal}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$ float $>$ Face\-::get\-Normal (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classFace_a75e299e2d14ba3f888272edd9a8c866f}
+Récupération du vecteur normal à la face \begin{DoxyReturn}{Returns}
+le vecteur normal à la face 
+\end{DoxyReturn}
+\hypertarget{classFace_a18e74dbfbb4bde83cc890c1664ce094b}{\index{Face@{Face}!remove@{remove}}
+\index{remove@{remove}!Face@{Face}}
+\subsubsection[{remove}]{\setlength{\rightskip}{0pt plus 5cm}void Face\-::remove (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classFace_a18e74dbfbb4bde83cc890c1664ce094b}
+Supprime le dernier point ajouté à la face \hypertarget{classFace_aaef76e86d3cc05d4ffe0fd34ae711a3b}{\index{Face@{Face}!set\-Couleur@{set\-Couleur}}
+\index{set\-Couleur@{set\-Couleur}!Face@{Face}}
+\subsubsection[{set\-Couleur}]{\setlength{\rightskip}{0pt plus 5cm}void Face\-::set\-Couleur (
+\begin{DoxyParamCaption}
+\item[{float}]{r, }
+\item[{float}]{g, }
+\item[{float}]{b}
+\end{DoxyParamCaption}
+)}}\label{classFace_aaef76e86d3cc05d4ffe0fd34ae711a3b}
+Affecte une couleur à la face 
+\begin{DoxyParams}{Parameters}
+{\em r} & canal rouge \\
+\hline
+{\em g} & canal vert \\
+\hline
+{\em b} & canal bleu \\
+\hline
+\end{DoxyParams}
+\hypertarget{classFace_a89341dffe04ab3d4ce3f64ea48039e54}{\index{Face@{Face}!set\-Couleur@{set\-Couleur}}
+\index{set\-Couleur@{set\-Couleur}!Face@{Face}}
+\subsubsection[{set\-Couleur}]{\setlength{\rightskip}{0pt plus 5cm}void Face\-::set\-Couleur (
+\begin{DoxyParamCaption}
+\item[{const {\bf Couleur} \&}]{c}
+\end{DoxyParamCaption}
+)}}\label{classFace_a89341dffe04ab3d4ce3f64ea48039e54}
+Affecte une couleur à la face 
+\begin{DoxyParams}{Parameters}
+{\em c} & couleur \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/tools\-\_\-models/Face.\-h\item 
+modules/open\-G\-L/tools\-\_\-models/Face.\-cpp\end{DoxyCompactItemize}

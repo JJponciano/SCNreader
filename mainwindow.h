@@ -5,6 +5,8 @@
 #include "modules/pcl/view/view_pcl.h"
 #include <QMessageBox>
 #include "works/scnreader_view.h"
+#include "works/vueparetape.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -25,14 +27,17 @@ public slots:
     void clear();
     void extract();
     void planarSeg();
+    void affichageOK();
     void loadFromFile();
     void loadFromSCN();
     void loadCloudFromTXT();
     void saveFromFile();
     void saveFromFileTXT();
+    void changeD();
+    void changeF();
 private:
     Ui::MainWindow *ui;
-    scnreader_view *qw;
+    VueParEtape *qw;
 };
 
 #endif // MAINWINDOW_H

@@ -1,0 +1,112 @@
+\hypertarget{classSLineaire}{\section{S\-Lineaire Class Reference}
+\label{classSLineaire}\index{S\-Lineaire@{S\-Lineaire}}
+}
+
+
+{\ttfamily \#include $<$S\-Lineaire.\-h$>$}
+
+Inheritance diagram for S\-Lineaire\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classSLineaire}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSLineaire_af29a55c43b2f69187e9bf7d2f01e3199}{S\-Lineaire} (std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ c, int n, \hyperlink{classPointGL}{Point\-G\-L} $\ast$p1, \hyperlink{classPointGL}{Point\-G\-L} $\ast$p2)
+\begin{DoxyCompactList}\small\item\em Constructeur d'une surface linéaire. \end{DoxyCompactList}\item 
+\hypertarget{classSLineaire_a99e6bd4a84347cffba0f3f5fcda2f228}{{\bfseries S\-Lineaire} (const \hyperlink{classSLineaire}{S\-Lineaire} \&orig)}\label{classSLineaire_a99e6bd4a84347cffba0f3f5fcda2f228}
+
+\item 
+\hypertarget{classSLineaire_a85d96a0221719b0397625f99dcb9d964}{virtual \hyperlink{classSLineaire_a85d96a0221719b0397625f99dcb9d964}{$\sim$\-S\-Lineaire} ()}\label{classSLineaire_a85d96a0221719b0397625f99dcb9d964}
+
+\begin{DoxyCompactList}\small\item\em destructeur de la classe qui détruit tous les pointeurs \end{DoxyCompactList}\item 
+\hypertarget{classSLineaire_a946fddfdae938c4d3ec6e91c9cb30b8c}{void \hyperlink{classSLineaire_a946fddfdae938c4d3ec6e91c9cb30b8c}{Creation} ()}\label{classSLineaire_a946fddfdae938c4d3ec6e91c9cb30b8c}
+
+\begin{DoxyCompactList}\small\item\em Construction de la surface par ajout des points dans \hyperlink{classSurface}{Surface} L'ajout se fait selon l'ordre suivant\-: Pour chaque points de la courbe on donne tous les points du segment qui a pour origine le point de la courbe ($<$=$>$ parallèle par parallèle) méridiens=courbe parallèle=segment. \end{DoxyCompactList}\item 
+\hypertarget{classSLineaire_a3c82b3b19ad80e6815ca86cbb23facb9}{void \hyperlink{classSLineaire_a3c82b3b19ad80e6815ca86cbb23facb9}{construction} ()}\label{classSLineaire_a3c82b3b19ad80e6815ca86cbb23facb9}
+
+\begin{DoxyCompactList}\small\item\em Fonction permettant l'affichage de la surface. \end{DoxyCompactList}\item 
+float \hyperlink{classSLineaire_aa50f3a000493441aa2ace64806e1ae9d}{Interpo\-Lineaire} (float t, float p0, float p1)
+\begin{DoxyCompactList}\small\item\em Fonction permettant de calculer l'interpolation linéaire entre p0 et p1 à l'instant t. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classSLineaire_af29a55c43b2f69187e9bf7d2f01e3199}{\index{S\-Lineaire@{S\-Lineaire}!S\-Lineaire@{S\-Lineaire}}
+\index{S\-Lineaire@{S\-Lineaire}!SLineaire@{S\-Lineaire}}
+\subsubsection[{S\-Lineaire}]{\setlength{\rightskip}{0pt plus 5cm}S\-Lineaire\-::\-S\-Lineaire (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$}]{c, }
+\item[{int}]{n, }
+\item[{{\bf Point\-G\-L} $\ast$}]{p1, }
+\item[{{\bf Point\-G\-L} $\ast$}]{p2}
+\end{DoxyParamCaption}
+)}}\label{classSLineaire_af29a55c43b2f69187e9bf7d2f01e3199}
+
+
+Constructeur d'une surface linéaire. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & vecteur de points correspondant au points appartenant à la courbe de référence sur laquelle repose la surface. Exemple\-: 
+\begin{DoxyCode}
+\hyperlink{classBezier}{Bezier}* b=\textcolor{keyword}{new} \hyperlink{classBezier}{Bezier}(10);
+b->\hyperlink{classBezier_a3973f77432e3a02a7971d6a524668aef}{Trace}(vectorPtsControleC, nbp);
+\hyperlink{classSLineaire}{SLineaire}* sl=\textcolor{keyword}{new} \hyperlink{classSLineaire_af29a55c43b2f69187e9bf7d2f01e3199}{SLineaire}(b.\hyperlink{classBezier_ac428660e18d25b27a4e60b911c10320e}{getP}(), nbp2, p1, p2);
+\end{DoxyCode}
+ \\
+\hline
+{\em n} & nombre de méridien pour la surface \\
+\hline
+{\em p1} & premier point du segment \mbox{[}p1,p2\mbox{]} permettant la construction linéaire le long de la courbe \\
+\hline
+{\em p2} & second point du segment \mbox{[}p1,p2\mbox{]} permettant la construction linéaire le long de la courbe Le segment \mbox{[}p1,p2\mbox{]} est le segment que l'on balade le long de la courbe pour obtenir la surface \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classSLineaire_aa50f3a000493441aa2ace64806e1ae9d}{\index{S\-Lineaire@{S\-Lineaire}!Interpo\-Lineaire@{Interpo\-Lineaire}}
+\index{Interpo\-Lineaire@{Interpo\-Lineaire}!SLineaire@{S\-Lineaire}}
+\subsubsection[{Interpo\-Lineaire}]{\setlength{\rightskip}{0pt plus 5cm}float S\-Lineaire\-::\-Interpo\-Lineaire (
+\begin{DoxyParamCaption}
+\item[{float}]{t, }
+\item[{float}]{p0, }
+\item[{float}]{p1}
+\end{DoxyParamCaption}
+)}}\label{classSLineaire_aa50f3a000493441aa2ace64806e1ae9d}
+
+
+Fonction permettant de calculer l'interpolation linéaire entre p0 et p1 à l'instant t. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & instant/avancement de l'interpolation linéaire \\
+\hline
+{\em p0} & point de départ de l'interpolation linéaire \\
+\hline
+{\em p1} & point d'arrivée de l'interpolation linéaire \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+la valeur correspondant à l'interpolation linéaire entre p0 et p1 à l'instant t 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/tools\-\_\-models/\-Surfaces/S\-Lineaire.\-h\item 
+modules/open\-G\-L/tools\-\_\-models/\-Surfaces/S\-Lineaire.\-cpp\end{DoxyCompactItemize}

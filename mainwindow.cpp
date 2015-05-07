@@ -1,24 +1,3 @@
-/**
-*  @copyright 2015 Jean-Jacques PONCIANO, Claire PRUDHOMME
-* All rights reserved.
-* This file is part of scn reader.
-*
-* scn reader is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* scn reader is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Foobar.  If not, see <http://www.gnu.org/licenses/>
-* @author Jean-Jacques PONCIANO and Claire PRUDHOMME
-* Contact: ponciano.jeanjacques@gmail.com
-* @version 0.1
-*/
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -26,9 +5,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
-    qw=new scnreader_view(this);
+    qw=new VueParEtape(this);
     ui->gridLayout->addWidget(qw);
+    ui->pushC->setChecked(true);
     QObject::connect(ui->actionLoad_from_pcl_format, SIGNAL(triggered()), this, SLOT(loadFromFile()));
     QObject::connect(ui->actionSave_to_PCL_format, SIGNAL(triggered()), this, SLOT(saveFromFile()));
     QObject::connect(ui->actionSave_to_TXT_format, SIGNAL(triggered()), this, SLOT(saveFromFileTXT()));
@@ -37,6 +18,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->pushClear, SIGNAL(clicked()), this, SLOT(clear()));
     QObject::connect(ui->pushExtract, SIGNAL(clicked()), this, SLOT(extract()));
     QObject::connect(ui->pushPS, SIGNAL(clicked()), this, SLOT(planarSeg()));
+    QObject::connect(ui->pushC, SIGNAL(clicked()), this, SLOT(affichageOK()));
+
+    QObject::connect(ui->interD, SIGNAL(valueChanged(int)), this, SLOT(changeD()));
+    QObject::connect(ui->interF, SIGNAL(valueChanged(int)), this, SLOT(changeF()));
 }
 
 MainWindow::~MainWindow()
@@ -60,14 +45,82 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event){
 
 void MainWindow::loadFromFile()
 {
-   this->qw->loadCloud();
+    this->qw->loadCloud();
+    this->ui->nomf->setText(QString::fromStdString (this->qw->getNomF()));
+    try{
+        if(this->qw->getTaille() > 0)
+        {
+            std::stringstream ss;
+            int ftpd=this->qw->getFtpD() ;
+            int ftpf=this->qw->getFtpF();
+            ss << ftpd <<"-" << ftpf;
+            this->ui->intervalFtp->setText(QString::fromStdString (ss.str()));
+
+            this->ui->interD->setMinimum(ftpd);
+            this->ui->interF->setMinimum(ftpd);
+            this->ui->interD->setMaximum(ftpf);
+            this->ui->interF->setMaximum(ftpf);
+            this->ui->interD->setValue(ftpd);
+            this->ui->interF->setValue(ftpd);
+        }
+        else throw Erreur("Le fichier ne contient pas de point");
+    }catch(std::exception const& e){
+        QMessageBox::critical(0, "Error", e.what());
+    }
+
+
 }
+
 void MainWindow::loadFromSCN()
 {
-  this->qw->loadFromSCN();
+    this->qw->loadFromSCN();
+    this->ui->nomf->setText(QString::fromStdString (this->qw->getNomF()));
+
+    try{
+        if(this->qw->getTaille() > 0)
+        {
+            std::stringstream ss;
+            int ftpd=this->qw->getFtpD() ;
+            int ftpf=this->qw->getFtpF();
+            ss << ftpd <<"-" << ftpf;
+            this->ui->intervalFtp->setText(QString::fromStdString (ss.str()));
+
+            this->ui->interD->setMinimum(ftpd);
+            this->ui->interF->setMinimum(ftpd);
+            this->ui->interD->setMaximum(ftpf);
+            this->ui->interF->setMaximum(ftpf);
+            this->ui->interD->setValue(ftpd);
+            this->ui->interF->setValue(ftpd);
+        }
+        else throw Erreur("Le fichier ne contient pas de point");
+    }catch(std::exception const& e){
+        QMessageBox::critical(0, "Error", e.what());
+    }
 }
 void MainWindow::loadCloudFromTXT(){
      this->qw->loadCloudFromTXT();
+    this->ui->nomf->setText(QString::fromStdString (this->qw->getNomF()));
+
+    try{
+        if(this->qw->getTaille() > 0)
+        {
+            std::stringstream ss;
+            int ftpd=this->qw->getFtpD() ;
+            int ftpf=this->qw->getFtpF();
+            ss << ftpd <<"-" << ftpf;
+            this->ui->intervalFtp->setText(QString::fromStdString (ss.str()));
+
+            this->ui->interD->setMinimum(ftpd);
+            this->ui->interF->setMinimum(ftpd);
+            this->ui->interD->setMaximum(ftpf);
+            this->ui->interF->setMaximum(ftpf);
+            this->ui->interD->setValue(ftpd);
+            this->ui->interF->setValue(ftpd);
+        }
+        else throw Erreur("Le fichier ne contient pas de point");
+    }catch(std::exception const& e){
+        QMessageBox::critical(0, "Error", e.what());
+    }
 }
 
 void MainWindow::saveFromFileTXT()
@@ -82,9 +135,19 @@ void MainWindow::clear(){
    this->qw->clear();
 }
 void MainWindow::extract(){
-
-    this->qw->extractionCloud(0);
+    this->qw->setaffE(ui->pushExtract->isChecked());
 }
 void MainWindow::planarSeg(){
-    this->qw->planarSegmentation(0);
+    this->qw->setaffS(ui->pushPS->isChecked());
+}
+void MainWindow::affichageOK(){
+    this->qw->setaffC(ui->pushC->isChecked());
+}
+
+void MainWindow::changeD(){
+    this->qw->setFtpDI(this->ui->interD->value());
+}
+
+void MainWindow::changeF(){
+    this->qw->setFtpFI(this->ui->interF->value());
 }

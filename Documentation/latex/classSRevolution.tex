@@ -1,0 +1,73 @@
+\hypertarget{classSRevolution}{\section{S\-Revolution Class Reference}
+\label{classSRevolution}\index{S\-Revolution@{S\-Revolution}}
+}
+
+
+{\ttfamily \#include $<$S\-Revolution.\-h$>$}
+
+Inheritance diagram for S\-Revolution\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classSRevolution}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSRevolution_a57a7215ff953ee4f6ec1ccb8d330b087}{S\-Revolution} (std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ c, int n)
+\begin{DoxyCompactList}\small\item\em Constructeur d'une surface de révolution. \end{DoxyCompactList}\item 
+\hypertarget{classSRevolution_a846beb4fa33dc09ce2d6cf49ee843960}{{\bfseries S\-Revolution} (const \hyperlink{classSRevolution}{S\-Revolution} \&orig)}\label{classSRevolution_a846beb4fa33dc09ce2d6cf49ee843960}
+
+\item 
+\hypertarget{classSRevolution_ae78dddc5cd493f71796b4ac21b840e9f}{virtual \hyperlink{classSRevolution_ae78dddc5cd493f71796b4ac21b840e9f}{$\sim$\-S\-Revolution} ()}\label{classSRevolution_ae78dddc5cd493f71796b4ac21b840e9f}
+
+\begin{DoxyCompactList}\small\item\em destructeur de la classe qui détruit tous les pointeurs \end{DoxyCompactList}\item 
+\hypertarget{classSRevolution_af42d610f9cd60bf946ff032d5d02d203}{void \hyperlink{classSRevolution_af42d610f9cd60bf946ff032d5d02d203}{creation} ()}\label{classSRevolution_af42d610f9cd60bf946ff032d5d02d203}
+
+\begin{DoxyCompactList}\small\item\em Construction de la surface par ajout des points dans \hyperlink{classSurface}{Surface} L'ajout se fait selon l'ordre suivant\-: Pour chaque points de la courbe on donne tous les points du cercle correspondant au niveau du point de la courbe ($<$=$>$ parallèle par parallèle) méridiens=courbe parallèle=cercle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classSRevolution_a57a7215ff953ee4f6ec1ccb8d330b087}{\index{S\-Revolution@{S\-Revolution}!S\-Revolution@{S\-Revolution}}
+\index{S\-Revolution@{S\-Revolution}!SRevolution@{S\-Revolution}}
+\subsubsection[{S\-Revolution}]{\setlength{\rightskip}{0pt plus 5cm}S\-Revolution\-::\-S\-Revolution (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$}]{c, }
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}}\label{classSRevolution_a57a7215ff953ee4f6ec1ccb8d330b087}
+
+
+Constructeur d'une surface de révolution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & vecteur de points correspondant au points appartenant à la courbe de référence sur laquelle repose la surface. Exemple\-: 
+\begin{DoxyCode}
+\hyperlink{classBezier}{Bezier}* b=\textcolor{keyword}{new} \hyperlink{classBezier}{Bezier}(10);
+b->\hyperlink{classBezier_a3973f77432e3a02a7971d6a524668aef}{Trace}(vectorPtsControleC, nbp);
+\hyperlink{classSRevolution}{SRevolution}* sl=\textcolor{keyword}{new} \hyperlink{classSRevolution_a57a7215ff953ee4f6ec1ccb8d330b087}{SRevolution}(b.\hyperlink{classBezier_ac428660e18d25b27a4e60b911c10320e}{getP}(), nbp2);
+\end{DoxyCode}
+ \\
+\hline
+{\em n} & nombre de méridien pour la surface \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/tools\-\_\-models/\-Surfaces/S\-Revolution.\-h\item 
+modules/open\-G\-L/tools\-\_\-models/\-Surfaces/S\-Revolution.\-cpp\end{DoxyCompactItemize}

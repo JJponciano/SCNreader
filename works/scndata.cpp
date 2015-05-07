@@ -1,30 +1,10 @@
-/**
-*  @copyright 2015 Jean-Jacques PONCIANO, Claire PRUDHOMME
-* All rights reserved.
-* This file is part of scn reader.
-*
-* scn reader is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* scn reader is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Foobar.  If not, see <http://www.gnu.org/licenses/>
-* @author Jean-Jacques PONCIANO and Claire PRUDHOMME
-* Contact: ponciano.jeanjacques@gmail.com
-* @version 0.1
-*/
 #include "scndata.h"
 
 ScnData::ScnData(std::string pathname)
 {
     this->indexreader=0;
     this->loadFromSCN(pathname);
+    this->assigningDatas();
 }
 ScnData::ScnData()
 {
@@ -189,10 +169,12 @@ void ScnData::loadFromSCN(std::string pathname){
     if(!fichier.open(QIODevice::ReadOnly)){
         throw Erreur("the file "+pathname +"have not been opened!");
     }
-    else
-        this->alldatas=fichier.readAll();
-    //  dp.readDataFile(pathname);
-    this->assigningDatas();
+     else
+    this->alldatas=fichier.readAll();
+   //  dp.readDataFile(pathname);
+     this->assigningDatas();
+
+
 }
 //assigning of datas
 void ScnData::assigningDatas(){
@@ -200,73 +182,41 @@ void ScnData::assigningDatas(){
     this->indexreader=288;
     //read all data's packet;
     //as long as it still a given package
+    int i=0;
     while(this->indexreader<this->alldatas.size()){
         //read block of byte and create a data package
         Datapackage dp(this->alldatas,this->indexreader);
         //update index reader
-        this->indexreader=dp.getEnd();
-        // this->indexreader+=10948;
+       this->indexreader=dp.getEnd();
+       // this->indexreader+=10948;
         // add package
         this->packages.push_back(dp);
+
+
         std::cout<<this->indexreader<<std::endl;
 
 
-       break; // break only for debug datapackage because i have not debugger
-    }std::cout<<"count of paquages: "<<this->packages.size()<<std::endl;
-}
-
-void ScnData::save_all_toTXT()const{
-    //save all packages
-    for(int i=0;i<this->packages.size();i++){
-      this->saveToTXT(i);
-    }
-}
-void ScnData::saveToTXT(int i)const{
-    //save  ith package
         // Création d'un objet QFile
-        QString name=QString::number(i);
+        QString name=QString::number(i++);
         name+=".txt";
         QFile file(name);
         // On ouvre notre fichier en lecture seule et on vérifie l'ouverture
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
             throw Erreur("the file "+name.toStdString() +"have not been opened!");
 
+        if(false){
         // Création d'un objet QTextStream à partir de notre objet QFile
         QTextStream flux(&file);
         // On choisit le codec correspondant au jeu de caractère que l'on souhaite ; ici, UTF-8
         flux.setCodec("UTF-8");
         // Écriture des différentes lignes dans le fichier
 
-        flux <<QString::fromStdString(this->packages.at(i).toString());
+        flux <<QString::fromStdString(dp.toString());
         file.close();
+        }
+       // break only for debug datapackage because i have not debugger
+    }std::cout<<"count of paquages: "<<this->packages.size()<<std::endl;
 }
-
-pcl::PointCloud<pcl::PointXYZ>::Ptr ScnData::getcloud(){
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
-
-    //get count of points
-    int countPoints=0;
-    //for all package
-    for(int i=0;i<this->packages.size();i++)
-        //get each count of point for each packages
-        countPoints+=this->packages.at(i).getPointCount();
-
-    // Fill in the cloud data
-    cloud->width    = countPoints;
-    cloud->height   = 1;
-    cloud->is_dense = false;
-    cloud->points.resize (cloud->width * cloud->height);
-
-     //add point for each points of each package
-    for(int i=0;i<this->packages.size();i++)
-         for(int j=0;j<this->packages.at(i).getPointCount();j++){
-        cloud->points[i].x = this->packages.at(i).getX().at(j);
-        cloud->points[i].y =this->packages.at(i).getY().at(j);
-        cloud->points[i].z = this->packages.at(i).getFootpulse();
-    }
-    return cloud;
-}
-
 int ScnData::getIndexreader() const
 {
     return indexreader;

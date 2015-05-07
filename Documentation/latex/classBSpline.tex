@@ -1,0 +1,94 @@
+\hypertarget{classBSpline}{\section{B\-Spline Class Reference}
+\label{classBSpline}\index{B\-Spline@{B\-Spline}}
+}
+
+
+{\ttfamily \#include $<$B\-Spline.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classBSpline_a270bffd29442d124a0a063502c0f1f37}{B\-Spline} (int nb)
+\begin{DoxyCompactList}\small\item\em Constructeur d'une courbe type B-\/\-Spline. \end{DoxyCompactList}\item 
+\hypertarget{classBSpline_a7c86b59f6e656ecc3c78ef4e1f35ca98}{\hyperlink{classBSpline_a7c86b59f6e656ecc3c78ef4e1f35ca98}{B\-Spline} (const \hyperlink{classBSpline}{B\-Spline} \&orig)}\label{classBSpline_a7c86b59f6e656ecc3c78ef4e1f35ca98}
+
+\begin{DoxyCompactList}\small\item\em Constructeur de copie. \end{DoxyCompactList}\item 
+\hypertarget{classBSpline_a535039ab5127dc644a1a121faedf88b3}{virtual \hyperlink{classBSpline_a535039ab5127dc644a1a121faedf88b3}{$\sim$\-B\-Spline} ()}\label{classBSpline_a535039ab5127dc644a1a121faedf88b3}
+
+\begin{DoxyCompactList}\small\item\em Destructeur de la classe qui détruit tous les pointeurs. \end{DoxyCompactList}\item 
+void \hyperlink{classBSpline_a21eed7e5829622d86020706210532bd3}{Trace} (std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ P)
+\begin{DoxyCompactList}\small\item\em Fonction permettant de créer la courbe, en remplissant le vecteur de points Points. \end{DoxyCompactList}\item 
+\hypertarget{classBSpline_a81e035fc5c4b4748e2ba24ea0a60db1b}{void \hyperlink{classBSpline_a81e035fc5c4b4748e2ba24ea0a60db1b}{Affichage} ()}\label{classBSpline_a81e035fc5c4b4748e2ba24ea0a60db1b}
+
+\begin{DoxyCompactList}\small\item\em Fonction permettant l'affichage de la courbe. \end{DoxyCompactList}\item 
+std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ \hyperlink{classBSpline_aa4606c8de89943ddea85f7065d5cb2fa}{get\-P} ()
+\begin{DoxyCompactList}\small\item\em accesseur en lecture au vecteur de points contenant les points de la courbe \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classBSpline_a270bffd29442d124a0a063502c0f1f37}{\index{B\-Spline@{B\-Spline}!B\-Spline@{B\-Spline}}
+\index{B\-Spline@{B\-Spline}!BSpline@{B\-Spline}}
+\subsubsection[{B\-Spline}]{\setlength{\rightskip}{0pt plus 5cm}B\-Spline\-::\-B\-Spline (
+\begin{DoxyParamCaption}
+\item[{int}]{nb}
+\end{DoxyParamCaption}
+)}}\label{classBSpline_a270bffd29442d124a0a063502c0f1f37}
+
+
+Constructeur d'une courbe type B-\/\-Spline. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nb} & nombre de points voulu pour la courbe \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classBSpline_aa4606c8de89943ddea85f7065d5cb2fa}{\index{B\-Spline@{B\-Spline}!get\-P@{get\-P}}
+\index{get\-P@{get\-P}!BSpline@{B\-Spline}}
+\subsubsection[{get\-P}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$ B\-Spline\-::get\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classBSpline_aa4606c8de89943ddea85f7065d5cb2fa}
+
+
+accesseur en lecture au vecteur de points contenant les points de la courbe 
+
+\begin{DoxyReturn}{Returns}
+le vecteur de points Points 
+\end{DoxyReturn}
+\hypertarget{classBSpline_a21eed7e5829622d86020706210532bd3}{\index{B\-Spline@{B\-Spline}!Trace@{Trace}}
+\index{Trace@{Trace}!BSpline@{B\-Spline}}
+\subsubsection[{Trace}]{\setlength{\rightskip}{0pt plus 5cm}void B\-Spline\-::\-Trace (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$}]{P}
+\end{DoxyParamCaption}
+)}}\label{classBSpline_a21eed7e5829622d86020706210532bd3}
+
+
+Fonction permettant de créer la courbe, en remplissant le vecteur de points Points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em P} & vecteur contenant les points de contrôle de la courbe nécessaires à sa construction \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/tools\-\_\-models/\-Courbes/B\-Spline.\-h\item 
+modules/open\-G\-L/tools\-\_\-models/\-Courbes/B\-Spline.\-cpp\end{DoxyCompactItemize}

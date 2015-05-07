@@ -1,24 +1,15 @@
-/**
-*  @copyright 2015 Jean-Jacques PONCIANO, Claire PRUDHOMME
-* All rights reserved.
-* This file is part of scn reader.
-*
-* scn reader is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* scn reader is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Foobar.  If not, see <http://www.gnu.org/licenses/>
-* @author Jean-Jacques PONCIANO and Claire PRUDHOMME
-* Contact: ponciano.jeanjacques@gmail.com
-* @version 0.1
-*/
+/*
+ *
+ * @author PONCIANO Jean-Jacques et PRUDHOMME Claire
+ * Copyright  2014  PONCIANO Jean-Jacques et PRUDHOMME Claire
+ * Contact: ponciano.jeanjacques@gmail.com
+ * Créé le 13 Mars 2014
+ *
+ * Cette oeuvre, création, code, site ou texte est sous licence Creative Commons  Attribution - Pas d’Utilisation Commerciale -
+ * Partage dans les Mêmes Conditions 4.0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante
+ * http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900,
+ * Mountain View, California, 94041, USA.
+ */
 #include "Scene.h"
 using namespace std;
 float pi = 3.14159265;

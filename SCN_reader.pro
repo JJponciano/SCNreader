@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     works/scnreader_view.cpp \
     works/scnreader_model.cpp \
     works/scndata.cpp \
-    works/datapackage.cpp
+    works/datapackage.cpp \
+    works/vueparetape.cpp
 
 # if you use openGL
 opengl {
@@ -63,6 +64,7 @@ HEADERS  += mainwindow.h \
     works/scnreader_model.h \
     works/scndata.h \
     works/datapackage.h \
+    works/vueparetape.h
 
 # if you use openGL
 opengl {
@@ -212,7 +214,7 @@ opencv {
 # ===== OpenGL
 #if you use freeglut and openGL
 opengl{
-    unix|win32: LIBS += -lQt5OpenGL
+    win32: LIBS += -lQt5OpenGL
     unix{
          LIBS +=  -L$$PWD/usr/lib/x86_64-linux-gnu/ -lGL
          LIBS +=  -L$$PWD/usr/lib/x86_64-linux-gnu/ -lglut
@@ -279,4 +281,3 @@ opengl{
         DEPENDPATH += $$PWD/../../Libs/freeglut/include
     }#end win32
 }#end opengl
-
