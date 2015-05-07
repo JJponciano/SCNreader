@@ -213,7 +213,7 @@ void Datapackage::update(){
     for (int i=0; i<HSPPOINTS; i++) {
         // Gültigkeit des Messpunktes abfragen
         if(i<this->sqrtInt.size()){
-             if(this->sqrtInt.at(i) == 0){
+             if(this->sqrtInt.at(i) == 0||this->radDist.at(i)<260 ){
                  quint16 n = (this->radDist.at(i));//std::cout<<"n: "<<n<<std::endl;
                  if(n==0) n=1;
                  angle += step;
