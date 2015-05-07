@@ -207,7 +207,7 @@ void ScnData::assigningDatas(){
     progress.setWindowModality(Qt::WindowModal);
     progress.setValue(0);
     int count=0;
-     while(this->indexreader<this->alldatas.size()&&count<100){count++;
+     while(this->indexreader<this->alldatas.size()&&count<500){count++;
           //if(indexreader%(this->alldatas.size()/100)==0||indexreader<(this->alldatas.size()/100))
         progress.setValue(indexreader);
         //read block of byte and create a data package

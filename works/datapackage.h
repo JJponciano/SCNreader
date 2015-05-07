@@ -156,8 +156,8 @@ public:
     int getFootpulse() const;
     void setFootpulse(int value);
 
-    QVector<unsigned short> getDistance() const;
-    void setDistance(const QVector<unsigned short> &value);
+    QVector<quint16> getDistance() const;
+    void setDistance(const QVector<quint16> &value);
 
     QVector<char> getIntensity() const;
     void setIntensity(const QVector<char> &value);
@@ -182,10 +182,10 @@ private:
     QString id;
     QString version;
     int radius;
-    QVector<unsigned short> distance;
-    QVector< char> intensity;
-    QVector<unsigned short>radDist;
-    QVector<unsigned char>sqrtInt;
+    QVector<quint16> distance;
+    QVector<quint8> intensity;
+    QVector<quint16>radDist;
+    QVector<quint8>sqrtInt;
     QVector<double>x;
     QVector<double>y;
     int radienkorrektur;

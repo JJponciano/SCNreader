@@ -21,7 +21,7 @@
 */
 #include "ToolsPCL.h"
 
- 
+
 ToolsPCL::ToolsPCL( )
 {
     this->maxY=1;
@@ -41,7 +41,7 @@ ToolsPCL::ToolsPCL( pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 
 ToolsPCL::~ToolsPCL()
 {
-   this->clouds.clear();
+    this->clouds.clear();
 }
 
 void ToolsPCL::clear(){
@@ -54,8 +54,10 @@ void ToolsPCL::addCloud(std::string pathname){
     }catch(std::exception const& e){
         QMessageBox::critical(0, "Error", e.what());
     }
-     this->searchMAX();
+    this->searchMAX();
 }
+
+
 
 void ToolsPCL::addCloudFromTXT(std::string pathname){
     try{
@@ -64,7 +66,7 @@ void ToolsPCL::addCloudFromTXT(std::string pathname){
     }catch(std::exception const& e){
         QMessageBox::critical(0, "Error", e.what());
     }
-     this->searchMAX();
+    this->searchMAX();
 }
 
 void ToolsPCL::saveClouds(std::string pathname){
@@ -126,6 +128,27 @@ QVector<pcl::PointCloud<pcl::PointXYZ>::Ptr> ToolsPCL::getClouds(){
 }
 
 //----------------------Static function --------------
+
+pcl::PointCloud<pcl::PointXYZ>::Ptr ToolsPCL::ransac(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud){
+    // initialize PointClouds
+    pcl::PointCloud<pcl::PointXYZ>::Ptr final (new pcl::PointCloud<pcl::PointXYZ>);
+
+    std::vector<int> inliers;
+
+    // created RandomSampleConsensus object and compute the appropriated model
+    pcl::SampleConsensusModelPlane<pcl::PointXYZ>::Ptr
+            model_p (new pcl::SampleConsensusModelPlane<pcl::PointXYZ> (cloud));
+
+        pcl::RandomSampleConsensus<pcl::PointXYZ> ransac (model_p);
+        ransac.setDistanceThreshold (.01);
+        ransac.computeModel();
+        ransac.getInliers(inliers);
+
+    // copies all inliers of the model computed to another PointCloud
+    pcl::copyPointCloud<pcl::PointXYZ>(*cloud, inliers, *final);
+    return final;
+}
+
 void ToolsPCL::saveCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,std::string newName){
 
     cloud->is_dense = true;
