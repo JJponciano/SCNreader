@@ -69,6 +69,11 @@ void View_ground_GL::paintGL()
     //glScalef(this->scale,this->scale,this->scale);
 
 }
+void View_ground_GL::setCamera(float pX, float pY, float pZ, float lX, float lY, float lZ){
+    this->model->scene.setCameraLocation(pX,pY,pZ);
+     this->model->scene.setCameraLookAt(lX,lY,lZ);
+}
+
 //===============================================
 //              Clavier et souris
 //===============================================

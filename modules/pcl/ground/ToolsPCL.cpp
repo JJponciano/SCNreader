@@ -1,7 +1,27 @@
+/**
+*  @copyright 2015 Jean-Jacques PONCIANO, Claire PRUDHOMME
+* All rights reserved.
+* This file is part of scn reader.
+*
+* scn reader is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* scn reader is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Foobar.  If not, see <http://www.gnu.org/licenses/>
+* @author Jean-Jacques PONCIANO and Claire PRUDHOMME
+* Contact: ponciano.jeanjacques@gmail.com
+* @version 0.1
+*/
 #include "ToolsPCL.h"
-#include <QString>
-#include "../../exceptions/erreur.h"
- 
+
+
 ToolsPCL::ToolsPCL( )
 {
     this->maxY=1;
@@ -21,7 +41,7 @@ ToolsPCL::ToolsPCL( pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 
 ToolsPCL::~ToolsPCL()
 {
-   this->clouds.clear();
+    this->clouds.clear();
 }
 
 void ToolsPCL::clear(){
@@ -34,8 +54,10 @@ void ToolsPCL::addCloud(std::string pathname){
     }catch(std::exception const& e){
         QMessageBox::critical(0, "Error", e.what());
     }
-     this->searchMAX();
+    this->searchMAX();
 }
+
+
 
 void ToolsPCL::addCloudFromTXT(std::string pathname){
     try{
@@ -44,7 +66,7 @@ void ToolsPCL::addCloudFromTXT(std::string pathname){
     }catch(std::exception const& e){
         QMessageBox::critical(0, "Error", e.what());
     }
-     this->searchMAX();
+    this->searchMAX();
 }
 
 void ToolsPCL::saveClouds(std::string pathname){
@@ -106,6 +128,27 @@ QVector<pcl::PointCloud<pcl::PointXYZ>::Ptr> ToolsPCL::getClouds(){
 }
 
 //----------------------Static function --------------
+
+pcl::PointCloud<pcl::PointXYZ>::Ptr ToolsPCL::ransac(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud){
+    // initialize PointClouds
+    pcl::PointCloud<pcl::PointXYZ>::Ptr final (new pcl::PointCloud<pcl::PointXYZ>);
+
+    std::vector<int> inliers;
+
+    // created RandomSampleConsensus object and compute the appropriated model
+    pcl::SampleConsensusModelPlane<pcl::PointXYZ>::Ptr
+            model_p (new pcl::SampleConsensusModelPlane<pcl::PointXYZ> (cloud));
+
+        pcl::RandomSampleConsensus<pcl::PointXYZ> ransac (model_p);
+        ransac.setDistanceThreshold (.01);
+        ransac.computeModel();
+        ransac.getInliers(inliers);
+
+    // copies all inliers of the model computed to another PointCloud
+    pcl::copyPointCloud<pcl::PointXYZ>(*cloud, inliers, *final);
+    return final;
+}
+
 void ToolsPCL::saveCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,std::string newName){
 
     cloud->is_dense = true;
@@ -236,7 +279,7 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr ToolsPCL::getCloudGray(std::string pathna
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGB>);
 
     // le constructeur de ifstream permet d'ouvrir un fichier en lecture
-    std::ifstream fichier( pathname.c_str() );
+    std::ifstream fichier( pathname );
 
     if ( fichier ) // test if file is open
     {
@@ -582,3 +625,4 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr ToolsPCL::planar_segmentation( pcl::PointClo
         return newCloud;
     }
 }
+

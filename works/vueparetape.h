@@ -1,9 +1,33 @@
+
+/**
+ * @copyright 2015 Jean-Jacques PONCIANO, Claire PRUDHOMME
+ * All rights reserved.
+ * This file is part of scn reader.
+ *
+ * scn reader is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * scn reader is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Foobar.  If not, see <http://www.gnu.org/licenses/>
+ * @author Jean-Jacques PONCIANO and Claire PRUDHOMME
+ * Contact: ponciano.jeanjacques@gmail.com
+ * @version 0.1
+ */
+
 #ifndef VUEPARETAPE_H
 #define VUEPARETAPE_H
 
 #include <QObject>
 #include <QWidget>
-#include "../modules/openGL/ground/view/view_ground_GL.h"
+#include "../modules/openGL/ground/groundglwidget.h"
+
 #include <cstdlib>
 #include <QMouseEvent>
 #include <QList>
@@ -31,7 +55,8 @@
 #include "scnreader_model.h"
 
 
-class VueParEtape: public View_ground_GL
+
+class VueParEtape: public groundGLWidget
 {
 public:
     VueParEtape(QWidget *parent = 0);
@@ -61,6 +86,7 @@ public:
     void planarSegmentation(int d, int f);
 
 
+
     /**
      * @brief loadCloud Opens a window allowing the user to select the file to load and load the cloud from file.
      * The format of the file is "pcd"
@@ -82,6 +108,7 @@ public:
 
 
    void loadFromSCN();
+
 
    //accesseur en lecture et en écriture
    int getFtpD();
