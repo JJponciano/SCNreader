@@ -1,0 +1,252 @@
+\hypertarget{classPointGL}{\section{Point\-G\-L Class Reference}
+\label{classPointGL}\index{Point\-G\-L@{Point\-G\-L}}
+}
+
+
+{\ttfamily \#include $<$Point.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classPointGL_a24e4ffa65772815aa20753e0bc786172}{Point\-G\-L} ()
+\item 
+\hyperlink{classPointGL_a7c78587e20818ba1cf6101d84c209f30}{Point\-G\-L} (float x, float y, float z)
+\item 
+\hypertarget{classPointGL_ad43d1643664e6e534a5e254628c1c9c9}{{\bfseries Point\-G\-L} (const \hyperlink{classPointGL}{Point\-G\-L} \&orig)}\label{classPointGL_ad43d1643664e6e534a5e254628c1c9c9}
+
+\item 
+float \hyperlink{classPointGL_adb7aa72a985bdd393e896a1414826cc4}{get\-X} () const 
+\item 
+float \hyperlink{classPointGL_a6808f21ba18339ebcb7ed085748a0ab2}{get\-Y} () const 
+\item 
+float \hyperlink{classPointGL_a6ca34827d4db24440f77695916952035}{get\-Z} () const 
+\item 
+void \hyperlink{classPointGL_af3a2a263da2b88f6878b9129ed3c89dd}{set\-X} (float a)
+\item 
+void \hyperlink{classPointGL_a9db09a7eea4bd0b1c674477d17c57ca8}{set\-Y} (float a)
+\item 
+void \hyperlink{classPointGL_ae9fee8c6d9bf2c9de0edaaee1cb1c210}{set\-Z} (float a)
+\item 
+void \hyperlink{classPointGL_a6997b9b1af305d3826e02a3809b1dead}{set\-Normal\-Moyenne} (std\-::vector$<$ float $>$n)
+\item 
+void \hyperlink{classPointGL_a62e96c2dfcd8a8b8c393b6306dff76cc}{set\-Normal\-Moyenne} (float x, float y, float z)
+\item 
+std\-::vector$<$ float $>$ \hyperlink{classPointGL_a93f7846dd282e0352349c2905ccbf6f3}{get\-Normal} () const 
+\item 
+void \hyperlink{classPointGL_aba253aa08f7f222d5d7355191875bc35}{translation} (float x, float y, float z)
+\item 
+void \hyperlink{classPointGL_ae50ee0f316b8b1e292f47c3c4e8460fa}{rotation} (float a, int x, int y, int z)
+\item 
+void \hyperlink{classPointGL_a2a664d07bcb24bebaeca3e9ac3d5586f}{scale} (float x, float y, float z)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classPointGL_a24e4ffa65772815aa20753e0bc786172}{\index{Point\-G\-L@{Point\-G\-L}!Point\-G\-L@{Point\-G\-L}}
+\index{Point\-G\-L@{Point\-G\-L}!PointGL@{Point\-G\-L}}
+\subsubsection[{Point\-G\-L}]{\setlength{\rightskip}{0pt plus 5cm}Point\-G\-L\-::\-Point\-G\-L (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classPointGL_a24e4ffa65772815aa20753e0bc786172}
+Construteur par défaut construisant le point à l'origine du repère \hypertarget{classPointGL_a7c78587e20818ba1cf6101d84c209f30}{\index{Point\-G\-L@{Point\-G\-L}!Point\-G\-L@{Point\-G\-L}}
+\index{Point\-G\-L@{Point\-G\-L}!PointGL@{Point\-G\-L}}
+\subsubsection[{Point\-G\-L}]{\setlength{\rightskip}{0pt plus 5cm}Point\-G\-L\-::\-Point\-G\-L (
+\begin{DoxyParamCaption}
+\item[{float}]{x, }
+\item[{float}]{y, }
+\item[{float}]{z}
+\end{DoxyParamCaption}
+)}}\label{classPointGL_a7c78587e20818ba1cf6101d84c209f30}
+Construction du point 
+\begin{DoxyParams}{Parameters}
+{\em x} & abscisse \\
+\hline
+{\em y} & ordonnée \\
+\hline
+{\em z} & profondeur \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classPointGL_a93f7846dd282e0352349c2905ccbf6f3}{\index{Point\-G\-L@{Point\-G\-L}!get\-Normal@{get\-Normal}}
+\index{get\-Normal@{get\-Normal}!PointGL@{Point\-G\-L}}
+\subsubsection[{get\-Normal}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$ float $>$ Point\-G\-L\-::get\-Normal (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classPointGL_a93f7846dd282e0352349c2905ccbf6f3}
+Récupération du vecteur normal à la face \begin{DoxyReturn}{Returns}
+le vecteur normal 
+\end{DoxyReturn}
+\hypertarget{classPointGL_adb7aa72a985bdd393e896a1414826cc4}{\index{Point\-G\-L@{Point\-G\-L}!get\-X@{get\-X}}
+\index{get\-X@{get\-X}!PointGL@{Point\-G\-L}}
+\subsubsection[{get\-X}]{\setlength{\rightskip}{0pt plus 5cm}float Point\-G\-L\-::get\-X (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classPointGL_adb7aa72a985bdd393e896a1414826cc4}
+Récupération de l'abscisse du point \begin{DoxyReturn}{Returns}
+abscisse du point 
+\end{DoxyReturn}
+\hypertarget{classPointGL_a6808f21ba18339ebcb7ed085748a0ab2}{\index{Point\-G\-L@{Point\-G\-L}!get\-Y@{get\-Y}}
+\index{get\-Y@{get\-Y}!PointGL@{Point\-G\-L}}
+\subsubsection[{get\-Y}]{\setlength{\rightskip}{0pt plus 5cm}float Point\-G\-L\-::get\-Y (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classPointGL_a6808f21ba18339ebcb7ed085748a0ab2}
+Récupération de l'ordonnée du point \begin{DoxyReturn}{Returns}
+ordonnée du point 
+\end{DoxyReturn}
+\hypertarget{classPointGL_a6ca34827d4db24440f77695916952035}{\index{Point\-G\-L@{Point\-G\-L}!get\-Z@{get\-Z}}
+\index{get\-Z@{get\-Z}!PointGL@{Point\-G\-L}}
+\subsubsection[{get\-Z}]{\setlength{\rightskip}{0pt plus 5cm}float Point\-G\-L\-::get\-Z (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classPointGL_a6ca34827d4db24440f77695916952035}
+Récupération de la profondeur du point \begin{DoxyReturn}{Returns}
+profondeur du point 
+\end{DoxyReturn}
+\hypertarget{classPointGL_ae50ee0f316b8b1e292f47c3c4e8460fa}{\index{Point\-G\-L@{Point\-G\-L}!rotation@{rotation}}
+\index{rotation@{rotation}!PointGL@{Point\-G\-L}}
+\subsubsection[{rotation}]{\setlength{\rightskip}{0pt plus 5cm}void Point\-G\-L\-::rotation (
+\begin{DoxyParamCaption}
+\item[{float}]{a, }
+\item[{int}]{x, }
+\item[{int}]{y, }
+\item[{int}]{z}
+\end{DoxyParamCaption}
+)}}\label{classPointGL_ae50ee0f316b8b1e292f47c3c4e8460fa}
+Opération de rotation 
+\begin{DoxyParams}{Parameters}
+{\em angle} & angle de rotation \\
+\hline
+{\em x} & axe de rotation \\
+\hline
+{\em y} & axe de rotation \\
+\hline
+{\em z} & axe de rotation \\
+\hline
+\end{DoxyParams}
+\hypertarget{classPointGL_a2a664d07bcb24bebaeca3e9ac3d5586f}{\index{Point\-G\-L@{Point\-G\-L}!scale@{scale}}
+\index{scale@{scale}!PointGL@{Point\-G\-L}}
+\subsubsection[{scale}]{\setlength{\rightskip}{0pt plus 5cm}void Point\-G\-L\-::scale (
+\begin{DoxyParamCaption}
+\item[{float}]{x, }
+\item[{float}]{y, }
+\item[{float}]{z}
+\end{DoxyParamCaption}
+)}}\label{classPointGL_a2a664d07bcb24bebaeca3e9ac3d5586f}
+Opération de mise à l'échelle 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em z} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{classPointGL_a6997b9b1af305d3826e02a3809b1dead}{\index{Point\-G\-L@{Point\-G\-L}!set\-Normal\-Moyenne@{set\-Normal\-Moyenne}}
+\index{set\-Normal\-Moyenne@{set\-Normal\-Moyenne}!PointGL@{Point\-G\-L}}
+\subsubsection[{set\-Normal\-Moyenne}]{\setlength{\rightskip}{0pt plus 5cm}void Point\-G\-L\-::set\-Normal\-Moyenne (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ float $>$}]{n}
+\end{DoxyParamCaption}
+)}}\label{classPointGL_a6997b9b1af305d3826e02a3809b1dead}
+Modifie la valeur de la normal moyenne en ce point 
+\begin{DoxyParams}{Parameters}
+{\em n} & normale moyenne à affecter \\
+\hline
+\end{DoxyParams}
+\hypertarget{classPointGL_a62e96c2dfcd8a8b8c393b6306dff76cc}{\index{Point\-G\-L@{Point\-G\-L}!set\-Normal\-Moyenne@{set\-Normal\-Moyenne}}
+\index{set\-Normal\-Moyenne@{set\-Normal\-Moyenne}!PointGL@{Point\-G\-L}}
+\subsubsection[{set\-Normal\-Moyenne}]{\setlength{\rightskip}{0pt plus 5cm}void Point\-G\-L\-::set\-Normal\-Moyenne (
+\begin{DoxyParamCaption}
+\item[{float}]{x, }
+\item[{float}]{y, }
+\item[{float}]{z}
+\end{DoxyParamCaption}
+)}}\label{classPointGL_a62e96c2dfcd8a8b8c393b6306dff76cc}
+Modifie la valeur de la normal moyenne en ce point 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em z} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{classPointGL_af3a2a263da2b88f6878b9129ed3c89dd}{\index{Point\-G\-L@{Point\-G\-L}!set\-X@{set\-X}}
+\index{set\-X@{set\-X}!PointGL@{Point\-G\-L}}
+\subsubsection[{set\-X}]{\setlength{\rightskip}{0pt plus 5cm}void Point\-G\-L\-::set\-X (
+\begin{DoxyParamCaption}
+\item[{float}]{a}
+\end{DoxyParamCaption}
+)}}\label{classPointGL_af3a2a263da2b88f6878b9129ed3c89dd}
+Modification de l'abscisse du point 
+\begin{DoxyParams}{Parameters}
+{\em a} & nouvel abscisse \\
+\hline
+\end{DoxyParams}
+\hypertarget{classPointGL_a9db09a7eea4bd0b1c674477d17c57ca8}{\index{Point\-G\-L@{Point\-G\-L}!set\-Y@{set\-Y}}
+\index{set\-Y@{set\-Y}!PointGL@{Point\-G\-L}}
+\subsubsection[{set\-Y}]{\setlength{\rightskip}{0pt plus 5cm}void Point\-G\-L\-::set\-Y (
+\begin{DoxyParamCaption}
+\item[{float}]{a}
+\end{DoxyParamCaption}
+)}}\label{classPointGL_a9db09a7eea4bd0b1c674477d17c57ca8}
+Modification de l'ordonné du point 
+\begin{DoxyParams}{Parameters}
+{\em a} & nouvel ordonné \\
+\hline
+\end{DoxyParams}
+\hypertarget{classPointGL_ae9fee8c6d9bf2c9de0edaaee1cb1c210}{\index{Point\-G\-L@{Point\-G\-L}!set\-Z@{set\-Z}}
+\index{set\-Z@{set\-Z}!PointGL@{Point\-G\-L}}
+\subsubsection[{set\-Z}]{\setlength{\rightskip}{0pt plus 5cm}void Point\-G\-L\-::set\-Z (
+\begin{DoxyParamCaption}
+\item[{float}]{a}
+\end{DoxyParamCaption}
+)}}\label{classPointGL_ae9fee8c6d9bf2c9de0edaaee1cb1c210}
+Modification de la prodondeur du point 
+\begin{DoxyParams}{Parameters}
+{\em a} & nouvelle prodondeur \\
+\hline
+\end{DoxyParams}
+\hypertarget{classPointGL_aba253aa08f7f222d5d7355191875bc35}{\index{Point\-G\-L@{Point\-G\-L}!translation@{translation}}
+\index{translation@{translation}!PointGL@{Point\-G\-L}}
+\subsubsection[{translation}]{\setlength{\rightskip}{0pt plus 5cm}void Point\-G\-L\-::translation (
+\begin{DoxyParamCaption}
+\item[{float}]{x, }
+\item[{float}]{y, }
+\item[{float}]{z}
+\end{DoxyParamCaption}
+)}}\label{classPointGL_aba253aa08f7f222d5d7355191875bc35}
+Opération de translation 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em z} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/tools\-\_\-models/Point.\-h\item 
+modules/open\-G\-L/tools\-\_\-models/Point.\-cpp\end{DoxyCompactItemize}

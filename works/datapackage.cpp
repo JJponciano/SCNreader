@@ -1,3 +1,4 @@
+
 /**
 *  @copyright 2015 Jean-Jacques PONCIANO, Claire PRUDHOMME
 * All rights reserved.
@@ -534,3 +535,4 @@ void Datapackage::setCloud(const pcl::PointCloud<pcl::PointXYZ>::Ptr &value)
 {
     cloud = value;
 }
+>>>>>>> master

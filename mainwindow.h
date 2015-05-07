@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * @copyright 2015 Jean-Jacques PONCIANO, Claire PRUDHOMME
  * All rights reserved.
@@ -48,11 +49,14 @@ public slots:
     void clear();
     void extract();
     void planarSeg();
+    void affichageOK();
     void loadFromFile();
     void loadFromSCN();
     void loadCloudFromTXT();
     void saveFromFile();
     void saveFromFileTXT();
+    void changeD();
+    void changeF();
 private:
     Ui::MainWindow *ui;
     VueParEtape *qw;

@@ -625,3 +625,4 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr ToolsPCL::planar_segmentation( pcl::PointClo
         return newCloud;
     }
 }
+

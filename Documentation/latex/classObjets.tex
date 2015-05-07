@@ -1,0 +1,114 @@
+\hypertarget{classObjets}{\section{Objets Class Reference}
+\label{classObjets}\index{Objets@{Objets}}
+}
+
+
+{\ttfamily \#include $<$Objets.\-h$>$}
+
+Inheritance diagram for Objets\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classObjets}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classObjets_a2c14a4a3841d82cef1d1ef4e695859f6}{construction} ()
+\item 
+void \hyperlink{classObjets_a33ab9a220bba2d8266901b1302d5d0e6}{affiche\-Points} () const 
+\item 
+void \hyperlink{classObjets_a0897b019b260a1b858dffd4fa07595fb}{affichage} () const 
+\item 
+void \hyperlink{classObjets_af830ffcb0d208607b530c80a9403f084}{set\-Texture} (\hyperlink{classTexture}{Texture} $\ast$text)
+\item 
+\hypertarget{classObjets_a63d846ef70e1d0922f79e16d77f0c7cb}{{\bfseries Objets} (const \hyperlink{classObjets}{Objets} \&orig)}\label{classObjets_a63d846ef70e1d0922f79e16d77f0c7cb}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classObjets_ae481b18cf3a384d177d62a101b8df518}{calcule\-Normal} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classObjets_a626af9cb2c818f96ee1107162bc88db1}{std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ {\bfseries points}}\label{classObjets_a626af9cb2c818f96ee1107162bc88db1}
+
+\item 
+\hypertarget{classObjets_aa12179399b8fa417a47cf9399e5746b7}{std\-::vector$<$ \hyperlink{classTexel}{Texel} $\ast$ $>$ {\bfseries texels}}\label{classObjets_aa12179399b8fa417a47cf9399e5746b7}
+
+\item 
+\hypertarget{classObjets_aba91b138535fd2825b1616af8c22fe68}{std\-::vector$<$ \hyperlink{classFace}{Face} $\ast$ $>$ {\bfseries faces}}\label{classObjets_aba91b138535fd2825b1616af8c22fe68}
+
+\item 
+\hypertarget{classObjets_aaf5fb81127ec1fdfbea5187079bdc408}{\hyperlink{classTexture}{Texture} $\ast$ {\bfseries t}}\label{classObjets_aaf5fb81127ec1fdfbea5187079bdc408}
+
+\item 
+\hypertarget{classObjets_a6047da5af8aa69b393b76e10f16aaebf}{bool {\bfseries texture\-Active}}\label{classObjets_a6047da5af8aa69b393b76e10f16aaebf}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Member Function Documentation}
+\hypertarget{classObjets_a0897b019b260a1b858dffd4fa07595fb}{\index{Objets@{Objets}!affichage@{affichage}}
+\index{affichage@{affichage}!Objets@{Objets}}
+\subsubsection[{affichage}]{\setlength{\rightskip}{0pt plus 5cm}void Objets\-::affichage (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classObjets_a0897b019b260a1b858dffd4fa07595fb}
+Affiche l'objet sous forme de facette \hypertarget{classObjets_a33ab9a220bba2d8266901b1302d5d0e6}{\index{Objets@{Objets}!affiche\-Points@{affiche\-Points}}
+\index{affiche\-Points@{affiche\-Points}!Objets@{Objets}}
+\subsubsection[{affiche\-Points}]{\setlength{\rightskip}{0pt plus 5cm}void Objets\-::affiche\-Points (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classObjets_a33ab9a220bba2d8266901b1302d5d0e6}
+Affiche chaque point de l'objet \hypertarget{classObjets_ae481b18cf3a384d177d62a101b8df518}{\index{Objets@{Objets}!calcule\-Normal@{calcule\-Normal}}
+\index{calcule\-Normal@{calcule\-Normal}!Objets@{Objets}}
+\subsubsection[{calcule\-Normal}]{\setlength{\rightskip}{0pt plus 5cm}void Objets\-::calcule\-Normal (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{classObjets_ae481b18cf3a384d177d62a101b8df518}
+calcule les normales moyenne en chaque sommet. A exécuter impérativement à la fin de la construction de l'objet \hypertarget{classObjets_a2c14a4a3841d82cef1d1ef4e695859f6}{\index{Objets@{Objets}!construction@{construction}}
+\index{construction@{construction}!Objets@{Objets}}
+\subsubsection[{construction}]{\setlength{\rightskip}{0pt plus 5cm}void Objets\-::construction (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classObjets_a2c14a4a3841d82cef1d1ef4e695859f6}
+Calcule tous les points de l'objet 
+
+Reimplemented in \hyperlink{classTore_acfda6ef660e1a3f3f8c9e78cdb63a629}{Tore}.
+
+\hypertarget{classObjets_af830ffcb0d208607b530c80a9403f084}{\index{Objets@{Objets}!set\-Texture@{set\-Texture}}
+\index{set\-Texture@{set\-Texture}!Objets@{Objets}}
+\subsubsection[{set\-Texture}]{\setlength{\rightskip}{0pt plus 5cm}void Objets\-::set\-Texture (
+\begin{DoxyParamCaption}
+\item[{{\bf Texture} $\ast$}]{text}
+\end{DoxyParamCaption}
+)}}\label{classObjets_af830ffcb0d208607b530c80a9403f084}
+Changement de texture 
+\begin{DoxyParams}{Parameters}
+{\em text} & nouvelle texture à affecter \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/tools\-\_\-models/Objets.\-h\item 
+modules/open\-G\-L/tools\-\_\-models/Objets.\-cpp\end{DoxyCompactItemize}

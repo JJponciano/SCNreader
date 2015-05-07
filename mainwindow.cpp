@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     qw=new VueParEtape(this);
     ui->gridLayout->addWidget(qw);
+    ui->pushC->setChecked(true);
     QObject::connect(ui->actionLoad_from_pcl_format, SIGNAL(triggered()), this, SLOT(loadFromFile()));
     QObject::connect(ui->actionSave_to_PCL_format, SIGNAL(triggered()), this, SLOT(saveFromFile()));
     QObject::connect(ui->actionSave_to_TXT_format, SIGNAL(triggered()), this, SLOT(saveFromFileTXT()));
@@ -38,6 +39,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->pushClear, SIGNAL(clicked()), this, SLOT(clear()));
     QObject::connect(ui->pushExtract, SIGNAL(clicked()), this, SLOT(extract()));
     QObject::connect(ui->pushPS, SIGNAL(clicked()), this, SLOT(planarSeg()));
+    QObject::connect(ui->pushC, SIGNAL(clicked()), this, SLOT(affichageOK()));
+
+    QObject::connect(ui->interD, SIGNAL(valueChanged(int)), this, SLOT(changeD()));
+    QObject::connect(ui->interF, SIGNAL(valueChanged(int)), this, SLOT(changeF()));
 }
 
 MainWindow::~MainWindow()
@@ -61,14 +66,82 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event){
 
 void MainWindow::loadFromFile()
 {
-   this->qw->loadCloud();
+    this->qw->loadCloud();
+    this->ui->nomf->setText(QString::fromStdString (this->qw->getNomF()));
+    try{
+        if(this->qw->getTaille() > 0)
+        {
+            std::stringstream ss;
+            int ftpd=this->qw->getFtpD() ;
+            int ftpf=this->qw->getFtpF();
+            ss << ftpd <<"-" << ftpf;
+            this->ui->intervalFtp->setText(QString::fromStdString (ss.str()));
+
+            this->ui->interD->setMinimum(ftpd);
+            this->ui->interF->setMinimum(ftpd);
+            this->ui->interD->setMaximum(ftpf);
+            this->ui->interF->setMaximum(ftpf);
+            this->ui->interD->setValue(ftpd);
+            this->ui->interF->setValue(ftpd);
+        }
+        else throw Erreur("Le fichier ne contient pas de point");
+    }catch(std::exception const& e){
+        QMessageBox::critical(0, "Error", e.what());
+    }
+
+
 }
+
 void MainWindow::loadFromSCN()
 {
-  this->qw->loadFromSCN();
+    this->qw->loadFromSCN();
+    this->ui->nomf->setText(QString::fromStdString (this->qw->getNomF()));
+
+    try{
+        if(this->qw->getTaille() > 0)
+        {
+            std::stringstream ss;
+            int ftpd=this->qw->getFtpD() ;
+            int ftpf=this->qw->getFtpF();
+            ss << ftpd <<"-" << ftpf;
+            this->ui->intervalFtp->setText(QString::fromStdString (ss.str()));
+
+            this->ui->interD->setMinimum(ftpd);
+            this->ui->interF->setMinimum(ftpd);
+            this->ui->interD->setMaximum(ftpf);
+            this->ui->interF->setMaximum(ftpf);
+            this->ui->interD->setValue(ftpd);
+            this->ui->interF->setValue(ftpd);
+        }
+        else throw Erreur("Le fichier ne contient pas de point");
+    }catch(std::exception const& e){
+        QMessageBox::critical(0, "Error", e.what());
+    }
 }
 void MainWindow::loadCloudFromTXT(){
      this->qw->loadCloudFromTXT();
+    this->ui->nomf->setText(QString::fromStdString (this->qw->getNomF()));
+
+    try{
+        if(this->qw->getTaille() > 0)
+        {
+            std::stringstream ss;
+            int ftpd=this->qw->getFtpD() ;
+            int ftpf=this->qw->getFtpF();
+            ss << ftpd <<"-" << ftpf;
+            this->ui->intervalFtp->setText(QString::fromStdString (ss.str()));
+
+            this->ui->interD->setMinimum(ftpd);
+            this->ui->interF->setMinimum(ftpd);
+            this->ui->interD->setMaximum(ftpf);
+            this->ui->interF->setMaximum(ftpf);
+            this->ui->interD->setValue(ftpd);
+            this->ui->interF->setValue(ftpd);
+        }
+        else throw Erreur("Le fichier ne contient pas de point");
+    }catch(std::exception const& e){
+        QMessageBox::critical(0, "Error", e.what());
+    }
 }
 
 void MainWindow::saveFromFileTXT()
@@ -83,9 +156,19 @@ void MainWindow::clear(){
    this->qw->clear();
 }
 void MainWindow::extract(){
-
-    this->qw->extractionCloud(0);
+    this->qw->setaffE(ui->pushExtract->isChecked());
 }
 void MainWindow::planarSeg(){
-    this->qw->planarSegmentation(0);
+    this->qw->setaffS(ui->pushPS->isChecked());
+}
+void MainWindow::affichageOK(){
+    this->qw->setaffC(ui->pushC->isChecked());
+}
+
+void MainWindow::changeD(){
+    this->qw->setFtpDI(this->ui->interD->value());
+}
+
+void MainWindow::changeF(){
+    this->qw->setFtpFI(this->ui->interF->value());
 }

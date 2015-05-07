@@ -1,0 +1,157 @@
+\hypertarget{classmodel__ground__GL}{\section{model\-\_\-ground\-\_\-\-G\-L Class Reference}
+\label{classmodel__ground__GL}\index{model\-\_\-ground\-\_\-\-G\-L@{model\-\_\-ground\-\_\-\-G\-L}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classmodel__ground__GL_a469f82ae7c86a5e3c9dbea525ca542b8}{void {\bfseries resize\-G\-L} (int ratio, int height)}\label{classmodel__ground__GL_a469f82ae7c86a5e3c9dbea525ca542b8}
+
+\item 
+\hypertarget{classmodel__ground__GL_a462d82d645c6bc86c00c046566a6053d}{void {\bfseries initialize\-G\-L} ()}\label{classmodel__ground__GL_a462d82d645c6bc86c00c046566a6053d}
+
+\item 
+\hypertarget{classmodel__ground__GL_aed145fa9a67caebd84374a1607be3af1}{void {\bfseries paint\-G\-L} ()}\label{classmodel__ground__GL_aed145fa9a67caebd84374a1607be3af1}
+
+\item 
+void \hyperlink{classmodel__ground__GL_a82bf9c4ed0fbe81ae2c974adf61ea089}{add\-Texture} (Q\-String path, Q\-String nom)
+\begin{DoxyCompactList}\small\item\em add\-Texture load a new texture from a \char`\"{}pgn\char`\"{} format file and add it. \end{DoxyCompactList}\item 
+\hyperlink{classTexture}{Texture} $\ast$ \hyperlink{classmodel__ground__GL_aa3c0c273536f72146bebc19d033aaa1c}{get\-Texture} (Q\-String name)
+\begin{DoxyCompactList}\small\item\em get\-Texture get the texture of which his name is specified \end{DoxyCompactList}\item 
+float \hyperlink{classmodel__ground__GL_a183fe53d5167cd8fb1cb0c51985b87f1}{get\-Zoom} ()
+\begin{DoxyCompactList}\small\item\em get\-Zoom getter of zoom \end{DoxyCompactList}\item 
+void \hyperlink{classmodel__ground__GL_a2cb236c3269f3252615575da22003b07}{set\-Zoom} (float new\-Zoom)
+\begin{DoxyCompactList}\small\item\em set\-Zoom setter of zoom \end{DoxyCompactList}\item 
+void \hyperlink{classmodel__ground__GL_ae0b4256b36fa5d2c0fd14d5b97e5bac2}{set\-Camera\-Location} (float x, float y, float z)
+\begin{DoxyCompactList}\small\item\em set\-Camera\-Location set the new position of the camera \end{DoxyCompactList}\item 
+void \hyperlink{classmodel__ground__GL_a9cadcfbe6c58dfc69b41c9c95b46bffe}{set\-Camera\-Look\-At} (float x, float y, float z)
+\begin{DoxyCompactList}\small\item\em set\-Camera\-Look\-At set the new look at of the camera \end{DoxyCompactList}\item 
+\hypertarget{classmodel__ground__GL_ab27e1908aac2edaa67b7d780f4679cc0}{void {\bfseries init\-Display} ()}\label{classmodel__ground__GL_ab27e1908aac2edaa67b7d780f4679cc0}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classmodel__ground__GL_aa269df20d00858b58e03aaa18afdbdbf}{\hyperlink{classScene}{Scene} {\bfseries scene}}\label{classmodel__ground__GL_aa269df20d00858b58e03aaa18afdbdbf}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classmodel__ground__GL_a82bf9c4ed0fbe81ae2c974adf61ea089}{\index{model\-\_\-ground\-\_\-\-G\-L@{model\-\_\-ground\-\_\-\-G\-L}!add\-Texture@{add\-Texture}}
+\index{add\-Texture@{add\-Texture}!model_ground_GL@{model\-\_\-ground\-\_\-\-G\-L}}
+\subsubsection[{add\-Texture}]{\setlength{\rightskip}{0pt plus 5cm}void model\-\_\-ground\-\_\-\-G\-L\-::add\-Texture (
+\begin{DoxyParamCaption}
+\item[{Q\-String}]{path, }
+\item[{Q\-String}]{nom}
+\end{DoxyParamCaption}
+)}}\label{classmodel__ground__GL_a82bf9c4ed0fbe81ae2c974adf61ea089}
+
+
+add\-Texture load a new texture from a \char`\"{}pgn\char`\"{} format file and add it. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & path of localisation of the texture \\
+\hline
+{\em nom} & assigned name has the texture \\
+\hline
+\end{DoxyParams}
+\hypertarget{classmodel__ground__GL_aa3c0c273536f72146bebc19d033aaa1c}{\index{model\-\_\-ground\-\_\-\-G\-L@{model\-\_\-ground\-\_\-\-G\-L}!get\-Texture@{get\-Texture}}
+\index{get\-Texture@{get\-Texture}!model_ground_GL@{model\-\_\-ground\-\_\-\-G\-L}}
+\subsubsection[{get\-Texture}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Texture} $\ast$ model\-\_\-ground\-\_\-\-G\-L\-::get\-Texture (
+\begin{DoxyParamCaption}
+\item[{Q\-String}]{name}
+\end{DoxyParamCaption}
+)}}\label{classmodel__ground__GL_aa3c0c273536f72146bebc19d033aaa1c}
+
+
+get\-Texture get the texture of which his name is specified 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & specific texture name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the texture which his name is specified 
+\end{DoxyReturn}
+\hypertarget{classmodel__ground__GL_a183fe53d5167cd8fb1cb0c51985b87f1}{\index{model\-\_\-ground\-\_\-\-G\-L@{model\-\_\-ground\-\_\-\-G\-L}!get\-Zoom@{get\-Zoom}}
+\index{get\-Zoom@{get\-Zoom}!model_ground_GL@{model\-\_\-ground\-\_\-\-G\-L}}
+\subsubsection[{get\-Zoom}]{\setlength{\rightskip}{0pt plus 5cm}float model\-\_\-ground\-\_\-\-G\-L\-::get\-Zoom (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmodel__ground__GL_a183fe53d5167cd8fb1cb0c51985b87f1}
+
+
+get\-Zoom getter of zoom 
+
+\begin{DoxyReturn}{Returns}
+zoom 
+\end{DoxyReturn}
+\hypertarget{classmodel__ground__GL_ae0b4256b36fa5d2c0fd14d5b97e5bac2}{\index{model\-\_\-ground\-\_\-\-G\-L@{model\-\_\-ground\-\_\-\-G\-L}!set\-Camera\-Location@{set\-Camera\-Location}}
+\index{set\-Camera\-Location@{set\-Camera\-Location}!model_ground_GL@{model\-\_\-ground\-\_\-\-G\-L}}
+\subsubsection[{set\-Camera\-Location}]{\setlength{\rightskip}{0pt plus 5cm}void model\-\_\-ground\-\_\-\-G\-L\-::set\-Camera\-Location (
+\begin{DoxyParamCaption}
+\item[{float}]{x, }
+\item[{float}]{y, }
+\item[{float}]{z}
+\end{DoxyParamCaption}
+)}}\label{classmodel__ground__GL_ae0b4256b36fa5d2c0fd14d5b97e5bac2}
+
+
+set\-Camera\-Location set the new position of the camera 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em z} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{classmodel__ground__GL_a9cadcfbe6c58dfc69b41c9c95b46bffe}{\index{model\-\_\-ground\-\_\-\-G\-L@{model\-\_\-ground\-\_\-\-G\-L}!set\-Camera\-Look\-At@{set\-Camera\-Look\-At}}
+\index{set\-Camera\-Look\-At@{set\-Camera\-Look\-At}!model_ground_GL@{model\-\_\-ground\-\_\-\-G\-L}}
+\subsubsection[{set\-Camera\-Look\-At}]{\setlength{\rightskip}{0pt plus 5cm}void model\-\_\-ground\-\_\-\-G\-L\-::set\-Camera\-Look\-At (
+\begin{DoxyParamCaption}
+\item[{float}]{x, }
+\item[{float}]{y, }
+\item[{float}]{z}
+\end{DoxyParamCaption}
+)}}\label{classmodel__ground__GL_a9cadcfbe6c58dfc69b41c9c95b46bffe}
+
+
+set\-Camera\-Look\-At set the new look at of the camera 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em z} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{classmodel__ground__GL_a2cb236c3269f3252615575da22003b07}{\index{model\-\_\-ground\-\_\-\-G\-L@{model\-\_\-ground\-\_\-\-G\-L}!set\-Zoom@{set\-Zoom}}
+\index{set\-Zoom@{set\-Zoom}!model_ground_GL@{model\-\_\-ground\-\_\-\-G\-L}}
+\subsubsection[{set\-Zoom}]{\setlength{\rightskip}{0pt plus 5cm}void model\-\_\-ground\-\_\-\-G\-L\-::set\-Zoom (
+\begin{DoxyParamCaption}
+\item[{float}]{new\-Zoom}
+\end{DoxyParamCaption}
+)}}\label{classmodel__ground__GL_a2cb236c3269f3252615575da22003b07}
+
+
+set\-Zoom setter of zoom 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\-Zoom} & the new zoom that will be affected \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/ground/model/model\-\_\-ground\-\_\-gl.\-h\item 
+modules/open\-G\-L/ground/model/model\-\_\-ground\-\_\-gl.\-cpp\end{DoxyCompactItemize}

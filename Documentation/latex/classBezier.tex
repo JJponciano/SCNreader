@@ -1,0 +1,97 @@
+\hypertarget{classBezier}{\section{Bezier Class Reference}
+\label{classBezier}\index{Bezier@{Bezier}}
+}
+
+
+{\ttfamily \#include $<$Bezier.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classBezier_a4a7be5dfa4ae95eb978123b256681c59}{Bezier} (int n)
+\begin{DoxyCompactList}\small\item\em Constructeur d'une courbe type Bézier. \end{DoxyCompactList}\item 
+\hypertarget{classBezier_a042d3cca85d534451938671d5d7a7383}{\hyperlink{classBezier_a042d3cca85d534451938671d5d7a7383}{Bezier} (const \hyperlink{classBezier}{Bezier} \&orig)}\label{classBezier_a042d3cca85d534451938671d5d7a7383}
+
+\begin{DoxyCompactList}\small\item\em Constructeur de copie. \end{DoxyCompactList}\item 
+\hypertarget{classBezier_a32f81ea72bd31a4607b4168839ea8815}{virtual \hyperlink{classBezier_a32f81ea72bd31a4607b4168839ea8815}{$\sim$\-Bezier} ()}\label{classBezier_a32f81ea72bd31a4607b4168839ea8815}
+
+\begin{DoxyCompactList}\small\item\em Destructeur de la classe qui détruit tous les pointeurs. \end{DoxyCompactList}\item 
+void \hyperlink{classBezier_a3973f77432e3a02a7971d6a524668aef}{Trace} (std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ P)
+\begin{DoxyCompactList}\small\item\em Fonction permettant de créer la courbe, en remplissant le vecteur de points Points. \end{DoxyCompactList}\item 
+\hypertarget{classBezier_a66d2cf118a768281f51ee743774b184c}{void \hyperlink{classBezier_a66d2cf118a768281f51ee743774b184c}{Affichage} ()}\label{classBezier_a66d2cf118a768281f51ee743774b184c}
+
+\begin{DoxyCompactList}\small\item\em Fonction permettant l'affichage de la courbe. \end{DoxyCompactList}\item 
+std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ \hyperlink{classBezier_ac428660e18d25b27a4e60b911c10320e}{get\-P} ()
+\begin{DoxyCompactList}\small\item\em accesseur en lecture au vecteur de points contenant les points de la courbe \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classBezier_a4a7be5dfa4ae95eb978123b256681c59}{\index{Bezier@{Bezier}!Bezier@{Bezier}}
+\index{Bezier@{Bezier}!Bezier@{Bezier}}
+\subsubsection[{Bezier}]{\setlength{\rightskip}{0pt plus 5cm}Bezier\-::\-Bezier (
+\begin{DoxyParamCaption}
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}}\label{classBezier_a4a7be5dfa4ae95eb978123b256681c59}
+
+
+Constructeur d'une courbe type Bézier. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & nombre de points voulu pour la courbe\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire Copyright 2014 P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} Créé le 13 Mars 2014
+\end{DoxyAuthor}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classBezier_ac428660e18d25b27a4e60b911c10320e}{\index{Bezier@{Bezier}!get\-P@{get\-P}}
+\index{get\-P@{get\-P}!Bezier@{Bezier}}
+\subsubsection[{get\-P}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$ Bezier\-::get\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classBezier_ac428660e18d25b27a4e60b911c10320e}
+
+
+accesseur en lecture au vecteur de points contenant les points de la courbe 
+
+\begin{DoxyReturn}{Returns}
+le vecteur de points Points 
+\end{DoxyReturn}
+\hypertarget{classBezier_a3973f77432e3a02a7971d6a524668aef}{\index{Bezier@{Bezier}!Trace@{Trace}}
+\index{Trace@{Trace}!Bezier@{Bezier}}
+\subsubsection[{Trace}]{\setlength{\rightskip}{0pt plus 5cm}void Bezier\-::\-Trace (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$}]{P}
+\end{DoxyParamCaption}
+)}}\label{classBezier_a3973f77432e3a02a7971d6a524668aef}
+
+
+Fonction permettant de créer la courbe, en remplissant le vecteur de points Points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em P} & vecteur contenant les points de contrôle de la courbe nécessaires à sa construction \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/tools\-\_\-models/\-Courbes/Bezier.\-h\item 
+modules/open\-G\-L/tools\-\_\-models/\-Courbes/Bezier.\-cpp\end{DoxyCompactItemize}
