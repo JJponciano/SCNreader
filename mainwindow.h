@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /**
  * @copyright 2015 Jean-Jacques PONCIANO, Claire PRUDHOMME
  * All rights reserved.
