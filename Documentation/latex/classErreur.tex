@@ -1,0 +1,68 @@
+\hypertarget{classErreur}{\section{Erreur Class Reference}
+\label{classErreur}\index{Erreur@{Erreur}}
+}
+
+
+The \hyperlink{classErreur}{Erreur} class for manage exeptions This class is used for throw a custom exeption.  
+
+
+
+
+{\ttfamily \#include $<$erreur.\-h$>$}
+
+Inheritance diagram for Erreur\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classErreur}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classErreur_a0d19b48536f8dbe265041bdc77446fca}{Erreur} (std\-::string const \&phrase=\char`\"{}error detected\char`\"{})  throw ()
+\begin{DoxyCompactList}\small\item\em \hyperlink{classErreur}{Erreur} create exeption. \end{DoxyCompactList}\item 
+\hypertarget{classErreur_a03f509dfcd70553d533a58ffb9db7cb6}{virtual const char $\ast$ {\bfseries what} () const   throw ()}\label{classErreur_a03f509dfcd70553d533a58ffb9db7cb6}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classErreur}{Erreur} class for manage exeptions This class is used for throw a custom exeption. 
+
+For example, if you want throw a exeption and catch it\-:
+
+
+\begin{DoxyCode}
+\textcolor{keywordflow}{try}\{
+
+\textcolor{keywordflow}{throw} \hyperlink{classErreur_a0d19b48536f8dbe265041bdc77446fca}{Erreur}(\textcolor{stringliteral}{"Description of exeption"});
+
+\}\textcolor{keywordflow}{catch}(std::exception \textcolor{keyword}{const}& e)\{
+ QMessageBox::critical(\textcolor{keyword}{this}, \textcolor{stringliteral}{"Error"}, e.what());
+\}
+\end{DoxyCode}
+ 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classErreur_a0d19b48536f8dbe265041bdc77446fca}{\index{Erreur@{Erreur}!Erreur@{Erreur}}
+\index{Erreur@{Erreur}!Erreur@{Erreur}}
+\subsubsection[{Erreur}]{\setlength{\rightskip}{0pt plus 5cm}Erreur\-::\-Erreur (
+\begin{DoxyParamCaption}
+\item[{std\-::string const \&}]{phrase = {\ttfamily \char`\"{}error~detected\char`\"{}}}
+\end{DoxyParamCaption}
+) throw  ) }}\label{classErreur_a0d19b48536f8dbe265041bdc77446fca}
+
+
+\hyperlink{classErreur}{Erreur} create exeption. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em phrase} & sentence explaining the reasons for the throwing of exceptions \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/exceptions/\hyperlink{erreur_8h}{erreur.\-h}\item 
+modules/exceptions/erreur.\-cpp\end{DoxyCompactItemize}

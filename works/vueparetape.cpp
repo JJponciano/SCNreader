@@ -1,3 +1,4 @@
+
 /**
  * @copyright 2015 Jean-Jacques PONCIANO, Claire PRUDHOMME
  * All rights reserved.
@@ -28,9 +29,14 @@ VueParEtape::VueParEtape(QWidget *parent): groundGLWidget(parent)
     this->pSuiv=0;
 
     this->ftpCourant=0;
+    //this->ftpD=0;
+    //this->ftpF=0;
+    this->ftpDI=0;
+    this->ftpFI=0;
+
+    this->affs=false;
+    this->affe=false;
     this->ftpdeDepart=0;
-
-
 }
 
 VueParEtape::~VueParEtape()
@@ -54,29 +60,78 @@ void VueParEtape::resizeGL(int width, int height)
 void VueParEtape::paintGL()
 {
     //call the superclass function
-    groundGLWidget::paintGL();
-    this->setCamera(pX,pY,pZ,lX,lY,lZ);
+    View_ground_GL::paintGL();
+
     //------------------------------------------------------------------
     // definition size dot
     glPointSize(1);
-    //draw clouds step by step
     glPushMatrix();
-    //glRotatef(-90,0,0,1);
-    glBegin(GL_POINTS);
+     glBegin(GL_POINTS);
+        if(affc)
+        {
+            int j=this->ftpDI;
+            bool stop=false;
+            while( !stop && j<=this->ftpFI)
+            {
+                if(this->scnreaderFond.getNuage().contains(j))
+                {
 
+                    QVector <pcl::PointXYZ*>* v=this->scnreaderFond.getNuage().value(j);
 
-    for(int j=0;j<this->scnreaderFond.getClouds().size();j++)
-    {
-         for (int i=0;i<this->scnreaderFond.getClouds(j)->points.size();i++){
-                glColor3f(1.0/(float)(j+1),1.0/(float)(this->scnreaderFond.getClouds().size()-j),1.0);
-                //normalizes points with model->max of cordinates previously finded
-                float x=this->scnreaderFond.getClouds(j)->points[i].x;//scnreaderFond.getMaxX()*10;
-                float y=this->scnreaderFond.getClouds(j)->points[i].y;//scnreaderFond.getMaxY()*10;
-                float z=(this->scnreaderFond.getClouds(j)->points[i].z-this->ftpdeDepart)*0.01;//scnreaderFond.getMaxZ()*10;
-                glVertex3f(x,y,z);
+                    for(int i=0; i<v->size(); i++)
+                    {
+                        glPointSize(1);
+                                glColor3f(1.0,1.0,1.0);
+                                //normalizes points with model->max of cordinates previously finded
+                                float x=(* (v->at(i))).x;//scnreaderFond.getMaxX()*10;
+                                float y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
+                                float z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
+                                glVertex3f(x,y,z);
+                    }
+
+                }
+                else
+                    stop=true;
+
+                j++;
             }
+             glEnd();
     }
-    glEnd();
+
+    std::stringstream ss;
+    ss << "S_" << this->ftpDI <<"_" << this->ftpFI;
+    QString chaine=QString::fromStdString (ss.str());
+    if(affs)
+    {
+     /*  if(!this->scnreaderFond.getSegmentation().size()>0)
+        {
+            this->scnreaderFond.planar_segmentation(this->ftpDI, this->ftpFI);
+        }
+*/
+        QHash<QString, QVector<pcl::PointXYZ*>*> h=this->scnreaderFond.getSegmentation();
+
+       if(!h.contains(chaine))
+        {
+            try{
+                this->scnreaderFond.planar_segmentation(this->ftpDI, this->ftpFI);
+            }catch(std::exception const& e){
+                QMessageBox::critical(0, "Error", e.what());
+            }
+        }
+         QVector <pcl::PointXYZ*>* vect=this->scnreaderFond.getSegmentation().value(QString::fromStdString (ss.str()));
+        glBegin(GL_POINTS);
+            for(int j=0;j<vect->size();j++)
+            {
+                glColor3f(0.0,0.0,1.0);
+                glVertex3f((* (vect->at(j))).x,(*(vect->at(j))).y,((* (vect->at(j))).z-this->ftpDI)*0.1);
+            }
+        glEnd();
+
+    }
+    if(affe)
+    {
+
+    }
     glPopMatrix();
     //----------------------------------------------------------------------*/
 }
@@ -91,8 +146,16 @@ void VueParEtape::loadCloudFromTXT(){
         // if user have seleted a directory
         if (!fileName.isEmpty())
         {
-            this->scnreaderFond.addCloudFromTXT(fileName.toStdString());
-
+            this->scnreaderFond.loadCloudFromTXT2(fileName.toStdString());
+            this->nomFichier=fileName.toStdString();
+            if(this->scnreaderFond.getNuage().size() > 0)
+            {
+                this->ftpDI=this->scnreaderFond.getFtpd();
+                this->ftpFI=this->scnreaderFond.getFtpd();
+            }
+            else throw Erreur("Le fichier ne contient pas de point");
+            //this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
+            //this->ftpCourant=this->scnreaderFond.getClouds(0)->points[0].z;
         }
 
     }catch(std::exception const& e){
@@ -109,8 +172,16 @@ void VueParEtape::loadCloud(){
         if (!fileName.isEmpty())
         {
             this->scnreaderFond.addCloud(fileName.toStdString());
-            this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
-            this->ftpCourant=this->scnreaderFond.getClouds(0)->points[0].z;
+            this->nomFichier=fileName.toStdString();
+
+            if(this->scnreaderFond.getNuage().size() > 0)
+            {
+                this->ftpDI=this->scnreaderFond.getFtpd();
+                this->ftpFI=this->scnreaderFond.getFtpd();
+            }
+            else throw Erreur("Le fichier ne contient pas de point");
+           // this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
+            //this->ftpCourant=this->scnreaderFond.getClouds(0)->points[0].z;
         }
 
     }catch(std::exception const& e){
@@ -140,8 +211,6 @@ void VueParEtape::saveCloudsFromTXT(){
         if (!fileName.isEmpty())
         {
             this->scnreaderFond.saveCloudsFromTXT(fileName.toStdString());
-            this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
-            this->ftpCourant=this->scnreaderFond.getClouds(0)->points[0].z;
         }
     }catch(std::exception const& e){
         QMessageBox::critical(0, "Error", e.what());
@@ -158,8 +227,14 @@ void VueParEtape::loadFromSCN(){
         {
             std::cout<<"start"<<std::endl;
             this->scnreaderFond.loadFromSCN(fileName.toStdString());
-this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
             std::cout<<"end"<<std::endl;
+            this->nomFichier=fileName.toStdString();
+            if(this->scnreaderFond.getNuage().size() > 0)
+            {
+                this->ftpDI=this->scnreaderFond.getFtpd();
+                this->ftpFI=this->scnreaderFond.getFtpd();
+            }
+            else throw Erreur("Le fichier ne contient pas de point");
         }
     }catch(std::exception const& e){
         QMessageBox::critical(this, "Error", e.what());
@@ -169,12 +244,16 @@ this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
 void VueParEtape::clear(){
     this->scnreaderFond.clear();
 }
-void VueParEtape::planarSegmentation(int i){
-    this->scnreaderFond.planarSegmentation(i);
+void VueParEtape::planarSegmentation(int d, int f){
+    try{
+        this->scnreaderFond.planar_segmentation( d, f);
+    }catch(std::exception const& e){
+        QMessageBox::critical(this, "Error", e.what());
+    }
 }
 
 void VueParEtape::extractionCloud(int i){
-    this->scnreaderFond.planarSegmentation(i);
+     this->scnreaderFond.extractionCloud(i,i);
 }
 
 //===============================================
@@ -184,36 +263,16 @@ void VueParEtape::keyPressEvent(QKeyEvent *keyEvent)
 {
 
     if(keyEvent->key()==Qt::Key_W){
-        this->pZ++;
-        this->lZ++;
-    }
-    else if(keyEvent->key()==Qt::Key_S){
-        this->pZ--;
-        this->lZ--;
-    }
-    else if(keyEvent->key()==Qt::Key_D){
-        this->pX--;
-        this->lX--;
-    }
-    else if(keyEvent->key()==Qt::Key_A){
-        this->pX++;
-        this->lX++;
+        this->scnreaderFond.setMaxX(this->scnreaderFond.getMaxX()*1.2);
+        this->scnreaderFond.setMaxY(this->scnreaderFond.getMaxY()*1.2);
+        this->scnreaderFond.setMaxZ(this->scnreaderFond.getMaxZ()*1.2);
     }
     else if(keyEvent->key()==Qt::Key_Q){
-        this->pY++;
-        this->lY++;
+        this->scnreaderFond.setMaxX(this->scnreaderFond.getMaxX()*0.8);
+        this->scnreaderFond.setMaxY(this->scnreaderFond.getMaxY()*0.8);
+        this->scnreaderFond.setMaxZ(this->scnreaderFond.getMaxZ()*0.8);
     }
-    else if(keyEvent->key()==Qt::Key_E){
-        this->pY--;
-        this->lY--;
-    }
-    else if(keyEvent->key()==Qt::Key_8){
-        this->lY++;
-    }
-    else if(keyEvent->key()==Qt::Key_5){
-        this->lY--;
-    }
-    else if(keyEvent->key()==Qt::Key_J){
+    /*else if(keyEvent->key()==Qt::Key_J){
         if( this->scnreaderFond.getClouds().size()>0)
             if( this->pSuiv < (this->scnreaderFond.getClouds(0)->points.size()))
             {
@@ -236,19 +295,71 @@ void VueParEtape::keyPressEvent(QKeyEvent *keyEvent)
     else if(keyEvent->key()==Qt::Key_D){
         if( this->scnreaderFond.getClouds().size()>0)
         {
-            this->ftpCourant=this->ftpdeDepart;
-            this->pCourant=0;
-            this->pPrec.clear();
+                this->ftpCourant=this->ftpdeDepart;
+                this->pCourant=0;
+                this->pPrec.clear();
         }
-    }
-    else groundGLWidget::keyPressEvent(keyEvent);
+    }*/
+    else View_ground_GL::keyPressEvent(keyEvent);
 }
+/*void VueParEtape::setFtpD(){
+    this->ftpD=this->scnreaderFond.getFtpd();
+}
+
+void VueParEtape::setFtpF(){
+    this->ftpF=this->scnreaderFond.getFtpf();
+}*/
+
+int VueParEtape::getFtpD(){
+    return this->scnreaderFond.getFtpd();
+}
+
+int VueParEtape::getFtpF(){
+    return this->scnreaderFond.getFtpf();
+}
+
+void VueParEtape::setFtpDI(int di){
+    this->ftpDI=di;
+}
+
+void VueParEtape::setFtpFI(int fi){
+    this->ftpFI=fi;
+}
+
+int VueParEtape::getFtpDI(){
+    return this->ftpDI;
+}
+
+int VueParEtape::getFtpFI(){
+    return this->ftpFI;
+}
+
+std::string VueParEtape::getNomF(){
+    return this->nomFichier;
+}
+
+void VueParEtape::setaffC(bool b){
+    this->affc=b;
+}
+
+void VueParEtape::setaffS(bool b){
+    this->affs=b;
+}
+
+void VueParEtape::setaffE(bool b){
+    this->affe=b;
+}
+
+int VueParEtape::getTaille(){
+    return this->scnreaderFond.getNuage().size();
+}
+
 void VueParEtape::mouseMoveEvent(QMouseEvent *event){
-    groundGLWidget::mouseMoveEvent(event);
+    View_ground_GL::mouseMoveEvent(event);
 }
 void VueParEtape::mousePressEvent(QMouseEvent *event){
-    groundGLWidget::mousePressEvent(event);
+    View_ground_GL::mousePressEvent(event);
 }
 void VueParEtape::mouseReleaseEvent(QMouseEvent *event){
-    groundGLWidget::mouseReleaseEvent(event);
+    View_ground_GL::mouseReleaseEvent(event);
 }

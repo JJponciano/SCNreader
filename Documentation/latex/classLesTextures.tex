@@ -1,0 +1,129 @@
+\hypertarget{classLesTextures}{\section{Les\-Textures Class Reference}
+\label{classLesTextures}\index{Les\-Textures@{Les\-Textures}}
+}
+
+
+{\ttfamily \#include $<$Les\-Textures.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classLesTextures_ae10396e044c7aa1749467834e5db8511}{Les\-Textures} ()
+\item 
+\hypertarget{classLesTextures_a3429b8579023d848474c9b109cc83a29}{{\bfseries Les\-Textures} (const \hyperlink{classLesTextures}{Les\-Textures} \&orig)}\label{classLesTextures_a3429b8579023d848474c9b109cc83a29}
+
+\item 
+void \hyperlink{classLesTextures_af3f3b9cde73b9f07abc980c62d26f0b0}{add} (\hyperlink{classTexture}{Texture} $\ast$t)
+\item 
+void \hyperlink{classLesTextures_aa55360dbfbc2d2799e0fdd4ba0167450}{add} (Q\-String adresse, std\-::string nom, G\-Luint id)
+\item 
+void \hyperlink{classLesTextures_a0132a8028f2fc67160268f80c4c79d63}{add} (Q\-String adresse, std\-::string nom)
+\begin{DoxyCompactList}\small\item\em add ajoute un texture avec son nom l'identifiant \end{DoxyCompactList}\item 
+void \hyperlink{classLesTextures_a02432688ee521372e71b7d0b32cd2b02}{affiche\-Texture} (std\-::string nom) const 
+\item 
+\hyperlink{classTexture}{Texture} $\ast$ \hyperlink{classLesTextures_ad41096dedc9ab42f0d9d4e93bc4a0794}{get\-Texture} (std\-::string nom)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classLesTextures_ae10396e044c7aa1749467834e5db8511}{\index{Les\-Textures@{Les\-Textures}!Les\-Textures@{Les\-Textures}}
+\index{Les\-Textures@{Les\-Textures}!LesTextures@{Les\-Textures}}
+\subsubsection[{Les\-Textures}]{\setlength{\rightskip}{0pt plus 5cm}Les\-Textures\-::\-Les\-Textures (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classLesTextures_ae10396e044c7aa1749467834e5db8511}
+Constructeur 
+
+\subsection{Member Function Documentation}
+\hypertarget{classLesTextures_af3f3b9cde73b9f07abc980c62d26f0b0}{\index{Les\-Textures@{Les\-Textures}!add@{add}}
+\index{add@{add}!LesTextures@{Les\-Textures}}
+\subsubsection[{add}]{\setlength{\rightskip}{0pt plus 5cm}void Les\-Textures\-::add (
+\begin{DoxyParamCaption}
+\item[{{\bf Texture} $\ast$}]{t}
+\end{DoxyParamCaption}
+)}}\label{classLesTextures_af3f3b9cde73b9f07abc980c62d26f0b0}
+Ajoute une texture 
+\begin{DoxyParams}{Parameters}
+{\em t} & texture à ajouter \\
+\hline
+\end{DoxyParams}
+\hypertarget{classLesTextures_aa55360dbfbc2d2799e0fdd4ba0167450}{\index{Les\-Textures@{Les\-Textures}!add@{add}}
+\index{add@{add}!LesTextures@{Les\-Textures}}
+\subsubsection[{add}]{\setlength{\rightskip}{0pt plus 5cm}void Les\-Textures\-::add (
+\begin{DoxyParamCaption}
+\item[{Q\-String}]{adresse, }
+\item[{std\-::string}]{nom, }
+\item[{G\-Luint}]{id}
+\end{DoxyParamCaption}
+)}}\label{classLesTextures_aa55360dbfbc2d2799e0fdd4ba0167450}
+Ajoute et crée une texture 
+\begin{DoxyParams}{Parameters}
+{\em adresse} & adresse de l'image \\
+\hline
+{\em nom} & nom de la texture \\
+\hline
+\end{DoxyParams}
+\hypertarget{classLesTextures_a0132a8028f2fc67160268f80c4c79d63}{\index{Les\-Textures@{Les\-Textures}!add@{add}}
+\index{add@{add}!LesTextures@{Les\-Textures}}
+\subsubsection[{add}]{\setlength{\rightskip}{0pt plus 5cm}void Les\-Textures\-::add (
+\begin{DoxyParamCaption}
+\item[{Q\-String}]{adresse, }
+\item[{std\-::string}]{nom}
+\end{DoxyParamCaption}
+)}}\label{classLesTextures_a0132a8028f2fc67160268f80c4c79d63}
+
+
+add ajoute un texture avec son nom l'identifiant 
+
+
+\begin{DoxyParams}{Parameters}
+{\em adresse} & adresse ou charger la texture \\
+\hline
+{\em nom} & identifiant de la texture \\
+\hline
+\end{DoxyParams}
+\hypertarget{classLesTextures_a02432688ee521372e71b7d0b32cd2b02}{\index{Les\-Textures@{Les\-Textures}!affiche\-Texture@{affiche\-Texture}}
+\index{affiche\-Texture@{affiche\-Texture}!LesTextures@{Les\-Textures}}
+\subsubsection[{affiche\-Texture}]{\setlength{\rightskip}{0pt plus 5cm}void Les\-Textures\-::affiche\-Texture (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{nom}
+\end{DoxyParamCaption}
+) const}}\label{classLesTextures_a02432688ee521372e71b7d0b32cd2b02}
+Affiche/applique la texture 
+\begin{DoxyParams}{Parameters}
+{\em nom} & nom de la texture à affiche/applique \\
+\hline
+\end{DoxyParams}
+\hypertarget{classLesTextures_ad41096dedc9ab42f0d9d4e93bc4a0794}{\index{Les\-Textures@{Les\-Textures}!get\-Texture@{get\-Texture}}
+\index{get\-Texture@{get\-Texture}!LesTextures@{Les\-Textures}}
+\subsubsection[{get\-Texture}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Texture} $\ast$ Les\-Textures\-::get\-Texture (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{nom}
+\end{DoxyParamCaption}
+)}}\label{classLesTextures_ad41096dedc9ab42f0d9d4e93bc4a0794}
+Récupère la texture 
+\begin{DoxyParams}{Parameters}
+{\em nom} & nom de la texture à récupérer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+texture portant le nom donné 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/ground/model/Les\-Textures.\-h\item 
+modules/open\-G\-L/ground/model/Les\-Textures.\-cpp\end{DoxyCompactItemize}

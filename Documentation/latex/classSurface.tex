@@ -1,0 +1,91 @@
+\hypertarget{classSurface}{\section{Surface Class Reference}
+\label{classSurface}\index{Surface@{Surface}}
+}
+
+
+{\ttfamily \#include $<$Surface.\-h$>$}
+
+Inheritance diagram for Surface\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classSurface}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSurface_ade400cdb9710332c4b0902fc8c385376}{Surface} (std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ c, int n)
+\begin{DoxyCompactList}\small\item\em Constructeur d'une surface. \end{DoxyCompactList}\item 
+\hypertarget{classSurface_a81c20bc2a06703270cd283cecb27580b}{{\bfseries Surface} (const \hyperlink{classSurface}{Surface} \&orig)}\label{classSurface_a81c20bc2a06703270cd283cecb27580b}
+
+\item 
+\hypertarget{classSurface_a89de75c95cb550d432f3ea4ed1429db0}{virtual \hyperlink{classSurface_a89de75c95cb550d432f3ea4ed1429db0}{$\sim$\-Surface} ()}\label{classSurface_a89de75c95cb550d432f3ea4ed1429db0}
+
+\begin{DoxyCompactList}\small\item\em destructeur de la classe qui détruit tous les pointeurs \end{DoxyCompactList}\item 
+\hypertarget{classSurface_a94c47bc99a994cd62fe0307841981d32}{void {\bfseries creation} ()}\label{classSurface_a94c47bc99a994cd62fe0307841981d32}
+
+\item 
+\hypertarget{classSurface_a1beede80574f15acea63245d8c1149a3}{void \hyperlink{classSurface_a1beede80574f15acea63245d8c1149a3}{construction} ()}\label{classSurface_a1beede80574f15acea63245d8c1149a3}
+
+\begin{DoxyCompactList}\small\item\em Fonction permettant l'affichage de la surface. \end{DoxyCompactList}\item 
+\hypertarget{classSurface_a5ea70201b07edf77ea1ce99f1a088447}{void {\bfseries affichage} ()}\label{classSurface_a5ea70201b07edf77ea1ce99f1a088447}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classSurface_a5ae7589a4557f13f679c7ed61ab6887e}{std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ {\bfseries Courbe}}\label{classSurface_a5ae7589a4557f13f679c7ed61ab6887e}
+
+\item 
+\hypertarget{classSurface_a1076295f2fc1c261f431faa6839e6528}{int {\bfseries nbl}}\label{classSurface_a1076295f2fc1c261f431faa6839e6528}
+
+\item 
+\hypertarget{classSurface_a27f163ee8df16552c164d3661be1578b}{int {\bfseries nbc}}\label{classSurface_a27f163ee8df16552c164d3661be1578b}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classSurface_ade400cdb9710332c4b0902fc8c385376}{\index{Surface@{Surface}!Surface@{Surface}}
+\index{Surface@{Surface}!Surface@{Surface}}
+\subsubsection[{Surface}]{\setlength{\rightskip}{0pt plus 5cm}Surface\-::\-Surface (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$}]{c, }
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}}\label{classSurface_ade400cdb9710332c4b0902fc8c385376}
+
+
+Constructeur d'une surface. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & vecteur de points correspondant au points appartenant à la courbe de référence sur laquelle repose la surface. Exemple\-: 
+\begin{DoxyCode}
+\hyperlink{classBezier}{Bezier}* b=\textcolor{keyword}{new} \hyperlink{classBezier}{Bezier}(10);
+b->\hyperlink{classBezier_a3973f77432e3a02a7971d6a524668aef}{Trace}(vectorPtsControleC, nbp);
+\hyperlink{classSurface}{Surface}* sl=\textcolor{keyword}{new} \hyperlink{classSurface_ade400cdb9710332c4b0902fc8c385376}{Surface}(b.\hyperlink{classBezier_ac428660e18d25b27a4e60b911c10320e}{getP}(), nbp2);
+\end{DoxyCode}
+ \\
+\hline
+{\em n} & nombre de méridien pour la surface \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/tools\-\_\-models/\-Surfaces/Surface.\-h\item 
+modules/open\-G\-L/tools\-\_\-models/\-Surfaces/Surface.\-cpp\end{DoxyCompactItemize}

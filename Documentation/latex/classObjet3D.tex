@@ -1,0 +1,209 @@
+\hypertarget{classObjet3D}{\section{Objet3\-D Class Reference}
+\label{classObjet3D}\index{Objet3\-D@{Objet3\-D}}
+}
+
+
+{\ttfamily \#include $<$Objet3\-D.\-h$>$}
+
+Inheritance diagram for Objet3\-D\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classObjet3D}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classObjet3D_aa378c3af15cbb46b010603f94c1d62f3}{Objet3\-D} (float largeur, float hauteur, float longueur)
+\item 
+virtual void \hyperlink{classObjet3D_adeb89dbb10335cd671378377818c1f71}{construction} ()
+\item 
+void \hyperlink{classObjet3D_ababe950dcc59f781b8140c327d64bdf6}{affiche\-Points} () const 
+\item 
+void \hyperlink{classObjet3D_a709f4a7ea16ecbf8628f41f0d701a211}{affichage} () const 
+\item 
+\hypertarget{classObjet3D_a1e0e07c88de765c1f303f65ab6c8d4c2}{{\bfseries Objet3\-D} (const \hyperlink{classObjet3D}{Objet3\-D} \&orig)}\label{classObjet3D_a1e0e07c88de765c1f303f65ab6c8d4c2}
+
+\item 
+float \hyperlink{classObjet3D_a0ea8e830e644ef96444969735679af66}{get\-Hauteur} () const 
+\item 
+float \hyperlink{classObjet3D_afaadd0060040977f410c5e0e724219c9}{get\-Largeur} () const 
+\item 
+float \hyperlink{classObjet3D_a8a364df4157ccde3eee4d544151a875b}{get\-Longeur} () const 
+\item 
+void \hyperlink{classObjet3D_ae8638f280f3627419c6777fe974011b2}{animation\-Lineaire} (std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ points\-Cles, float a)
+\item 
+std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ \hyperlink{classObjet3D_ad6212ed4caebf78e5a1764a2a3d76551}{get\-P} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classObjet3D_a55b19161ab383c859dda77a43f7471fc}{calcule\-Normal} ()
+\item 
+void \hyperlink{classObjet3D_af4fb214001539392efb76b79a047c93e}{calcule\-Facette} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classObjet3D_a69365378a5fae36f1e9f2fc7722fc4f5}{std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ {\bfseries points\-Referents}}\label{classObjet3D_a69365378a5fae36f1e9f2fc7722fc4f5}
+
+\item 
+\hypertarget{classObjet3D_a4ea8b7db42b1ba185f55ce49d3cdd13e}{std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ {\bfseries points}}\label{classObjet3D_a4ea8b7db42b1ba185f55ce49d3cdd13e}
+
+\item 
+\hypertarget{classObjet3D_a96937966af7a998d477ff60499f88e89}{std\-::vector$<$ \hyperlink{classTexel}{Texel} $\ast$ $>$ {\bfseries texels}}\label{classObjet3D_a96937966af7a998d477ff60499f88e89}
+
+\item 
+\hypertarget{classObjet3D_a910312e0c543bc5c1f423f713a841e9e}{std\-::vector$<$ \hyperlink{classFace}{Face} $\ast$ $>$ {\bfseries faces}}\label{classObjet3D_a910312e0c543bc5c1f423f713a841e9e}
+
+\item 
+\hypertarget{classObjet3D_afd0238a66814cdbf2fca0fc6afe89ff2}{float {\bfseries hauteur}}\label{classObjet3D_afd0238a66814cdbf2fca0fc6afe89ff2}
+
+\item 
+\hypertarget{classObjet3D_afcc95dcb6e9e0f85af4633bde1992da6}{float {\bfseries largeur}}\label{classObjet3D_afcc95dcb6e9e0f85af4633bde1992da6}
+
+\item 
+\hypertarget{classObjet3D_a02b4e577a1f81f5df155e5e94de71252}{float {\bfseries longueur}}\label{classObjet3D_a02b4e577a1f81f5df155e5e94de71252}
+
+\item 
+\hypertarget{classObjet3D_a7fb70f76d88b1dfbd32eb2d888bd321d}{\hyperlink{classMateriel}{Materiel} $\ast$ {\bfseries mat}}\label{classObjet3D_a7fb70f76d88b1dfbd32eb2d888bd321d}
+
+\item 
+\hypertarget{classObjet3D_a3a3b7dc321d2aed3e729595e6ec9cd85}{bool {\bfseries animation\-Active}}\label{classObjet3D_a3a3b7dc321d2aed3e729595e6ec9cd85}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classObjet3D_aa378c3af15cbb46b010603f94c1d62f3}{\index{Objet3\-D@{Objet3\-D}!Objet3\-D@{Objet3\-D}}
+\index{Objet3\-D@{Objet3\-D}!Objet3D@{Objet3\-D}}
+\subsubsection[{Objet3\-D}]{\setlength{\rightskip}{0pt plus 5cm}Objet3\-D\-::\-Objet3\-D (
+\begin{DoxyParamCaption}
+\item[{float}]{largeur, }
+\item[{float}]{hauteur, }
+\item[{float}]{longueur}
+\end{DoxyParamCaption}
+)}}\label{classObjet3D_aa378c3af15cbb46b010603f94c1d62f3}
+Constructeur 
+\begin{DoxyParams}{Parameters}
+{\em largeur} & largeur de l'objet \\
+\hline
+{\em hauteur} & hauteur de l'objet \\
+\hline
+{\em longueur} & longueur de l'objet \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classObjet3D_a709f4a7ea16ecbf8628f41f0d701a211}{\index{Objet3\-D@{Objet3\-D}!affichage@{affichage}}
+\index{affichage@{affichage}!Objet3D@{Objet3\-D}}
+\subsubsection[{affichage}]{\setlength{\rightskip}{0pt plus 5cm}void Objet3\-D\-::affichage (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classObjet3D_a709f4a7ea16ecbf8628f41f0d701a211}
+Affiche l'objet sous forme de facette \hypertarget{classObjet3D_ababe950dcc59f781b8140c327d64bdf6}{\index{Objet3\-D@{Objet3\-D}!affiche\-Points@{affiche\-Points}}
+\index{affiche\-Points@{affiche\-Points}!Objet3D@{Objet3\-D}}
+\subsubsection[{affiche\-Points}]{\setlength{\rightskip}{0pt plus 5cm}void Objet3\-D\-::affiche\-Points (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classObjet3D_ababe950dcc59f781b8140c327d64bdf6}
+Affiche chaque point de l'objet \hypertarget{classObjet3D_ae8638f280f3627419c6777fe974011b2}{\index{Objet3\-D@{Objet3\-D}!animation\-Lineaire@{animation\-Lineaire}}
+\index{animation\-Lineaire@{animation\-Lineaire}!Objet3D@{Objet3\-D}}
+\subsubsection[{animation\-Lineaire}]{\setlength{\rightskip}{0pt plus 5cm}void Objet3\-D\-::animation\-Lineaire (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$}]{points\-Cles, }
+\item[{float}]{a}
+\end{DoxyParamCaption}
+)}}\label{classObjet3D_ae8638f280f3627419c6777fe974011b2}
+Animation de l'objets par interpolation linaire entre chaque points du tableau référent \char`\"{}points\-Referents\char`\"{} avec chaque point du tableau \char`\"{}points\-Cles\char`\"{} 
+\begin{DoxyParams}{Parameters}
+{\em points\-Cles} & tableau de points référent représentant une position clé de l'objet \\
+\hline
+{\em a} & vitesse d'avancement de l'interpolation linéaire. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classObjet3D_af4fb214001539392efb76b79a047c93e}{\index{Objet3\-D@{Objet3\-D}!calcule\-Facette@{calcule\-Facette}}
+\index{calcule\-Facette@{calcule\-Facette}!Objet3D@{Objet3\-D}}
+\subsubsection[{calcule\-Facette}]{\setlength{\rightskip}{0pt plus 5cm}void Objet3\-D\-::calcule\-Facette (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{classObjet3D_af4fb214001539392efb76b79a047c93e}
+Calcule toutes les faces à partir du tableau de point \char`\"{}points\char`\"{} \hypertarget{classObjet3D_a55b19161ab383c859dda77a43f7471fc}{\index{Objet3\-D@{Objet3\-D}!calcule\-Normal@{calcule\-Normal}}
+\index{calcule\-Normal@{calcule\-Normal}!Objet3D@{Objet3\-D}}
+\subsubsection[{calcule\-Normal}]{\setlength{\rightskip}{0pt plus 5cm}void Objet3\-D\-::calcule\-Normal (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{classObjet3D_a55b19161ab383c859dda77a43f7471fc}
+calcule les normales moyenne en chaque sommet. A exécuter impérativement à la fin de la construction de l'objet \hypertarget{classObjet3D_adeb89dbb10335cd671378377818c1f71}{\index{Objet3\-D@{Objet3\-D}!construction@{construction}}
+\index{construction@{construction}!Objet3D@{Objet3\-D}}
+\subsubsection[{construction}]{\setlength{\rightskip}{0pt plus 5cm}void Objet3\-D\-::construction (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classObjet3D_adeb89dbb10335cd671378377818c1f71}
+Calcule tous les points de l'objet 
+
+Reimplemented in \hyperlink{classSphere_a60631bd7158f7c443ebc5bda6066d2a2}{Sphere}, \hyperlink{classSLineaire_a3c82b3b19ad80e6815ca86cbb23facb9}{S\-Lineaire}, \hyperlink{classSCirculaire_a7db7e11fa18f5e00b870d7c062427572}{S\-Circulaire}, and \hyperlink{classSurface_a1beede80574f15acea63245d8c1149a3}{Surface}.
+
+\hypertarget{classObjet3D_a0ea8e830e644ef96444969735679af66}{\index{Objet3\-D@{Objet3\-D}!get\-Hauteur@{get\-Hauteur}}
+\index{get\-Hauteur@{get\-Hauteur}!Objet3D@{Objet3\-D}}
+\subsubsection[{get\-Hauteur}]{\setlength{\rightskip}{0pt plus 5cm}float Objet3\-D\-::get\-Hauteur (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classObjet3D_a0ea8e830e644ef96444969735679af66}
+Récupération de la hauteur de l'objet \begin{DoxyReturn}{Returns}
+hauteur de l'objet 
+\end{DoxyReturn}
+\hypertarget{classObjet3D_afaadd0060040977f410c5e0e724219c9}{\index{Objet3\-D@{Objet3\-D}!get\-Largeur@{get\-Largeur}}
+\index{get\-Largeur@{get\-Largeur}!Objet3D@{Objet3\-D}}
+\subsubsection[{get\-Largeur}]{\setlength{\rightskip}{0pt plus 5cm}float Objet3\-D\-::get\-Largeur (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classObjet3D_afaadd0060040977f410c5e0e724219c9}
+Récupération de la largeur de l'objet \begin{DoxyReturn}{Returns}
+largeur de l'objet 
+\end{DoxyReturn}
+\hypertarget{classObjet3D_a8a364df4157ccde3eee4d544151a875b}{\index{Objet3\-D@{Objet3\-D}!get\-Longeur@{get\-Longeur}}
+\index{get\-Longeur@{get\-Longeur}!Objet3D@{Objet3\-D}}
+\subsubsection[{get\-Longeur}]{\setlength{\rightskip}{0pt plus 5cm}float Objet3\-D\-::get\-Longeur (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classObjet3D_a8a364df4157ccde3eee4d544151a875b}
+Récupération de la longueur de l'objet \begin{DoxyReturn}{Returns}
+longueur de l'objet 
+\end{DoxyReturn}
+\hypertarget{classObjet3D_ad6212ed4caebf78e5a1764a2a3d76551}{\index{Objet3\-D@{Objet3\-D}!get\-P@{get\-P}}
+\index{get\-P@{get\-P}!Objet3D@{Objet3\-D}}
+\subsubsection[{get\-P}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$ Objet3\-D\-::get\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classObjet3D_ad6212ed4caebf78e5a1764a2a3d76551}
+Accesseur en lecture au tableau de points \begin{DoxyReturn}{Returns}
+le tableau contenant les points de l'objet3\-D 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/tools\-\_\-models/Objet3\-D.\-h\item 
+modules/open\-G\-L/tools\-\_\-models/Objet3\-D.\-cpp\end{DoxyCompactItemize}

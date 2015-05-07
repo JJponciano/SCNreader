@@ -1,0 +1,67 @@
+\hypertarget{classTexture}{\section{Texture Class Reference}
+\label{classTexture}\index{Texture@{Texture}}
+}
+
+
+{\ttfamily \#include $<$Texture.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classTexture_a6536fdc1838f905e0319ca7c88e3e58d}{{\bfseries Texture} (Q\-String adresse, std\-::string nom, G\-Luint id)}\label{classTexture_a6536fdc1838f905e0319ca7c88e3e58d}
+
+\item 
+\hypertarget{classTexture_abcac6b67c53983ee9e9a99373fe4c925}{{\bfseries Texture} (const \hyperlink{classTexture}{Texture} \&orig)}\label{classTexture_abcac6b67c53983ee9e9a99373fe4c925}
+
+\item 
+void \hyperlink{classTexture_a70b86ee52585f20c73e51cf03bb6f6c0}{charger} () const 
+\item 
+\hypertarget{classTexture_ac795255cc4811d4d57327bd9fecdaef9}{std\-::string {\bfseries get\-Nnom} () const }\label{classTexture_ac795255cc4811d4d57327bd9fecdaef9}
+
+\item 
+\hypertarget{classTexture_aa20db484528f539a9557a3193f2a08fb}{G\-Luint {\bfseries get\-Id} () const }\label{classTexture_aa20db484528f539a9557a3193f2a08fb}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire Copyright 2014 P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} Créé le 13 Mars 2014
+\end{DoxyAuthor}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Installer la librairie libtiff-\/devel sudo yum install libtiff-\/devel.\-x86\-\_\-64 
+
+\subsection{Member Function Documentation}
+\hypertarget{classTexture_a70b86ee52585f20c73e51cf03bb6f6c0}{\index{Texture@{Texture}!charger@{charger}}
+\index{charger@{charger}!Texture@{Texture}}
+\subsubsection[{charger}]{\setlength{\rightskip}{0pt plus 5cm}void Texture\-::charger (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classTexture_a70b86ee52585f20c73e51cf03bb6f6c0}
+Affichage de la texture 
+\begin{DoxyCode}
+   glEnable(GL\_TEXTURE\_2D);
+\hyperlink{classTexture_a70b86ee52585f20c73e51cf03bb6f6c0}{charger}();
+glTexParameteri(GL\_TEXTURE\_2D, GL\_TEXTURE\_WRAP\_S, GL\_CLAMP);
+glTexParameteri(GL\_TEXTURE\_2D, GL\_TEXTURE\_WRAP\_T, GL\_CLAMP);
+glTexParameteri(GL\_TEXTURE\_2D, GL\_TEXTURE\_MAG\_FILTER, GL\_NEAREST);
+glTexParameteri(GL\_TEXTURE\_2D, GL\_TEXTURE\_MIN\_FILTER, GL\_NEAREST);
+glTexEnvf(GL\_TEXTURE\_ENV, GL\_TEXTURE\_ENV\_MODE, GL\_REPLACE);
+glBegin(GL\_POLYGON);
+\textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < 6; i++) \{
+    \textcolor{keywordtype}{float} x = cos(i * PI / 3.0);
+    \textcolor{keywordtype}{float} y = sin(i * PI / 3.0);
+
+    glTexCoord2f((-x + 1) / 2, (-y + 1) / 2);
+    glVertex3f(x * 10, y * 10, 0);
+
+\}
+glEnd();
+glDisable(GL\_TEXTURE\_2D);
+\end{DoxyCode}
+ 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/ground/model/Texture.\-h\item 
+modules/open\-G\-L/ground/model/Texture.\-cpp\end{DoxyCompactItemize}

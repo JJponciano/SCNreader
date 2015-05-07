@@ -1,0 +1,115 @@
+\hypertarget{classCatmullRom}{\section{Catmull\-Rom Class Reference}
+\label{classCatmullRom}\index{Catmull\-Rom@{Catmull\-Rom}}
+}
+
+
+{\ttfamily \#include $<$Catmull\-Rom.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCatmullRom_ac0e994d7a9644541cf02e8fd82fa0773}{Catmull\-Rom} (float s, int n)
+\begin{DoxyCompactList}\small\item\em Constructeur d'une courbe type Catmull-\/\-Rom. \end{DoxyCompactList}\item 
+\hypertarget{classCatmullRom_a1acf3961c850ce0f7911b64db3463629}{\hyperlink{classCatmullRom_a1acf3961c850ce0f7911b64db3463629}{Catmull\-Rom} (const \hyperlink{classCatmullRom}{Catmull\-Rom} \&orig)}\label{classCatmullRom_a1acf3961c850ce0f7911b64db3463629}
+
+\begin{DoxyCompactList}\small\item\em Constructeur de copie. \end{DoxyCompactList}\item 
+\hypertarget{classCatmullRom_a5661b43985801f9adf5047f057b55ddc}{virtual \hyperlink{classCatmullRom_a5661b43985801f9adf5047f057b55ddc}{$\sim$\-Catmull\-Rom} ()}\label{classCatmullRom_a5661b43985801f9adf5047f057b55ddc}
+
+\begin{DoxyCompactList}\small\item\em Destructeur de la classe qui détruit tous les pointeurs. \end{DoxyCompactList}\item 
+void \hyperlink{classCatmullRom_a2be4505724c40d8bc7d7d72164ab5585}{trace} (std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ P)
+\begin{DoxyCompactList}\small\item\em Fonction permettant de créer la courbe, en remplissant le vecteur de points Points. \end{DoxyCompactList}\item 
+void \hyperlink{classCatmullRom_ac70e97a3222e3883d1df1c74ede347a8}{set\-Inds} (float s)
+\begin{DoxyCompactList}\small\item\em accesseur en écriture au vecteur de points contenant les points de la courbe \end{DoxyCompactList}\item 
+\hypertarget{classCatmullRom_a9d20a2042b439a8d129481185f5c57fa}{void \hyperlink{classCatmullRom_a9d20a2042b439a8d129481185f5c57fa}{affichage} ()}\label{classCatmullRom_a9d20a2042b439a8d129481185f5c57fa}
+
+\begin{DoxyCompactList}\small\item\em Fonction permettant l'affichage de la courbe. \end{DoxyCompactList}\item 
+std\-::vector$<$ \hyperlink{classPointGL}{Point\-G\-L} $\ast$ $>$ \hyperlink{classCatmullRom_a6921464048064a19dd08e4fced1b88ff}{get\-P} ()
+\begin{DoxyCompactList}\small\item\em accesseur en lecture au vecteur de points contenant les points de la courbe \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classCatmullRom_ac0e994d7a9644541cf02e8fd82fa0773}{\index{Catmull\-Rom@{Catmull\-Rom}!Catmull\-Rom@{Catmull\-Rom}}
+\index{Catmull\-Rom@{Catmull\-Rom}!CatmullRom@{Catmull\-Rom}}
+\subsubsection[{Catmull\-Rom}]{\setlength{\rightskip}{0pt plus 5cm}Catmull\-Rom\-::\-Catmull\-Rom (
+\begin{DoxyParamCaption}
+\item[{float}]{s, }
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}}\label{classCatmullRom_ac0e994d7a9644541cf02e8fd82fa0773}
+
+
+Constructeur d'une courbe type Catmull-\/\-Rom. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & coefficient de la courbe (en générale, égale à 1/2) \\
+\hline
+{\em n} & nombre de points voulu pour la courbe \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classCatmullRom_a6921464048064a19dd08e4fced1b88ff}{\index{Catmull\-Rom@{Catmull\-Rom}!get\-P@{get\-P}}
+\index{get\-P@{get\-P}!CatmullRom@{Catmull\-Rom}}
+\subsubsection[{get\-P}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$ Catmull\-Rom\-::get\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classCatmullRom_a6921464048064a19dd08e4fced1b88ff}
+
+
+accesseur en lecture au vecteur de points contenant les points de la courbe 
+
+\begin{DoxyReturn}{Returns}
+le vecteur de points Points 
+\end{DoxyReturn}
+\hypertarget{classCatmullRom_ac70e97a3222e3883d1df1c74ede347a8}{\index{Catmull\-Rom@{Catmull\-Rom}!set\-Inds@{set\-Inds}}
+\index{set\-Inds@{set\-Inds}!CatmullRom@{Catmull\-Rom}}
+\subsubsection[{set\-Inds}]{\setlength{\rightskip}{0pt plus 5cm}void Catmull\-Rom\-::set\-Inds (
+\begin{DoxyParamCaption}
+\item[{float}]{s}
+\end{DoxyParamCaption}
+)}}\label{classCatmullRom_ac70e97a3222e3883d1df1c74ede347a8}
+
+
+accesseur en écriture au vecteur de points contenant les points de la courbe 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & coefficient de la courbe (en générale, égale à 1/2) \\
+\hline
+\end{DoxyParams}
+\hypertarget{classCatmullRom_a2be4505724c40d8bc7d7d72164ab5585}{\index{Catmull\-Rom@{Catmull\-Rom}!trace@{trace}}
+\index{trace@{trace}!CatmullRom@{Catmull\-Rom}}
+\subsubsection[{trace}]{\setlength{\rightskip}{0pt plus 5cm}void Catmull\-Rom\-::trace (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ {\bf Point\-G\-L} $\ast$ $>$}]{P}
+\end{DoxyParamCaption}
+)}}\label{classCatmullRom_a2be4505724c40d8bc7d7d72164ab5585}
+
+
+Fonction permettant de créer la courbe, en remplissant le vecteur de points Points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em P} & vecteur contenant les points de contrôle de la courbe nécessaires à sa construction \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/tools\-\_\-models/\-Courbes/Catmull\-Rom.\-h\item 
+modules/open\-G\-L/tools\-\_\-models/\-Courbes/Catmull\-Rom.\-cpp\end{DoxyCompactItemize}

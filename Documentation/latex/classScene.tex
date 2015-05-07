@@ -1,0 +1,361 @@
+\hypertarget{classScene}{\section{Scene Class Reference}
+\label{classScene}\index{Scene@{Scene}}
+}
+
+
+{\ttfamily \#include $<$Scene.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classScene_ad10176d75a9cc0da56626f682d083507}{Scene} ()
+\item 
+\hypertarget{classScene_a44eef26bfd4ff2196c0689d30d651ac0}{{\bfseries Scene} (const \hyperlink{classScene}{Scene} \&orig)}\label{classScene_a44eef26bfd4ff2196c0689d30d651ac0}
+
+\item 
+void \hyperlink{classScene_a278d69cec31d0f217f66d6d5b835c1cf}{initialisation} ()
+\item 
+void \hyperlink{classScene_a21d0fc2e44e61436e2434790c71e6d79}{clavier} (int touche)
+\item 
+void \hyperlink{classScene_af43ee036671541ec134792751a57a83f}{mouse\-Clicked} (Q\-Mouse\-Event $\ast$event)
+\begin{DoxyCompactList}\small\item\em mouse \end{DoxyCompactList}\item 
+void \hyperlink{classScene_af8819619897d14c6e58655252d4c5f37}{mousemotion} (int x, int y)
+\item 
+void \hyperlink{classScene_aeb3584af02d5818a17ea91eb5d19fc92}{affichage} ()
+\item 
+void \hyperlink{classScene_a76bd2b46fa79e3a939ea87c9da2d8928}{eclairage} (bool e)
+\item 
+void \hyperlink{classScene_a38a063de5f88ffefc9a7ef90e9ba23cb}{lumiere} ()
+\item 
+void \hyperlink{classScene_aaea9ff8b946f2d004037b116e5a53f08}{spot} (G\-Lenum lum)
+\item 
+void \hyperlink{classScene_a576e0cdbd359e0888ba33d2f004365c3}{grille} () const 
+\item 
+void \hyperlink{classScene_a5e9920a83e80a09a255c8c17052b1313}{animation\-Lineaire} (float px, float py, float pz, float lx, float ly, float lz, float zoome, float a)
+\item 
+void \hyperlink{classScene_ab546e6e73c981e816c95c96436f86a4f}{deplacement} (int touche)
+\item 
+void \hyperlink{classScene_af64db0a4c0a5986b12624caefaf6d6e4}{set\-Camera\-Location} (int x, int y, int z)
+\begin{DoxyCompactList}\small\item\em set\-Camera\-Location permet d'affecter de nouvelles coordonnées à la caméra \end{DoxyCompactList}\item 
+void \hyperlink{classScene_ac9e914eb62fd1520fd3ad0000f2015de}{set\-Camera\-Look\-At} (int x, int y, int z)
+\begin{DoxyCompactList}\small\item\em set\-Camera\-Look\-At permet d'affecter de nouvelles coordonnées au point de visé de la caméra \end{DoxyCompactList}\item 
+float \hyperlink{classScene_a77b47fda37a4f654c2afc1369243cc71}{get\-Posx} ()
+\begin{DoxyCompactList}\small\item\em get\-Posx \end{DoxyCompactList}\item 
+float \hyperlink{classScene_ae519821e00f9f4022fe01e27f29341b1}{get\-Posy} ()
+\begin{DoxyCompactList}\small\item\em get\-Posy \end{DoxyCompactList}\item 
+float \hyperlink{classScene_a5bc3326488d3899234b900362cc3922e}{get\-Posz} ()
+\begin{DoxyCompactList}\small\item\em get\-Posz \end{DoxyCompactList}\item 
+float \hyperlink{classScene_ab1c2fef33054817bbede5a4048e4c40e}{get\-Lookx} ()
+\begin{DoxyCompactList}\small\item\em get\-Lookx \end{DoxyCompactList}\item 
+float \hyperlink{classScene_a8ec463670f863914c2398fe21143d0e6}{get\-Looky} ()
+\begin{DoxyCompactList}\small\item\em get\-Looky \end{DoxyCompactList}\item 
+float \hyperlink{classScene_a3b5b9bdd1371ed2330ab9e2bf39456a7}{get\-Lookz} ()
+\begin{DoxyCompactList}\small\item\em get\-Lookz \end{DoxyCompactList}\item 
+\hypertarget{classScene_ade754942bbdec763bbf3f8d0595fde04}{void {\bfseries zoom} ()}\label{classScene_ade754942bbdec763bbf3f8d0595fde04}
+
+\item 
+\hypertarget{classScene_a79ba6db33b5fbac304c9f6811da42b0b}{void {\bfseries dezoom} ()}\label{classScene_a79ba6db33b5fbac304c9f6811da42b0b}
+
+\item 
+\hypertarget{classScene_ae6393370d5cc51ecc620c60597dc3853}{void {\bfseries reset} ()}\label{classScene_ae6393370d5cc51ecc620c60597dc3853}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+P\-O\-N\-C\-I\-A\-N\-O Jean-\/\-Jacques et P\-R\-U\-D\-H\-O\-M\-M\-E Claire 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+13/03/2014
+\end{DoxyDate}
+Cette oeuvre, création, code, site ou texte est sous licence Creative Commons Attribution -\/ Pas d’\-Utilisation Commerciale -\/ Partage dans les Mêmes Conditions 4.\-0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante \href{http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr}{\tt http\-://creativecommons.\-org/licenses/by-\/nc-\/sa/4.\-0/deed.\-fr} ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, U\-S\-A. Copyright 2014
+
+Contact\-: \href{mailto:ponciano.jeanjacques@gmail.com}{\tt ponciano.\-jeanjacques@gmail.\-com} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classScene_ad10176d75a9cc0da56626f682d083507}{\index{Scene@{Scene}!Scene@{Scene}}
+\index{Scene@{Scene}!Scene@{Scene}}
+\subsubsection[{Scene}]{\setlength{\rightskip}{0pt plus 5cm}Scene\-::\-Scene (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classScene_ad10176d75a9cc0da56626f682d083507}
+Constructeur 
+
+\subsection{Member Function Documentation}
+\hypertarget{classScene_aeb3584af02d5818a17ea91eb5d19fc92}{\index{Scene@{Scene}!affichage@{affichage}}
+\index{affichage@{affichage}!Scene@{Scene}}
+\subsubsection[{affichage}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::affichage (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classScene_aeb3584af02d5818a17ea91eb5d19fc92}
+Affichage minimaliste de la scène \hypertarget{classScene_a5e9920a83e80a09a255c8c17052b1313}{\index{Scene@{Scene}!animation\-Lineaire@{animation\-Lineaire}}
+\index{animation\-Lineaire@{animation\-Lineaire}!Scene@{Scene}}
+\subsubsection[{animation\-Lineaire}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::animation\-Lineaire (
+\begin{DoxyParamCaption}
+\item[{float}]{px, }
+\item[{float}]{py, }
+\item[{float}]{pz, }
+\item[{float}]{lx, }
+\item[{float}]{ly, }
+\item[{float}]{lz, }
+\item[{float}]{zoome, }
+\item[{float}]{a}
+\end{DoxyParamCaption}
+)}}\label{classScene_a5e9920a83e80a09a255c8c17052b1313}
+Interpolation par image cré avec la caméra 
+\begin{DoxyParams}{Parameters}
+{\em px} & abscisse de la position de l'image clé de la caméra \\
+\hline
+{\em py} & ordonnée de la position de l'image clé de la caméra \\
+\hline
+{\em pz} & profondeur de la position de l'image clé de la caméra \\
+\hline
+{\em lx} & abscisse de la position de l'image clé de la caméra \\
+\hline
+{\em ly} & ordonnée de la position de l'image clé de la caméra \\
+\hline
+{\em lz} & profondeur de la position de l'image clé de la caméra \\
+\hline
+{\em zoome} & zoome de la caméra \\
+\hline
+{\em a} & avancement de l'interpolation linéaire \\
+\hline
+\end{DoxyParams}
+\hypertarget{classScene_a21d0fc2e44e61436e2434790c71e6d79}{\index{Scene@{Scene}!clavier@{clavier}}
+\index{clavier@{clavier}!Scene@{Scene}}
+\subsubsection[{clavier}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::clavier (
+\begin{DoxyParamCaption}
+\item[{int}]{touche}
+\end{DoxyParamCaption}
+)}}\label{classScene_a21d0fc2e44e61436e2434790c71e6d79}
+Traitement des actions effectué avec le clavier 
+\begin{DoxyParams}{Parameters}
+{\em touche} & touche pressée \\
+\hline
+\end{DoxyParams}
+\hypertarget{classScene_ab546e6e73c981e816c95c96436f86a4f}{\index{Scene@{Scene}!deplacement@{deplacement}}
+\index{deplacement@{deplacement}!Scene@{Scene}}
+\subsubsection[{deplacement}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::deplacement (
+\begin{DoxyParamCaption}
+\item[{int}]{touche}
+\end{DoxyParamCaption}
+)}}\label{classScene_ab546e6e73c981e816c95c96436f86a4f}
+Gestion des déplacement 
+\begin{DoxyParams}{Parameters}
+{\em int} & touche du clavier indiquant le choix du déplacement 1 =$>$ en avant 2 =$>$ en arrière 3 =$>$ à droite 4 =$>$ à gauche 5 =$>$ augmentation de la hauteur de la caméra 6 =$>$ diminution de la hauteur de la caméra 7 =$>$ Zoom 8 =$>$Dezoom \\
+\hline
+\end{DoxyParams}
+\hypertarget{classScene_a76bd2b46fa79e3a939ea87c9da2d8928}{\index{Scene@{Scene}!eclairage@{eclairage}}
+\index{eclairage@{eclairage}!Scene@{Scene}}
+\subsubsection[{eclairage}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::eclairage (
+\begin{DoxyParamCaption}
+\item[{bool}]{e}
+\end{DoxyParamCaption}
+)}}\label{classScene_a76bd2b46fa79e3a939ea87c9da2d8928}
+Prend en compte ou non l'éclairage de la scène. 
+\begin{DoxyParams}{Parameters}
+{\em e} & true si prise ne compte de l'éclairage, false sinon. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classScene_ab1c2fef33054817bbede5a4048e4c40e}{\index{Scene@{Scene}!get\-Lookx@{get\-Lookx}}
+\index{get\-Lookx@{get\-Lookx}!Scene@{Scene}}
+\subsubsection[{get\-Lookx}]{\setlength{\rightskip}{0pt plus 5cm}float Scene\-::get\-Lookx (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classScene_ab1c2fef33054817bbede5a4048e4c40e}
+
+
+get\-Lookx 
+
+\begin{DoxyReturn}{Returns}
+position en x du point de visé de la caméra 
+\end{DoxyReturn}
+\hypertarget{classScene_a8ec463670f863914c2398fe21143d0e6}{\index{Scene@{Scene}!get\-Looky@{get\-Looky}}
+\index{get\-Looky@{get\-Looky}!Scene@{Scene}}
+\subsubsection[{get\-Looky}]{\setlength{\rightskip}{0pt plus 5cm}float Scene\-::get\-Looky (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classScene_a8ec463670f863914c2398fe21143d0e6}
+
+
+get\-Looky 
+
+\begin{DoxyReturn}{Returns}
+position en y du point de visé de la caméra 
+\end{DoxyReturn}
+\hypertarget{classScene_a3b5b9bdd1371ed2330ab9e2bf39456a7}{\index{Scene@{Scene}!get\-Lookz@{get\-Lookz}}
+\index{get\-Lookz@{get\-Lookz}!Scene@{Scene}}
+\subsubsection[{get\-Lookz}]{\setlength{\rightskip}{0pt plus 5cm}float Scene\-::get\-Lookz (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classScene_a3b5b9bdd1371ed2330ab9e2bf39456a7}
+
+
+get\-Lookz 
+
+\begin{DoxyReturn}{Returns}
+position en z du point de visé de la caméra 
+\end{DoxyReturn}
+\hypertarget{classScene_a77b47fda37a4f654c2afc1369243cc71}{\index{Scene@{Scene}!get\-Posx@{get\-Posx}}
+\index{get\-Posx@{get\-Posx}!Scene@{Scene}}
+\subsubsection[{get\-Posx}]{\setlength{\rightskip}{0pt plus 5cm}float Scene\-::get\-Posx (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classScene_a77b47fda37a4f654c2afc1369243cc71}
+
+
+get\-Posx 
+
+\begin{DoxyReturn}{Returns}
+position en x de la caméra 
+\end{DoxyReturn}
+\hypertarget{classScene_ae519821e00f9f4022fe01e27f29341b1}{\index{Scene@{Scene}!get\-Posy@{get\-Posy}}
+\index{get\-Posy@{get\-Posy}!Scene@{Scene}}
+\subsubsection[{get\-Posy}]{\setlength{\rightskip}{0pt plus 5cm}float Scene\-::get\-Posy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classScene_ae519821e00f9f4022fe01e27f29341b1}
+
+
+get\-Posy 
+
+\begin{DoxyReturn}{Returns}
+position en y de la caméra 
+\end{DoxyReturn}
+\hypertarget{classScene_a5bc3326488d3899234b900362cc3922e}{\index{Scene@{Scene}!get\-Posz@{get\-Posz}}
+\index{get\-Posz@{get\-Posz}!Scene@{Scene}}
+\subsubsection[{get\-Posz}]{\setlength{\rightskip}{0pt plus 5cm}float Scene\-::get\-Posz (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classScene_a5bc3326488d3899234b900362cc3922e}
+
+
+get\-Posz 
+
+\begin{DoxyReturn}{Returns}
+position en z de la caméra 
+\end{DoxyReturn}
+\hypertarget{classScene_a576e0cdbd359e0888ba33d2f004365c3}{\index{Scene@{Scene}!grille@{grille}}
+\index{grille@{grille}!Scene@{Scene}}
+\subsubsection[{grille}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::grille (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classScene_a576e0cdbd359e0888ba33d2f004365c3}
+Affichage du grille au sol pour faciliter la construction d'objets \hypertarget{classScene_a278d69cec31d0f217f66d6d5b835c1cf}{\index{Scene@{Scene}!initialisation@{initialisation}}
+\index{initialisation@{initialisation}!Scene@{Scene}}
+\subsubsection[{initialisation}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::initialisation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classScene_a278d69cec31d0f217f66d6d5b835c1cf}
+Initialisation des paramètres glut et Open\-G\-L \hypertarget{classScene_a38a063de5f88ffefc9a7ef90e9ba23cb}{\index{Scene@{Scene}!lumiere@{lumiere}}
+\index{lumiere@{lumiere}!Scene@{Scene}}
+\subsubsection[{lumiere}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::lumiere (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classScene_a38a063de5f88ffefc9a7ef90e9ba23cb}
+affichage des lumière \hypertarget{classScene_af43ee036671541ec134792751a57a83f}{\index{Scene@{Scene}!mouse\-Clicked@{mouse\-Clicked}}
+\index{mouse\-Clicked@{mouse\-Clicked}!Scene@{Scene}}
+\subsubsection[{mouse\-Clicked}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::mouse\-Clicked (
+\begin{DoxyParamCaption}
+\item[{Q\-Mouse\-Event $\ast$}]{event}
+\end{DoxyParamCaption}
+)}}\label{classScene_af43ee036671541ec134792751a57a83f}
+
+
+mouse 
+
+
+\begin{DoxyParams}{Parameters}
+{\em button} & bouton utilisé ( 1=$>$gauche 2=$>$ droit) \\
+\hline
+{\em state} & \\
+\hline
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{classScene_af8819619897d14c6e58655252d4c5f37}{\index{Scene@{Scene}!mousemotion@{mousemotion}}
+\index{mousemotion@{mousemotion}!Scene@{Scene}}
+\subsubsection[{mousemotion}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::mousemotion (
+\begin{DoxyParamCaption}
+\item[{int}]{x, }
+\item[{int}]{y}
+\end{DoxyParamCaption}
+)}}\label{classScene_af8819619897d14c6e58655252d4c5f37}
+Action continue de la souris 
+\begin{DoxyParams}{Parameters}
+{\em x} & abscisse du curseur de la souris \\
+\hline
+{\em y} & ordonnée du curseur de la souris \\
+\hline
+\end{DoxyParams}
+\hypertarget{classScene_af64db0a4c0a5986b12624caefaf6d6e4}{\index{Scene@{Scene}!set\-Camera\-Location@{set\-Camera\-Location}}
+\index{set\-Camera\-Location@{set\-Camera\-Location}!Scene@{Scene}}
+\subsubsection[{set\-Camera\-Location}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::set\-Camera\-Location (
+\begin{DoxyParamCaption}
+\item[{int}]{x, }
+\item[{int}]{y, }
+\item[{int}]{z}
+\end{DoxyParamCaption}
+)}}\label{classScene_af64db0a4c0a5986b12624caefaf6d6e4}
+
+
+set\-Camera\-Location permet d'affecter de nouvelles coordonnées à la caméra 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & coordonnée en X \\
+\hline
+{\em y} & coordonnée en Y \\
+\hline
+{\em z} & coordonnée en Z \\
+\hline
+\end{DoxyParams}
+\hypertarget{classScene_ac9e914eb62fd1520fd3ad0000f2015de}{\index{Scene@{Scene}!set\-Camera\-Look\-At@{set\-Camera\-Look\-At}}
+\index{set\-Camera\-Look\-At@{set\-Camera\-Look\-At}!Scene@{Scene}}
+\subsubsection[{set\-Camera\-Look\-At}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::set\-Camera\-Look\-At (
+\begin{DoxyParamCaption}
+\item[{int}]{x, }
+\item[{int}]{y, }
+\item[{int}]{z}
+\end{DoxyParamCaption}
+)}}\label{classScene_ac9e914eb62fd1520fd3ad0000f2015de}
+
+
+set\-Camera\-Look\-At permet d'affecter de nouvelles coordonnées au point de visé de la caméra 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & coordonnée en X \\
+\hline
+{\em y} & coordonnée en Y \\
+\hline
+{\em z} & coordonnée en Z \\
+\hline
+\end{DoxyParams}
+\hypertarget{classScene_aaea9ff8b946f2d004037b116e5a53f08}{\index{Scene@{Scene}!spot@{spot}}
+\index{spot@{spot}!Scene@{Scene}}
+\subsubsection[{spot}]{\setlength{\rightskip}{0pt plus 5cm}void Scene\-::spot (
+\begin{DoxyParamCaption}
+\item[{G\-Lenum}]{lum}
+\end{DoxyParamCaption}
+)}}\label{classScene_aaea9ff8b946f2d004037b116e5a53f08}
+Affichage d'un spot 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+modules/open\-G\-L/ground/model/Scene.\-h\item 
+modules/open\-G\-L/ground/model/Scene.\-cpp\end{DoxyCompactItemize}

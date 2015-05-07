@@ -214,7 +214,7 @@ opencv {
 # ===== OpenGL
 #if you use freeglut and openGL
 opengl{
-    unix|win32: LIBS += -lQt5OpenGL
+    win32: LIBS += -lQt5OpenGL
     unix{
          LIBS +=  -L$$PWD/usr/lib/x86_64-linux-gnu/ -lGL
          LIBS +=  -L$$PWD/usr/lib/x86_64-linux-gnu/ -lglut
@@ -281,4 +281,3 @@ opengl{
         DEPENDPATH += $$PWD/../../Libs/freeglut/include
     }#end win32
 }#end opengl
-

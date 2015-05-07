@@ -72,3 +72,4 @@ void groundGLWidget::mouseReleaseEvent(QMouseEvent *event){
     View_ground_GL::mouseReleaseEvent(event);
 }
 
+

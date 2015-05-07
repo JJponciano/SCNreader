@@ -1,3 +1,4 @@
+
 /**
  * @copyright 2015 Jean-Jacques PONCIANO, Claire PRUDHOMME
  * All rights reserved.
@@ -19,12 +20,14 @@
  * Contact: ponciano.jeanjacques@gmail.com
  * @version 0.1
  */
+
 #ifndef VUEPARETAPE_H
 #define VUEPARETAPE_H
 
 #include <QObject>
 #include <QWidget>
 #include "../modules/openGL/ground/groundglwidget.h"
+
 #include <cstdlib>
 #include <QMouseEvent>
 #include <QList>
@@ -52,6 +55,7 @@
 #include "scnreader_model.h"
 
 
+
 class VueParEtape: public groundGLWidget
 {
 public:
@@ -77,9 +81,10 @@ public:
     void extractionCloud(int i);
     /**
      * @brief planarSegmentation  create a new cloud representing the most larger plan of the cloud located at the ith position in the clouds vector
-     * @param i index of the cloud position in this Qvector clouds
+     * @param int d, footpulde to begin, int f, footpulse to finish
      */
-    void planarSegmentation(int i);
+    void planarSegmentation(int d, int f);
+
 
 
     /**
@@ -105,16 +110,45 @@ public:
    void loadFromSCN();
 
 
+   //accesseur en lecture et en écriture
+   int getFtpD();
+   int getFtpF();
+   int getFtpDI();
+   int getFtpFI();
+
+   std::string getNomF();
+
+   int getTaille();
+   //void setFtpD(int d);
+   //void setFtpF(int f);
+   void setFtpDI(int di);
+   void setFtpFI(int fi);
+   void setaffS(bool b);
+   void setaffE(bool b);
+   void setaffC(bool b);
 private:
 
   scnreader_model scnreaderFond;
-  int ftpdeDepart;
-  int ftpCourant;
-  QVector<int> pPrec;
-  int pCourant;
-  int pSuiv;
-  int step;
-  bool avance;
+  //int ftpdeDepart;
+  //int ftpCourant;
+  //QVector<int> pPrec;
+  //int pCourant;
+  //int pSuiv;
+  //int step;
+  //bool avance;
+
+  //footpulse de début et de fin du cloud entier
+    //int ftpD;
+   // int ftpF;
+  //footpulse de début et de fin de l'intervalle de travail
+    int ftpDI;
+    int ftpFI;
+  //boolean permettant de gérer l'affichage
+    bool affs;
+    bool affe;
+    bool affc;
+
+    std::string nomFichier;
 
   int sizeCloud;
 };
