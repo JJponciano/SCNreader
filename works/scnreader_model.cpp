@@ -81,6 +81,8 @@ void scnreader_model::loadFromSCN(std::string pathname){
 
     //add clouds
     this->clouds.push_back(data.getcloud());
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=ToolsPCL::ransac(data.getcloud());
+    this->clouds.push_back(cloud);
     //add this data created
     this->datas.push_back(data);
 }

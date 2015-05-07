@@ -35,6 +35,14 @@
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/segmentation/extract_clusters.h>
+#include <iostream>
+#include <pcl/console/parse.h>
+#include <pcl/filters/extract_indices.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/sample_consensus/ransac.h>
+#include <pcl/sample_consensus/sac_model_plane.h>
+#include <pcl/sample_consensus/sac_model_sphere.h>
+
 #include "../../exceptions/erreur.h"
 #include <QString>
 #include <QStringList>
@@ -182,6 +190,13 @@ public:
      * @return the cloud located at index i of the vector
      */
     pcl::PointCloud<pcl::PointXYZ>::Ptr getClouds(int i);
+
+    /**
+     * @brief ransac create a segmentation for finding the lines in cloud
+     * @param cloud input cloud
+     * @return cloud with the lines found
+     */
+    static pcl::PointCloud<pcl::PointXYZ>::Ptr ransac(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 
     /**
      * @brief getCloudGray load a gray cloud from file which format is: X Y Z grayscale
