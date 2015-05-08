@@ -1,26 +1,26 @@
 #include "view_pcl.h"
 
 View_pcl::View_pcl(QWidget *parent)
-    : View_ground_GL(parent)
+    : groundGLWidget(parent)
 {
 }
 
 // ------------------------------------------ OPENGL Functions ------------------------------------------
 void View_pcl::initializeGL()
 {
-    View_ground_GL::initializeGL();
+    groundGLWidget::initializeGL();
      glDisable(GL_LIGHTING);
 }
 
 void View_pcl::resizeGL(int width, int height)
 {
-    View_ground_GL::resizeGL( width,  height);
+    groundGLWidget::resizeGL( width,  height);
 }
 
 void View_pcl::paintGL()
 {
     //call the superclass function
-    View_ground_GL::paintGL();
+    groundGLWidget::paintGL();
 
     //------------------------------------------------------------------
     // definition size dot
@@ -126,16 +126,16 @@ void View_pcl::keyPressEvent(QKeyEvent *keyEvent)
         this->toolspcl.setMaxY(this->toolspcl.getMaxY()*0.8);
         this->toolspcl.setMaxZ(this->toolspcl.getMaxZ()*0.8);
     }
-    else View_ground_GL::keyPressEvent(keyEvent);
+    else groundGLWidget::keyPressEvent(keyEvent);
 }
 void View_pcl::mouseMoveEvent(QMouseEvent *event){
-    View_ground_GL::mouseMoveEvent(event);
+    groundGLWidget::mouseMoveEvent(event);
 }
 void View_pcl::mousePressEvent(QMouseEvent *event){
-    View_ground_GL::mousePressEvent(event);
+    groundGLWidget::mousePressEvent(event);
 }
 void View_pcl::mouseReleaseEvent(QMouseEvent *event){
-    View_ground_GL::mouseReleaseEvent(event);
+    groundGLWidget::mouseReleaseEvent(event);
 }
 
 

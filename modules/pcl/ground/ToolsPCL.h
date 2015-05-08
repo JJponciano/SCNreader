@@ -1,4 +1,3 @@
-
 /**
  * @file ToolsPCL.h
  * @brief file to the managements of pcl
@@ -255,17 +254,17 @@ public:
     float getMaxZ() const;
     void setMaxZ(float value);
 protected:
+    void searchMAX();
     float maxX;
     float maxY;
     float maxZ;
     // get point cloud from cloud file previously saved
     QVector<pcl::PointCloud<pcl::PointXYZ>::Ptr> clouds;
 private:
-    void searchMAX();
+
     QStringList extractionCloudRGB(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud);
     QStringList extractionCloudInList(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 
 };
 
 #endif // TOOLSPCL_H
-

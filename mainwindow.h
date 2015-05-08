@@ -48,12 +48,12 @@ public slots:
     void clear();
     void extract();
     void planarSeg();
-    void affichageOK();
     void loadFromFile();
     void loadFromSCN();
     void loadCloudFromTXT();
     void saveFromFile();
     void saveFromFileTXT();
+    void affichageOK();
     void changeD();
     void changeF();
 private:

@@ -535,4 +535,3 @@ void Datapackage::setCloud(const pcl::PointCloud<pcl::PointXYZ>::Ptr &value)
 {
     cloud = value;
 }
->>>>>>> master

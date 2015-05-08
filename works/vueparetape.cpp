@@ -24,11 +24,7 @@
 
 VueParEtape::VueParEtape(QWidget *parent): groundGLWidget(parent)
 {
-    this->step=500;
-    this->pCourant=0;
-    this->pSuiv=0;
 
-    this->ftpCourant=0;
     //this->ftpD=0;
     //this->ftpF=0;
     this->ftpDI=0;
@@ -36,7 +32,7 @@ VueParEtape::VueParEtape(QWidget *parent): groundGLWidget(parent)
 
     this->affs=false;
     this->affe=false;
-    this->ftpdeDepart=0;
+
 }
 
 VueParEtape::~VueParEtape()
