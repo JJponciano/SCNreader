@@ -52,6 +52,7 @@ void groundGLWidget::paintGL()
 {
     //call the superclass function
     View_ground_GL::paintGL();
+    this->setCamera(pX,pY,pZ,lX,lY,lZ);
 }
 
 
@@ -60,6 +61,7 @@ void groundGLWidget::paintGL()
 //===============================================
 void groundGLWidget::keyPressEvent(QKeyEvent *keyEvent)
 {
+
 View_ground_GL::keyPressEvent(keyEvent);
 }
 void groundGLWidget::mouseMoveEvent(QMouseEvent *event){

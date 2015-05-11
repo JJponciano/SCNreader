@@ -147,7 +147,10 @@ private:
     bool affs;
     bool affe;
     bool affc;
-
+    float px;
+    float py;
+    float pz;
+    bool firstP;
     std::string nomFichier;
 
   int sizeCloud;

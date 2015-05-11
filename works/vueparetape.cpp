@@ -29,7 +29,9 @@ VueParEtape::VueParEtape(QWidget *parent): groundGLWidget(parent)
     //this->ftpF=0;
     this->ftpDI=0;
     this->ftpFI=0;
-
+    this->px=0;
+    this->py=0;
+    this->pz=0;
     this->affs=false;
     this->affe=false;
 
@@ -56,7 +58,7 @@ void VueParEtape::resizeGL(int width, int height)
 void VueParEtape::paintGL()
 {
     //call the superclass function
-    View_ground_GL::paintGL();
+    groundGLWidget::paintGL();
 
     //------------------------------------------------------------------
     // definition size dot
@@ -73,7 +75,6 @@ void VueParEtape::paintGL()
                 {
 
                     QVector <pcl::PointXYZ*>* v=this->scnreaderFond.getNuage().value(j);
-
                     for(int i=0; i<v->size(); i++)
                     {
                         glPointSize(1);
@@ -82,7 +83,8 @@ void VueParEtape::paintGL()
                                 float x=(* (v->at(i))).x;//scnreaderFond.getMaxX()*10;
                                 float y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
                                 float z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
-                                glVertex3f(x,y,z);
+                                glVertex3f(x,int(y*1000)/100,z);
+
                     }
 
                 }
@@ -259,52 +261,37 @@ void VueParEtape::keyPressEvent(QKeyEvent *keyEvent)
 {
 
     if(keyEvent->key()==Qt::Key_W){
-        this->scnreaderFond.setMaxX(this->scnreaderFond.getMaxX()*1.2);
-        this->scnreaderFond.setMaxY(this->scnreaderFond.getMaxY()*1.2);
-        this->scnreaderFond.setMaxZ(this->scnreaderFond.getMaxZ()*1.2);
+        this->pZ++;
+        this->lZ++;
     }
-    else if(keyEvent->key()==Qt::Key_Q){
-        this->scnreaderFond.setMaxX(this->scnreaderFond.getMaxX()*0.8);
-        this->scnreaderFond.setMaxY(this->scnreaderFond.getMaxY()*0.8);
-        this->scnreaderFond.setMaxZ(this->scnreaderFond.getMaxZ()*0.8);
-    }
-    /*else if(keyEvent->key()==Qt::Key_J){
-        if( this->scnreaderFond.getClouds().size()>0)
-            if( this->pSuiv < (this->scnreaderFond.getClouds(0)->points.size()))
-            {
-                this->ftpCourant+=step;
-                this->pPrec.push_back(this->pCourant);
-                this->pCourant=this->pSuiv;
-                std::cout<<this->pCourant<<"/"<<this->scnreaderFond.getClouds(0)->points.size()<<std::endl;
-            }
-    }
-    else if(keyEvent->key()==Qt::Key_L){
-        if( this->scnreaderFond.getClouds().size()>0)
-            if(this->pPrec.size()>0)
-            {
-                this->ftpCourant-=step;
-                this->pCourant=this->pPrec.at(this->pPrec.size()-1);
-                this->pPrec.pop_back();
-                std::cout<<this->pCourant<<"/"<<this->scnreaderFond.getClouds(0)->points.size()<<std::endl;
-            }
+    else if(keyEvent->key()==Qt::Key_S){
+        this->pZ--;
+        this->lZ--;
     }
     else if(keyEvent->key()==Qt::Key_D){
-        if( this->scnreaderFond.getClouds().size()>0)
-        {
-                this->ftpCourant=this->ftpdeDepart;
-                this->pCourant=0;
-                this->pPrec.clear();
-        }
-    }*/
-    else View_ground_GL::keyPressEvent(keyEvent);
+        this->pX--;
+        this->lX--;
+    }
+    else if(keyEvent->key()==Qt::Key_A){
+        this->pX++;
+        this->lX++;
+    }
+    else if(keyEvent->key()==Qt::Key_Q){
+        this->pY++;
+        this->lY++;
+    }
+    else if(keyEvent->key()==Qt::Key_E){
+        this->pY--;
+        this->lY--;
+    }
+    else if(keyEvent->key()==Qt::Key_8){
+        this->lY++;
+    }
+    else if(keyEvent->key()==Qt::Key_5){
+        this->lY--;
+    }
+    else groundGLWidget::keyPressEvent(keyEvent);
 }
-/*void VueParEtape::setFtpD(){
-    this->ftpD=this->scnreaderFond.getFtpd();
-}
-
-void VueParEtape::setFtpF(){
-    this->ftpF=this->scnreaderFond.getFtpf();
-}*/
 
 int VueParEtape::getFtpD(){
     return this->scnreaderFond.getFtpd();
