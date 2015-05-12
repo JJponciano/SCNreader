@@ -32,7 +32,9 @@ SOURCES += main.cpp\
     works/scnreader_model.cpp \
     works/scndata.cpp \
     works/datapackage.cpp \
-    works/vueparetape.cpp
+    works/vueparetape.cpp \
+    works/railcluster.cpp \
+    works/listerail.cpp
 
 # if you use openGL
 opengl {
@@ -64,7 +66,9 @@ HEADERS  += mainwindow.h \
     works/scnreader_model.h \
     works/scndata.h \
     works/datapackage.h \
-    works/vueparetape.h
+    works/vueparetape.h \
+    works/railcluster.h \
+    works/listerail.h
 
 # if you use openGL
 opengl {

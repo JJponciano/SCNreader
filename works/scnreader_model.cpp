@@ -33,7 +33,10 @@ scnreader_model::~scnreader_model()
     this->segmentation.clear();
     this->extraction.clear();
 }
+/*
+pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getRails(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud){
 
+}*/
 
 QString scnreader_model::readData(int bytePosition, int length,std::string pathname,bool isnumber){
     std::ifstream ouverture(pathname.c_str(),std::ios::in);

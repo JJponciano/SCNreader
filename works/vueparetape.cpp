@@ -34,6 +34,8 @@ VueParEtape::VueParEtape(QWidget *parent): groundGLWidget(parent)
     this->pz=0;
     this->affs=false;
     this->affe=false;
+    this->affr=false;
+    this->affc=true;
 
 }
 
@@ -83,8 +85,8 @@ void VueParEtape::paintGL()
                                 float x=(* (v->at(i))).x;//scnreaderFond.getMaxX()*10;
                                 float y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
                                 float z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
-                                glVertex3f(x,int(y*1000)/100,z);
-
+//                                glVertex3f(x,int(y*1000)/100,z);
+                                   glVertex3f(x,y,z);
                     }
 
                 }
@@ -127,6 +129,11 @@ void VueParEtape::paintGL()
 
     }
     if(affe)
+    {
+
+    }
+
+    if(affr)
     {
 
     }
@@ -331,6 +338,10 @@ void VueParEtape::setaffS(bool b){
 
 void VueParEtape::setaffE(bool b){
     this->affe=b;
+}
+
+void VueParEtape::setaffR(bool b){
+    this->affr=b;
 }
 
 int VueParEtape::getTaille(){

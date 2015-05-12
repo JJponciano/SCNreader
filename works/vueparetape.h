@@ -126,6 +126,8 @@ public:
    void setaffS(bool b);
    void setaffE(bool b);
    void setaffC(bool b);
+   void setaffR(bool b);
+
 private:
 
   scnreader_model scnreaderFond;
@@ -147,6 +149,7 @@ private:
     bool affs;
     bool affe;
     bool affc;
+    bool affr;
     float px;
     float py;
     float pz;

@@ -54,6 +54,7 @@ public slots:
     void saveFromFile();
     void saveFromFileTXT();
     void affichageOK();
+    void afficheRansac();
     void changeD();
     void changeF();
 private:
