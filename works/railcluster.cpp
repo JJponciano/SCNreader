@@ -46,7 +46,7 @@ void RailCluster::remove(pcl::PointXYZ * pt){
 
 }
 
-void RailCluster::haveCorresponding(QVector <pcl::PointXYZ *> pts)
+void RailCluster::match(QVector <pcl::PointXYZ *> pts)
 {
 
 }
