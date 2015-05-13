@@ -13,31 +13,32 @@ ListeRail::~ListeRail()
 
 QVector <int> ListeRail::switchDetected()
 {
-
+    QVector <int>a;
+return a;
 }
 
-bool growingRegions(RailCluster rail)
+bool ListeRail::growingRegions(RailCluster rail)
 {
-
+return true;
 }
 
-bool growingOk(QVector <pcl::PointXYZ *> reg)
+bool ListeRail::growingOk(QVector <pcl::PointXYZ *> reg)
 {
-
+return true;
 }
 
-bool isInRegion(QVector <pcl::PointXYZ *> reg, pcl::PointXYZ * pt)
+bool ListeRail::isInRegion(QVector <pcl::PointXYZ *> reg, pcl::PointXYZ * pt)
 {
-
+return true;
 }
 
 
-QVector <pcl::PointXYZ *> getRegions()
+QVector <pcl::PointXYZ *> ListeRail::getRegions()
 {
     return this->regions;
 }
 
-QVector <RailCluster> getLesRails()
+QVector <RailCluster> ListeRail::getLesRails()
 {
     return this->lesRails;
 }
