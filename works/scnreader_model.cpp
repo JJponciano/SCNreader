@@ -729,3 +729,27 @@ QVector<pcl::PointXYZ *>* scnreader_model::getPtWithInd(int d, int f, std::vecto
     }
     return v;
 }
+
+QVector<pcl::PointXYZ *> * scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp)
+{
+    /*QVector<pcl::PointXYZ *> * v;
+    //TODO
+    return v;*/
+    throw Erreur("NOT YET IMPLEMENT, SORRY!");
+}
+
+bool scnreader_model::samePoint(pcl::PointXYZ *point2, pcl::PointXYZ * ptP)
+{
+    //we take the coordinates of ptP
+    float x1=ptP->x;
+    float y1=ptP->y;
+    float z1=ptP->z;
+
+    //we take the coordinates of pt
+    float x2=point2->x;
+    float y2=point2->y;
+    float z2=point2->z;
+
+    return (x1==x2) && (y1==y2) && (z1==z2);
+}
+

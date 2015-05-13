@@ -42,18 +42,22 @@ public:
       * @brief RailCluster constructor
       * Initialization of parameters
       * @param height Average height of railway rail
-      * @param widch Average width of railway rail
+      * @param width Average width of railway rail
       * @param spacing Average spacing between two railways rail
       */
-     RailCluster(float height, float widch, float spacing);
+     RailCluster(float height, float width, float spacing);
      /**
       * @brief RailCluster constructor
       * Initialization of parameters and get all point of railways rail
       * @param height Average height of railway rail
-      * @param widch Average width of railway rail
+      * @param width Average width of railway rail
       * @param spacing Average spacing between two railways rail
+      * @param footpulse
       */
-     RailCluster(float height, float widch, float spacing, QVector <pcl::PointXYZ *>footpulse);
+     RailCluster(float height, float width, float spacing, QVector <pcl::PointXYZ *>footpulse);
+     /**
+      * @brief RailCluster destructor
+      */
     ~RailCluster();
     /**
      * @brief add Add points with the required criteria
@@ -80,7 +84,7 @@ public:
     void remove(pcl::PointXYZ * pt);
 
     /**
-     * @brief haveCorresponding  matches the points in pairs and adds or removes points.
+     * @brief match  matches the points in pairs and adds or removes points.
      * This function matches the points in pairs and if is necessary, it adds a point of the pair.
      * Then, it removes and adds of the blacklist all single point. For to match points two by two,
      * it tests for each point of this class if the point has a distance close to the average

@@ -27,6 +27,21 @@ RailCluster::RailCluster()
 
 }
 
+RailCluster::RailCluster(float height, float width, float spacing)
+{
+    this->hm = height;
+    this->lm = width;
+    this->em = spacing;
+}
+
+RailCluster::RailCluster(float height, float width, float spacing, QVector <pcl::PointXYZ *>footpulse)
+{
+    this->hm = height;
+    this->lm = width;
+    this->em = spacing;
+    this->points = footpulse;
+}
+
 RailCluster::~RailCluster()
 {
     this->points.clear();

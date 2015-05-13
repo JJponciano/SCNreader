@@ -99,6 +99,13 @@ public:
       QHash <QString, QVector<pcl::PointXYZ *>*> getExtraction();
 
 private:
+      /**
+       * @brief samePoint watch if two points are the same or not
+       * @param ptP the point which is contained in QHash
+       * @param pt the point which is contained in cloud
+       * @return if they are the same
+       */
+      bool samePoint( pcl::PointXYZ* point2, pcl::PointXYZ *ptP);
     /**
      * @brief readData read a data byte by byte
      * @param bytePosition posision of the data
@@ -128,6 +135,13 @@ private:
      * @return the cloud corresponding to the part of cloud which we work on
      */
     pcl::PointCloud<pcl::PointXYZ>::Ptr getPartInCloud(int d, int f, QVector<int>* tailles);
+
+    /**
+     * @brief getCloudInVect transform a cloud in a vector of points
+     * @param cloudTemp is the cloud which we will transform
+     * @return the vector of points corresponding
+     */
+    QVector<pcl::PointXYZ *> * getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp);
 
     /**
      * @brief scnreader_model::getPtWithInd take the points correponding to indices which are given
