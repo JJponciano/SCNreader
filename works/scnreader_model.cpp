@@ -32,6 +32,7 @@ scnreader_model::~scnreader_model()
     this->nuage.clear();
     this->segmentation.clear();
     this->extraction.clear();
+    this->lesRails.clear();
 }
 /*
 pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getRails(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud){
@@ -753,3 +754,27 @@ bool scnreader_model::samePoint(pcl::PointXYZ *point2, pcl::PointXYZ * ptP)
     return (x1==x2) && (y1==y2) && (z1==z2);
 }
 
+void scnreader_model::createRail()
+{
+    if(!this->nuage.isEmpty())
+    {
+        //mnumber of footpulses we test
+        int nbrails;
+
+        if(this->ftpf-this->ftpd<100)
+            nbrails=this->ftpf-this->ftpd;
+        else
+            nbrails=100;
+
+        //create rails
+        RailCluster * r=new RailCluster(0.2,0.1,1.0,*this->nuage.value(this->ftpd));
+        this->lesRails.push_back(r);
+        for(int i=1; i<nbrails;i++)
+        {
+            r=new RailCluster(0.2,0.1,1.0,* (this->nuage.value(this->ftpd+i)), * (this->lesRails.at(i-1)));
+            this->lesRails.push_back(r);
+        }
+
+    }
+    else throw Erreur("Les rails n'ont pas pu etre crees car le nuage de points est vide.");
+}

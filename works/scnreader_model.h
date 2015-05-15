@@ -27,6 +27,8 @@
 
 #include "../modules/exceptions/erreur.h"
 #include "scndata.h"
+#include "railcluster.h"
+#include "listerail.h"
 #include <QVector>
 #include <QHash>
 #include <QDataStream>
@@ -97,6 +99,11 @@ public:
       * @return the Qhash which contains all points of exractions of a cloud's part
       */
       QHash <QString, QVector<pcl::PointXYZ *>*> getExtraction();
+
+      /**
+       * @brief createRail fills lesrails with the 100 first footpulses
+       */
+      void createRail();
 
 private:
       /**
@@ -173,6 +180,11 @@ private:
       *
       */
      QHash <QString, QVector<pcl::PointXYZ *>*> extraction;
+     /**
+      * @brief this vector contains tracks for each footpulse
+      *
+      */
+     QVector<RailCluster*> lesRails;
 };
 
 #endif // SCNREADER_MODULE_H
