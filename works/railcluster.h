@@ -102,13 +102,41 @@ public:
      */
     void growing(RailCluster rail, QVector <pcl::PointXYZ *> pts);
 
+    /**
+     * @brief sameHeight test if points have the sames height
+     * @param p1 point to be tested
+     * @param p2 point to be tested
+     * @return true is the points have the sames height
+     */
+    bool sameHeight(pcl::PointXYZ *p1,pcl::PointXYZ *p2)const;
+    /**
+     * @brief sameWidth test if points have the sames width
+     * @param p1 point to be tested
+     * @param p2 point to be tested
+     * @return true is the points have the sames width
+     */
+    bool sameWidth(pcl::PointXYZ *p1,pcl::PointXYZ *p2) const;
+    /**
+     * @brief widthDistance test if the distance between 2 points is below to the width of the track
+     * @param p1  point to be tested
+     * @param p2 point to be tested
+     * @return true if the distance between 2 points is below to the width of the track
+     */
+    bool widthDistance(pcl::PointXYZ *p1,pcl::PointXYZ *p2)const;
+    /**
+     * @brief spacingDistance test if the distance between 2 points is below to the average spacing between two tracks
+     * @param p1  point to be tested
+     * @param p2 point to be tested
+     * @return true if the distance between 2 points is below to the average spacing between two tracks
+     */
+    bool spacingDistance(pcl::PointXYZ *p1,pcl::PointXYZ *p2) const;
     //accesseur en lecture et en ecriture
     void setEm(float e);
     void setHm(float h);
     void setLm(float l);
-    float getEm();
-    float getHm();
-    float getLm();
+    float getEm() const;
+    float getHm()const;
+    float getLm()const;
 
     QVector<pcl::PointXYZ *> getPoints() const;
     void setPoints(const QVector<pcl::PointXYZ *> &value);
@@ -116,10 +144,12 @@ public:
     QVector<pcl::PointXYZ *> getBlacklist() const;
     void setBlacklist(const QVector<pcl::PointXYZ *> &value);
 
+    int getFootpulse() const;
+    void setFootpulse(int value);
+
 private:
-    bool sameHeight(pcl::PointXYZ *p1,pcl::PointXYZ *p2);
-    bool widthDistance(pcl::PointXYZ *p1,pcl::PointXYZ *p2);
-    bool spacingDistance(pcl::PointXYZ *p1,pcl::PointXYZ *p2);
+
+    int footpulse;
     float delta;///> approximation
     float em; ///< Average spacing between two railways rail
     float hm; ///< Average height of railway rail

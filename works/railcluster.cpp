@@ -33,6 +33,7 @@ RailCluster::RailCluster(float height, float width, float spacing, QVector <pcl:
     this->lm = width;
     this->em = spacing;
     this->delta=3.0;
+    this->footpulse=footpulse.at(0)->z;
 
     //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
     this->add(footpulse);
@@ -54,7 +55,7 @@ RailCluster::RailCluster(float height, float width, float spacing, QVector <pcl:
     this->lm = width;
     this->em = spacing;
     this->delta=3.0;
-
+    this->footpulse=footpulse.at(0)->z;
     //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
     this->add(footpulse);
 
@@ -203,15 +204,15 @@ void RailCluster::setLm(float l){
     this->lm=l;
 }
 
-float RailCluster::getEm(){
+float RailCluster::getEm()const{
     return this->em;
 }
 
-float RailCluster::getHm(){
+float RailCluster::getHm()const{
     return this->hm;
 }
 
-float RailCluster::getLm(){
+float RailCluster::getLm()const{
     return this->lm;
 }
 QVector<pcl::PointXYZ *> RailCluster::getPoints() const
@@ -232,17 +233,31 @@ void RailCluster::setBlacklist(const QVector<pcl::PointXYZ *> &value)
 {
     blacklist = value;
 }
+int RailCluster::getFootpulse() const
+{
+    return footpulse;
+}
 
-bool RailCluster::sameHeight(pcl::PointXYZ *p1, pcl::PointXYZ *p2)
+void RailCluster::setFootpulse(int value)
+{
+    footpulse = value;
+}
+
+
+bool RailCluster::sameHeight(pcl::PointXYZ *p1, pcl::PointXYZ *p2) const
 {
     return (std::abs(p1->y-p2->y)<this->hm/this->delta);
 }
-bool RailCluster::widthDistance(pcl::PointXYZ *p1, pcl::PointXYZ *p2)
+bool RailCluster::sameWidth(pcl::PointXYZ *p1, pcl::PointXYZ *p2)const
+{
+    return (std::abs(p1->y-p2->y)<this->lm/this->delta);
+}
+bool RailCluster::widthDistance(pcl::PointXYZ *p1, pcl::PointXYZ *p2)const
 {
     return( std::abs(p1->x-p2->x)<(this->lm+this->lm/this->delta)&& (std::abs(p1->x-p2->x)>(this->lm-this->lm/this->delta)));
 }
 
-bool RailCluster::spacingDistance(pcl::PointXYZ *p1, pcl::PointXYZ *p2)
+bool RailCluster::spacingDistance(pcl::PointXYZ *p1, pcl::PointXYZ *p2)const
 {
     return( std::abs(p1->x-p2->x)<(this->em+this->em/this->delta)&& (std::abs(p1->x-p2->x)>(this->em-this->em/this->delta)));
 

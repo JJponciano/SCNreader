@@ -36,38 +36,49 @@ public:
     ~ListeRail();
 
     /**
-     * @brief switchDetected detect a switch and gives footpulses corresponding of this switch
-     * @return the vector which contains all footpulses corresponding to a switch
-     */
-    QVector <int> switchDetected();
+    * @brief addRail add a rail and test if the rail contains a switch
+    * @param rail rail to be added
+    */
+   void addRail(RailCluster rail);
     /**
      * @brief growingRegions do growing regions with the rail
      * @param rail rail added to growing regions
-     * @return
+     * @return true if a swtich is detected
      */
     bool growingRegions(RailCluster rail);
+
+
+
+    //accesseur
+    QVector <pcl::PointXYZ *> getCloud()const;
+    QVector <RailCluster> getLesRails();
+
+  int getNumberSwitchDetected() const;
+    QVector<int> getSwitchDetected() const;
+    void setSwitchDetected(const QVector<int> &value);
+
+private:
     /**
-     * @brief growingOk
-     * @param reg
-     * @return
+     * @brief isInRegion test  if the point belongs to the region
+     * @param reg regions to be tested
+     * @param pt pt to be tested if is in reg.
+     * @return true if the point belongs to the region
+     */
+    bool isInRegion(QVector <pcl::PointXYZ *> reg, pcl::PointXYZ * pt);
+    /**
+     * @brief growingOk test if the region is not too big after this adding.
+     * @param reg region to be tested
+     * @return true if the regions is not too big
      */
     bool growingOk(QVector <pcl::PointXYZ *> reg);
     /**
-     * @brief isInRegion
-     * @param reg
-     * @param pt
-     * @return
+     * @brief split split a region in two regions
+     * @param regindex index of the region to be splited
      */
-    bool isInRegion(QVector <pcl::PointXYZ *> reg, pcl::PointXYZ * pt);
-
-    //accesseur
-    QVector <pcl::PointXYZ *> getRegions();
-    QVector <RailCluster> getLesRails();
-
-
-private:
-    QVector <RailCluster> lesRails;
-    QVector <pcl::PointXYZ *> regions;
+    void split(int regindex);
+        QVector <int>switchDetected;///< list of the footpulste with switch
+    QVector <RailCluster> lesRails;///< all rails
+    QVector<QVector <pcl::PointXYZ *>>regions;///<regions detected
 
 };
 
