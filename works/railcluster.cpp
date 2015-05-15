@@ -49,7 +49,42 @@ RailCluster::~RailCluster()
 
 void RailCluster::add(QVector <pcl::PointXYZ *> pts)
 {
+    //Selecting points following with a similar height to create a sequence
+    QVector <pcl::PointXYZ *> seq;
+    bool again=true;
 
+    for( int i=0;i<pts.size();i++){
+        //if is a first points
+        if(i==0){
+            seq.push_back(pts.at(i));
+        }else{
+            pcl::PointXYZ *currentPoint=pts.at(i);
+            pcl::PointXYZ *previous=seq.at(i-1);
+            //if the point is at a height below hm/2 from the previous point, it is adding
+            if((currentPoint->y-previous->y)<this->hm/2.0) seq.push_back(pts.at(i));
+            // else, the sequence is finiched
+            else again=false;
+        }
+        //if the sequence is finiched
+        if(!again||(i+1)==pts.size()){
+            // start a new sequence
+            again=true;
+            // test if the size of the sequence is below to lm+lm/3
+            if(seq.size()<(this->lm+this->lm/3.0)){
+                //points of the sequence are a track and are added
+                for(int j=0;j<seq.size();j++){
+                    this->points.push_back(seq.at(j));
+                }
+            }
+            //this sequence is may be not a track
+            for(int j=0;j<seq.size();j++){
+                seq[i]=0;
+            }seq.clear();
+
+        }
+    }
+    //  This function tests if the point is into a bounding box
+    //  defined by the height and width of a railway rail. So, if it is inside, it is added .
 }
 
 void RailCluster::add(pcl::PointXYZ * pt)

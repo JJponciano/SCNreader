@@ -69,15 +69,6 @@ public:
     void add(QVector <pcl::PointXYZ *> pts);
 
     /**
-     * @brief add Add point with the required criteria
-     *  This function tests if the point is into a bounding box
-     *  defined by the height and width of a railway rail and also by the spacing
-     *  between two railways rail. So, if it is inside, it is added .
-     * @param pt point to test and add
-     */
-    void add(pcl::PointXYZ * pt);
-
-    /**
      * @brief remove remove a point of the list
      * @param pt point to remove
      */
@@ -116,6 +107,7 @@ public:
     float getLm();
 
 private:
+    float delta;///> approximation
     float em; ///< Average spacing between two railways rail
     float hm; ///< Average height of railway rail
     float lm; ///< Average width of railway rail
