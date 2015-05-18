@@ -37,10 +37,10 @@ void ListeRail::addRail(RailCluster rail)
     // add the rail
    this->lesRails.push_back(rail);
     // test if the rail contain a switch
-    if(growingRegions(rail)){
-        // add the footpulse to the liste of the switch
-        this->switchDetected.push_back(rail.getFootpulse());
-    }
+//        if(growingRegions(rail)){
+//            // add the footpulse to the liste of the switch
+//            //this->switchDetected.push_back(rail.getFootpulse());
+//        }
 }
 
 bool ListeRail::growingRegions(RailCluster rail)
@@ -53,7 +53,7 @@ bool ListeRail::growingRegions(RailCluster rail)
         pcl::PointXYZ *currentPoint=rail.getPoints().at(i);
         // test if the point belongs to regions, and counts the number of regions
         for(int j=0;j<this->regions.size();j++)
-            if(isInRegion(this->regions.at(i),currentPoint))
+            if(isInRegion(this->regions.at(j),currentPoint))
                 countRegions.push_back(j);//add the index of the regions
 
         //if you have a merge of regions, you can not add the point to the region.
@@ -66,22 +66,22 @@ bool ListeRail::growingRegions(RailCluster rail)
             newRegion.push_back(currentPoint);
             this->regions.push_back(newRegion);
         }else if(countRegions.size()==1){
-            //the point is added into the region
-            this->regions[countRegions.at(0)].push_back(currentPoint);
-            //test if the region is not too big after this adding.
-            regionOK=growingOk(this->regions.at(countRegions.at(0)));
-            //if the regions is not ok, you have a switch
-            if(!regionOK){
-                //split the region
-                this->split(countRegions.at(0));
+                //the point is added into the region
+                this->regions[countRegions.at(0)].push_back(currentPoint);
+                //test if the region is not too big after this adding.
+                regionOK=growingOk(this->regions.at(countRegions.at(0)));
+                //if the regions is not ok, you have a switch
+                if(!regionOK){
+                    //split the region
+                    this->split(countRegions.at(0));
+                }
+            }else{
+                // if the point have not a region
+                //create a regions for it and add it
+                QVector <pcl::PointXYZ *>newRegion;
+                newRegion.push_back(currentPoint);
+                this->regions.push_back(newRegion);
             }
-        }else{
-            // if the point have not a region
-            //create a regions for it and add it
-            QVector <pcl::PointXYZ *>newRegion;
-            newRegion.push_back(currentPoint);
-            this->regions.push_back(newRegion);
-        }
     }
     return (regionOK==false)||mergeRegions;
 }
@@ -127,6 +127,16 @@ void ListeRail::split(int regindex)
     this->regions.push_back(newRegion2);
 
 }
+QVector<RailCluster> ListeRail::getLesRails() const
+{
+    return lesRails;
+}
+
+void ListeRail::setLesRails(const QVector<RailCluster> &value)
+{
+    lesRails = value;
+}
+
 QVector<int> ListeRail::getSwitchDetected() const
 {
     return switchDetected;
@@ -155,9 +165,10 @@ bool ListeRail::growingOk(QVector <pcl::PointXYZ *> reg)
 {
     float widthMax=this->lesRails.at(0).getEm();
     //search the extremum of the x coordinates in the region
-    float xmin=0;
-    float xmax=0;
-      for(int i=0;i<reg.size();i++){
+    //search the extremum of the x coordinates in the region
+    float xmin=reg.at(0)->x;
+    float xmax=reg.at(0)->x;
+      for(int i=1;i<reg.size();i++){
           if(reg.at(i)->x<xmin)xmin=reg.at(i)->x;
           else    if(reg.at(i)->x>xmax)xmax=reg.at(i)->x;
       }
@@ -171,6 +182,7 @@ bool ListeRail::isInRegion(QVector <pcl::PointXYZ *> reg, pcl::PointXYZ * pt)
     for(int i=0;i<reg.size();i++){
         pcl::PointXYZ *currentPoint=reg.at(i);
         //test if the points avec the same width with and height the point to be tested
+        if(this->lesRails.size()!=0)
         if(this->lesRails.at(0).sameWidth(currentPoint,pt)&&this->lesRails.at(0).sameHeight(currentPoint,pt))
             return true;
     }

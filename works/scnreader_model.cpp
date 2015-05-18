@@ -32,7 +32,6 @@ scnreader_model::~scnreader_model()
     this->nuage.clear();
     this->segmentation.clear();
     this->extraction.clear();
-    this->lesRails.clear();
 }
 /*
 pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getRails(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud){
@@ -94,7 +93,7 @@ void scnreader_model::addCloudFromTXT(std::string pathname){
     }catch(std::exception const& e){
         QMessageBox::critical(0, "Error", e.what());
     }
-     this->searchMAX();
+    this->searchMAX();
 }
 
 
@@ -144,78 +143,37 @@ void scnreader_model::loadCloudFromTXT2(std::string pathname){
                     if(footpulse==0)
                     {
                         p=new pcl::PointXYZ(z.toFloat(),y.toFloat(),x.toFloat());
-                        //if the footpulse is not initialized or if he is different of the previous
-                        if(ftpcourant==-1 || ftpcourant!=(int) p->z)
-                        {
-                            //we update footpulse
-                            ftpcourant=(int) p->z;
-                            //we create a new vector
-                            v= new QVector<pcl::PointXYZ *>();
-                            //which we add to the hashtable
-                            nuage.insert(ftpcourant, v);
-                            //then we add the new point
-                            v->push_back(p);
-                        }
-                        else
-                            v->push_back(p);//else we add the new point
-
-                        if(premier){
-                            this->ftpd=p->z;
-                            premier=false;
-                        }
-                        this->ftpf=p->z;
-                        //cloud->points.push_back(pcl::PointXYZ(z.toFloat(),y.toFloat(),x.toFloat()));
                     }
                     else if(footpulse==1)
-                         {
-                                p=new pcl::PointXYZ(x.toFloat(),z.toFloat(),y.toFloat());
-                                //if the footpulse is not initialized or if he is different of the previous
-                                if(ftpcourant==-1 || ftpcourant!=(int) p->z)
-                                {
-                                    //we update footpulse
-                                    ftpcourant=(int) p->z;
-                                    //we create a new vector
-                                    v= new QVector<pcl::PointXYZ *>();
-                                    //which we add to the hashtable
-                                    nuage.insert(ftpcourant, v);
-                                    //then we add the new point
-                                    v->push_back(p);
-                                }
-                                else
-                                    v->push_back(p);//else we add the new point
+                    {
+                        p=new pcl::PointXYZ(x.toFloat(),z.toFloat(),y.toFloat());
+                    }
+                    else
+                    {
+                        p=new pcl::PointXYZ(x.toFloat(),y.toFloat(),z.toFloat());
+                    }
 
-                                if(premier){
-                                    this->ftpd=p->z;
-                                    premier=false;
-                                }
-                                this->ftpf=p->z;
-                            //cloud->points.push_back(pcl::PointXYZ(x.toFloat(),z.toFloat(),y.toFloat()));
-                         }
-                         else
-                         {
-                               p=new pcl::PointXYZ(x.toFloat(),y.toFloat(),z.toFloat());
-                               //if the footpulse is not initialized or if he is different of the previous
-                               if(ftpcourant==-1 || ftpcourant!=(int) p->z)
-                               {
-                                   //we update footpulse
-                                   ftpcourant=(int) p->z;
-                                   //we create a new vector
-                                   v= new QVector<pcl::PointXYZ *>();
-                                   //which we add to the hashtable
-                                   nuage.insert(ftpcourant, v);
-                                   //then we add the new point
-                                   v->push_back(p);
-                               }
-                               else
-                                   v->push_back(p); //else we add the new point
+                    //if the footpulse is not initialized or if he is different of the previous
+                    if(ftpcourant==-1 || ftpcourant!=(int) p->z)
+                    {
+                        //we update footpulse
+                        ftpcourant=(int) p->z;
+                        //we create a new vector
+                        v= new QVector<pcl::PointXYZ *>();
+                        //which we add to the hashtable
+                        nuage.insert(ftpcourant, v);
+                        //then we add the new point
+                        v->push_back(p);
+                    }
+                    else
+                        v->push_back(p);//else we add the new point
 
-                               if(premier){
-                                   this->ftpd=p->z;
-                                   premier=false;
-                               }
-                               this->ftpf=p->z;
-                           //cloud->points.push_back(pcl::PointXYZ(x.toFloat(),y.toFloat(),z.toFloat()));
-                         }
+                    if(premier){
+                        this->ftpd=p->z;
+                        premier=false;
+                    }
+                    this->ftpf=p->z;
+                    //cloud->points.push_back(pcl::PointXYZ(z.toFloat(),y.toFloat(),x.toFloat()));
                 }
 
 
@@ -228,15 +186,18 @@ void scnreader_model::loadCloudFromTXT2(std::string pathname){
 
         //close file
         fichier.close();
+
+        //create tracks
+        createRail();
         // create cloud point and cloud file pcl
 
         // Fill in the cloud data
-      /*  cloud->width    = cloud->points.size();
+        /*  cloud->width    = cloud->points.size();
         cloud->height   = 1;
         cloud->is_dense = false;
         cloud->points.resize (cloud->width * cloud->height);*/
 
-       // return cloud;
+        // return cloud;
     }else throw Erreur("the file "+pathname +"have not been opened!");
 
 }
@@ -288,15 +249,15 @@ int scnreader_model::IsFootpulse(std::string pathname){
             ty=y.toFloat();
             tz=z.toFloat();
         }else if(result1.size()<3)throw Erreur(" Error reading file!");
-              else{
-                        QString x=result1.at(0);
-                        QString y=result1.at(1);
-                        QString z=result1.at(2);
-                        //previous value
-                        tx=x.toFloat();
-                        ty=y.toFloat();
-                        tz=z.toFloat();
-                   }
+        else{
+            QString x=result1.at(0);
+            QString y=result1.at(1);
+            QString z=result1.at(2);
+            //previous value
+            tx=x.toFloat();
+            ty=y.toFloat();
+            tz=z.toFloat();
+        }
 
         //__________Cover of file's part_______________
         while(!flux.atEnd() && !find)
@@ -312,36 +273,36 @@ int scnreader_model::IsFootpulse(std::string pathname){
             //test if the first line define the number of lines into the file
             if(result.size()<3)throw Erreur(" Error reading file!");
             else{
-                     QString x=result.at(0);
-                     QString y=result.at(1);
-                     QString z=result.at(2);
-                     //convert coordonated Qstring to float coordinates to compare
-                     vx=x.toFloat();
-                     vy=y.toFloat();
-                     vz=z.toFloat();
+                QString x=result.at(0);
+                QString y=result.at(1);
+                QString z=result.at(2);
+                //convert coordonated Qstring to float coordinates to compare
+                vx=x.toFloat();
+                vy=y.toFloat();
+                vz=z.toFloat();
 
-                     //compare the current and the previous value
-                     if(cx<2)
-                         if(tx!=vx)
-                         {
-                             cx++;
-                         }
-                     if(cy<2)
-                         if(ty!=vy)
-                         {
-                             cy++;
-                         }
-                     if(cz<2)
-                         if(tz!=vz)
-                         {
-                             cz++;
-                         }
+                //compare the current and the previous value
+                if(cx<2)
+                    if(tx!=vx)
+                    {
+                        cx++;
+                    }
+                if(cy<2)
+                    if(ty!=vy)
+                    {
+                        cy++;
+                    }
+                if(cz<2)
+                    if(tz!=vz)
+                    {
+                        cz++;
+                    }
 
-                     //update the future previous value
-                     tx=vx;
-                     ty=vy;
-                     tz=vz;
-                }
+                //update the future previous value
+                tx=vx;
+                ty=vy;
+                tz=vz;
+            }
 
             //update of booleans
             fx=(cy>=2 && cz>=2);
@@ -363,7 +324,7 @@ int scnreader_model::IsFootpulse(std::string pathname){
 
 
 void scnreader_model::extractionCloud(int d, int f) {
-/*
+    /*
     if(nuage.contains(d) && nuage.contains(f))
     {
         //---------------------Create the cluster to do the extraction-------------------
@@ -702,7 +663,7 @@ QVector<pcl::PointXYZ *>* scnreader_model::getPtWithInd(int d, int f, std::vecto
                 std::string message=ss.str();
                 throw Erreur(message);
             }
-           // nb+=tailles->at(ind);
+            // nb+=tailles->at(ind);
         }
         //we keep the vector corresponding
         vec=nuage.value(d+ind);
@@ -730,6 +691,12 @@ QVector<pcl::PointXYZ *>* scnreader_model::getPtWithInd(int d, int f, std::vecto
     }
     return v;
 }
+ListeRail scnreader_model::getLesRails() const
+{
+    return lesRails;
+}
+
+
 
 QVector<pcl::PointXYZ *> * scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp)
 {
@@ -758,7 +725,7 @@ void scnreader_model::createRail()
 {
     if(!this->nuage.isEmpty())
     {
-        //mnumber of footpulses we test
+        //number of footpulses we test
         int nbrails;
 
         if(this->ftpf-this->ftpd<100)
@@ -767,14 +734,15 @@ void scnreader_model::createRail()
             nbrails=100;
 
         //create rails
-        RailCluster * r=new RailCluster(0.2,0.1,1.0,*this->nuage.value(this->ftpd));
-        this->lesRails.push_back(r);
+        RailCluster  r (0.2,0.1,1.0,*this->nuage.value(this->ftpd));
+        RailCluster rc=r;
+        this->lesRails.addRail(r);
         for(int i=1; i<nbrails;i++)
         {
-            r=new RailCluster(0.2,0.1,1.0,* (this->nuage.value(this->ftpd+i)), * (this->lesRails.at(i-1)));
-            this->lesRails.push_back(r);
+            RailCluster r2(0.2,0.1,1.0,* (this->nuage.value(this->ftpd+i)), rc);
+            rc=r2;
+            // this->lesRails.addRail(r2);
         }
-
     }
     else throw Erreur("Les rails n'ont pas pu etre crees car le nuage de points est vide.");
 }

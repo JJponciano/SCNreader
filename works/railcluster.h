@@ -46,7 +46,7 @@ public:
       * @param spacing Average spacing between two railways rail
       * @param footpulse foopulse at analyse
       */
-     RailCluster(float height, float width, float spacing, QVector <pcl::PointXYZ *>footpulse);
+     RailCluster(float height, float width, float spacing,const QVector <pcl::PointXYZ *>footpulse);
      /**
       * @brief RailCluster constructor
       * Initialization of parameters and get all point of railways rail
@@ -56,7 +56,7 @@ public:
       * @param footpulse foopulse at analyse
       * @param rail railcluster used for growing regions and keep the continuity of the rails
       */
-     RailCluster(float height, float width, float spacing, QVector <pcl::PointXYZ *>footpulse, RailCluster rail);
+     RailCluster(float height, float width, float spacing, const QVector <pcl::PointXYZ *>footpulse,const RailCluster rail);
      /**
       * @brief RailCluster destructor
       */
@@ -148,7 +148,7 @@ public:
     void setFootpulse(int value);
 
 private:
-
+float gap(QVector <pcl::PointXYZ *> reg) const;
     int footpulse;
     float delta;///> approximation
     float em; ///< Average spacing between two railways rail

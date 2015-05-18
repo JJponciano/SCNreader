@@ -130,6 +130,8 @@ public:
 
 private:
 
+   void affichageCloud();
+   void affichageSegm();
   scnreader_model scnreaderFond;
   //int ftpdeDepart;
   //int ftpCourant;

@@ -51,11 +51,13 @@ public:
 
     //accesseur
     QVector <pcl::PointXYZ *> getCloud()const;
-    QVector <RailCluster> getLesRails();
 
   int getNumberSwitchDetected() const;
     QVector<int> getSwitchDetected() const;
     void setSwitchDetected(const QVector<int> &value);
+
+    QVector<RailCluster> getLesRails() const;
+    void setLesRails(const QVector<RailCluster> &value);
 
 private:
     /**

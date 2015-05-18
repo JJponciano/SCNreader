@@ -105,6 +105,8 @@ public:
        */
       void createRail();
 
+      ListeRail getLesRails() const;
+
 private:
       /**
        * @brief samePoint watch if two points are the same or not
@@ -181,10 +183,10 @@ private:
       */
      QHash <QString, QVector<pcl::PointXYZ *>*> extraction;
      /**
-      * @brief this vector contains tracks for each footpulse
+      * @brief lesRails contains tracks for each footpulse
       *
       */
-     QVector<RailCluster*> lesRails;
+     ListeRail lesRails;
 };
 
 #endif // SCNREADER_MODULE_H

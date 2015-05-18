@@ -21,18 +21,18 @@
  * @version 0.1
  */
 #include "railcluster.h"
-
+#include "../modules/exceptions/erreur.h"
 RailCluster::RailCluster()
 {
-    this->delta=3.0;
+    this->delta=0.30;
 }
 
-RailCluster::RailCluster(float height, float width, float spacing, QVector <pcl::PointXYZ *>footpulse)
+RailCluster::RailCluster(float height, float width, float spacing, const QVector<pcl::PointXYZ *> footpulse)
 {
     this->hm = height;
     this->lm = width;
     this->em = spacing;
-    this->delta=3.0;
+    this->delta=0.30;
     this->footpulse=footpulse.at(0)->z;
 
     //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
@@ -41,6 +41,7 @@ RailCluster::RailCluster(float height, float width, float spacing, QVector <pcl:
     //refinement
     bool add1=true;
     bool add2=true;
+
     while(add1||add2){
         // 2) search a corresponding track
         add1= this->match(footpulse);
@@ -49,12 +50,12 @@ RailCluster::RailCluster(float height, float width, float spacing, QVector <pcl:
     }
 }
 
-RailCluster::RailCluster(float height, float width, float spacing, QVector <pcl::PointXYZ *>footpulse,RailCluster rail)
+RailCluster::RailCluster(float height, float width, float spacing,  const QVector<pcl::PointXYZ *> footpulse,  const RailCluster rail)
 {
     this->hm = height;
     this->lm = width;
     this->em = spacing;
-    this->delta=3.0;
+    this->delta=0.30;
     this->footpulse=footpulse.at(0)->z;
     //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
     this->add(footpulse);
@@ -87,42 +88,70 @@ void RailCluster::add(QVector <pcl::PointXYZ *> pts)
 
     for( int i=0;i<pts.size();i++){
         //if is a first points
-        if(i==0){
+        if(seq.size()==0){
             seq.push_back(pts.at(i));
         }else{
             pcl::PointXYZ *currentPoint=pts.at(i);
-            pcl::PointXYZ *previous=seq.at(i-1);
+            pcl::PointXYZ *previous=seq.at(seq.size()-1);
             //if the point is at a height below hm/2 from the previous point, it is adding
             if(this->sameHeight(currentPoint,previous))
                 seq.push_back(pts.at(i));
-            // else, the sequence is finiched
-            else again=false;
+            //else, the sequence is finiched
+            else {
+                again=false;
+                i--;
+            }
         }
         //if the sequence is finiched
         if(!again||(i+1)==pts.size()){
             // start a new sequence
             again=true;
             // test if the size of the sequence is below to lm+lm/3
-            if(seq.size()<(this->lm+this->lm/this->delta)){
+            float distance=this->lm+(this->lm*this->delta);
+            if(gap(seq)<distance){
                 //points of the sequence are a track and are added
                 for(int j=0;j<seq.size();j++){
                     this->points.push_back(seq.at(j));
                 }
             }
+            /*********************************************************************************/
+            /******************ACHTUNG: FUITE MEMOIRE POSSIBLE*******************************/
             //this sequence is may be not a track
             for(int j=0;j<seq.size();j++){
-                seq[i]=0;
-            }seq.clear();
+                pcl::PointXYZ *p=new pcl::PointXYZ(0.0,0.0,0.0);
+                seq[j]=p;
+            }
+            seq.clear();
+            /*
+            QVector <pcl::PointXYZ *> seq2;
+            seq=seq2;*/
+            /*********************************************************************************/
+            /*********************************************************************************/
 
         }
     }
+    std::cout<<"taille de point dans liste rail"<<this->points.size()<<std::endl;
 }
 void RailCluster::remove(pcl::PointXYZ * pt){
-   int i= this->points.lastIndexOf(pt);
-   if(i>=0)
-    this->points.remove(i);
+    int i= this->points.lastIndexOf(pt);
+    if(i>=0)
+        this->points.remove(i);
 }
-
+float RailCluster::gap(QVector <pcl::PointXYZ *> reg)const
+{
+    //search the extremum of the x coordinates in the region
+    float xmin=reg.at(0)->x;
+    float xmax=reg.at(0)->x;
+    for(int i=1;i<reg.size();i++){
+        if(reg.at(i)->x<xmin)
+            xmin=reg.at(i)->x;
+        else
+            if(reg.at(i)->x>xmax)
+                xmax=reg.at(i)->x;
+    }
+    //compare the distance between the extremums with the maximum authorized.
+    return (xmax-xmin);
+}
 bool RailCluster::match(QVector <pcl::PointXYZ *> pts)
 {
     bool pointadded=false;
@@ -131,26 +160,44 @@ bool RailCluster::match(QVector <pcl::PointXYZ *> pts)
         * it tests for each point of this class if the point has a distance close to the average
         * spacing of railway railand with another point into the list given close to and test if it has a similar height.*/
     //for each point keeped
-    for(int i=0;i<this->points.size();i++){
+    int nbpoint=this->points.size();
+    for(int i=0;i<nbpoint;i++){
         //test if it exists points which have the same height and which is at a distance of as em
         pcl::PointXYZ *currentPoint=this->points.at(i);
         //bool for see if the point has a corresponding
         bool corresp=false;
         //test if is not black listed
         if(!this->blacklist.contains(currentPoint)){
+            // for each point not yet keeped search a corresponding
             for(int j=0;j<pts.size();j++){
-                pcl::PointXYZ *testPoint=pts.at(i);
-                if(this->spacingDistance(currentPoint,testPoint)&&this->sameHeight(currentPoint,testPoint)){
-                    this->points.push_back(testPoint);
-                    pointadded=true;
-                    corresp=true;
+                pcl::PointXYZ *testPoint=pts.at(j);
+                if(!this->blacklist.contains(testPoint)){
+                    // if the point have a corresponding
+                    if(this->spacingDistance(currentPoint,testPoint)&&
+                            this->sameHeight(currentPoint,testPoint)){
+                        corresp=true;
+                        //test if it is already added
+                        if(!this->points.contains(testPoint)){
+                            //if is not already added, add it
+                            this->points.push_back(testPoint);
+                            // flag: it have added a point
+                            pointadded=true;
+                        }
+                    }
                 }
             }
             // if the point has not a corresponding, it is removed
             if(!corresp){
-                this->points.remove(i);
-                // and it is black listed
+                // it is black listed
                 this->blacklist.push_back(currentPoint);
+                //remove fail point
+                pcl::PointXYZ *p=new pcl::PointXYZ(0.0,0.0,0.0);
+                this->points[i]=p;
+                this->points.remove(i);
+                //since a point is removed, the size of the vector decrease of 1
+                i--;
+                nbpoint--;
+
             }
         }
     }
@@ -160,20 +207,20 @@ bool RailCluster::match(QVector <pcl::PointXYZ *> pts)
 bool RailCluster::addSimilarePoint(QVector <pcl::PointXYZ *> pts)
 {
     bool pointadded=false;
-    for(int i=0;i<this->points.size();i++){
-        //test if it exists points which have the same height and which is at a distance of as lm
-        pcl::PointXYZ *currentPoint=this->points.at(i);
-        //test if is not black listed
-        if(!this->blacklist.contains(currentPoint)){
-            for(int j=0;j<pts.size();j++){
-                pcl::PointXYZ *testPoint=pts.at(i);
-                if(this->widthDistance(currentPoint,testPoint)&&this->sameHeight(currentPoint,testPoint)){
-                    this->points.push_back(testPoint);
-                    pointadded=true;
-                }
-            }
-        }
-    }
+    //for(int i=0;i<this->points.size();i++){
+    //        //test if it exists points which have the same height and which is at a distance of as lm
+    //        pcl::PointXYZ *currentPoint=this->points.at(i);
+    //        //test if is not black listed
+    //        if(!this->blacklist.contains(currentPoint)){
+    //            for(int j=0;j<pts.size();j++){
+    //                pcl::PointXYZ *testPoint=pts.at(i);
+    //                if(this->widthDistance(currentPoint,testPoint)&&this->sameHeight(currentPoint,testPoint)){
+    //                    this->points.push_back(testPoint);
+    //                    pointadded=true;
+    //                }
+    //            }
+    //        }
+    //  }
     return pointadded;
 }
 
@@ -246,21 +293,75 @@ void RailCluster::setFootpulse(int value)
 
 bool RailCluster::sameHeight(pcl::PointXYZ *p1, pcl::PointXYZ *p2) const
 {
-    return (std::abs(p1->y-p2->y)<this->hm/this->delta);
+    if(p1==nullptr||p2==nullptr) throw Erreur("one of points, which are given in sameHeight, is a null pointer");
+    else{
+
+        //get distance between p1 and p2
+        float y1=p1->y;
+        float y2=p2->y;
+        float pv=y1-y2;
+        if(pv<0.0)
+            pv=-1.0*pv;
+
+        float dv=this->hm*this->delta;
+        //approximation
+        bool lesbool=(pv<dv);
+
+        return lesbool;
+    }
 }
 bool RailCluster::sameWidth(pcl::PointXYZ *p1, pcl::PointXYZ *p2)const
 {
-    return (std::abs(p1->y-p2->y)<this->lm/this->delta);
+    if(p1==nullptr||p2==nullptr) throw Erreur("one of points, which are given in sameWidth, is a null pointer");
+    else{
+        //get distance between p1 and p2
+        float x1=p1->x;
+        float x2=p2->x;
+        float pv=x1-x2;
+        if(pv<0.0)
+            pv=-1.0*pv;
+        //approximation
+        float dv=this->lm*this->delta;
+
+        bool lesbool=(pv<dv);
+
+        return lesbool;
+    }
+
 }
 bool RailCluster::widthDistance(pcl::PointXYZ *p1, pcl::PointXYZ *p2)const
 {
-    return( std::abs(p1->x-p2->x)<(this->lm+this->lm/this->delta)&& (std::abs(p1->x-p2->x)>(this->lm-this->lm/this->delta)));
+    if(p1==nullptr||p2==nullptr) throw Erreur("one of points, which are given in widthDistance, is a null pointer");
+    else{
+        //get distance between p1 and p2 - average width of a track
+        float x1=p1->x;
+        float x2=p2->x;
+        float pv=x1-x2-this->lm;
+        if(pv<0.0)
+            pv=-1.0*pv;
+        //approximation
+        float dv=this->lm*this->delta;
+        bool lesbool=(pv<dv);
+        return lesbool;
+    }
 }
 
 bool RailCluster::spacingDistance(pcl::PointXYZ *p1, pcl::PointXYZ *p2)const
 {
-    return( std::abs(p1->x-p2->x)<(this->em+this->em/this->delta)&& (std::abs(p1->x-p2->x)>(this->em-this->em/this->delta)));
 
+    if(p1==nullptr||p2==nullptr) throw Erreur("one of points, which are given in spacing Distance, is a null pointer");
+    else{
+        //get distance between p1 and p2 - average spacing between 2 tracks
+        float x1=p1->x;
+        float x2=p2->x;
+        float pv=x1-x2-this->em;
+        if(pv<0.0)
+            pv=-1.0*pv;
+        //approximation
+        float dv=this->em*this->delta;
+        bool lesbool=(pv<dv);
+        return lesbool;
+    }
 }
 
 
