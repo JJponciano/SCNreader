@@ -100,7 +100,7 @@ public:
      * @param rail
      * @param pts
      */
-    void growing(RailCluster rail, QVector <pcl::PointXYZ *> pts);
+    bool growing(RailCluster rail, QVector <pcl::PointXYZ *> pts);
 
     /**
      * @brief sameHeight test if points have the sames height
