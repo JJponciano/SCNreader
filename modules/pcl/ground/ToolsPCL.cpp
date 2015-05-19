@@ -140,7 +140,7 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr ToolsPCL::ransac(pcl::PointCloud<pcl::PointX
             model_p (new pcl::SampleConsensusModelPlane<pcl::PointXYZ> (cloud));
 
         pcl::RandomSampleConsensus<pcl::PointXYZ> ransac (model_p);
-        ransac.setDistanceThreshold (.01);
+        ransac.setDistanceThreshold (.02);
         ransac.computeModel();
         ransac.getInliers(inliers);
 

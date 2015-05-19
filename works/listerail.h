@@ -47,7 +47,7 @@ public:
      */
     bool growingRegions(RailCluster rail);
 
-
+void clear();
 
     //accesseur
     QVector <pcl::PointXYZ *> getCloud()const;

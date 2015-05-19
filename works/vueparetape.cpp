@@ -36,7 +36,7 @@ VueParEtape::VueParEtape(QWidget *parent): groundGLWidget(parent)
     this->affe=false;
     this->affr=false;
     this->affc=true;
-
+    this->mirx=0;
 }
 
 VueParEtape::~VueParEtape()
@@ -64,31 +64,28 @@ void VueParEtape::paintGL()
 
     //------------------------------------------------------------------
     // definition size dot
+//    glPointSize(4);
+//    glPushMatrix();
+//        glBegin(GL_POINTS);
+//        glColor3f(1.0,1.0,1.0);
+//           for(int i=-100; i<100; i++)
+//          glVertex3f(mirx,i*0.01, 0);
+//        glEnd();
+//    glPopMatrix();
+
     glPointSize(1);
     glPushMatrix();
 
-        if(affc)
-        {
-            //affichageCloud();
-             QVector <pcl::PointXYZ *> rails=this->scnreaderFond.getLesRails().getCloud();
-             //std::cout<<(rails.size())<<std::endl;
-             QVector <int> switchs= scnreaderFond.getLesRails().getSwitchDetected();
-             glBegin(GL_POINTS);
-             for(int i=0; i<rails.size(); i++)
-             {
-                 if(switchs.contains((int) (rails.at(i)->z)))
-                        glColor3f(1.0,0.0,0.0);
-                 else
-                        glColor3f(0.0,1.0,1.0);
-                 glVertex3f(rails.at(i)->x, rails.at(i)->y, (rails.at(i)->z-this->ftpDI)*0.1);
-             }
-              glEnd();
-        }
+    if(affc)
+    {
+        affichageCloud();
+
+    }
 
 
     if(affs)
     {
-     /*  if(!this->scnreaderFond.getSegmentation().size()>0)
+        /*  if(!this->scnreaderFond.getSegmentation().size()>0)
         {
             this->scnreaderFond.planar_segmentation(this->ftpDI, this->ftpFI);
         }
@@ -97,12 +94,35 @@ void VueParEtape::paintGL()
     }
     if(affe)
     {
-
+        QVector <pcl::PointXYZ *> rails=this->scnreaderFond.getLesRails().getCloud();
+        //std::cout<<(rails.size())<<std::endl;
+        QVector <int> switchs= scnreaderFond.getLesRails().getSwitchDetected();
+        glBegin(GL_POINTS);
+        for(int i=0; i<rails.size(); i++)
+        {
+            if(switchs.contains((int) (rails.at(i)->z)))
+                glColor3f(1.0,0.0,0.0);
+            else
+                glColor3f(0.0,1.0,1.0);
+            glVertex3f(rails.at(i)->x, rails.at(i)->y, (rails.at(i)->z-this->ftpDI)*0.1);
+        }
+        glEnd();
     }
 
     if(affr)
     {
+        QVector <pcl::PointXYZ *> rails=this->scnreaderFond.getLesRails().getCloud();
 
+        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=this->scnreaderFond.getVectInCloud(rails);
+
+        pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC=this->scnreaderFond.ransac(cloud);
+        glBegin(GL_POINTS);
+        for(int i=0; i<resultRANSAC->points.size(); i++)
+        {
+            glColor3f(1.0,0.0,1.0);
+            glVertex3f(resultRANSAC->points.at(i).x, resultRANSAC->points.at(i).y, (resultRANSAC->points.at(i).z-this->ftpDI)*0.1);
+        }
+        glEnd();
     }
     glPopMatrix();
     //----------------------------------------------------------------------*/
@@ -123,13 +143,13 @@ void VueParEtape::affichageCloud()
             for(int i=0; i<v->size(); i++)
             {
                 glPointSize(1);
-                        glColor3f(1.0,1.0,1.0);
-                        //normalizes points with model->max of cordinates previously finded
-                        float x=(* (v->at(i))).x;//scnreaderFond.getMaxX()*10;
-                        float y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
-                        float z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
-    //                                glVertex3f(x,int(y*1000)/100,z);
-                           glVertex3f(x,y,z);
+                glColor3f(1.0,1.0,1.0);
+                //normalizes points with model->max of cordinates previously finded
+                float x=(* (v->at(i))).x;//scnreaderFond.getMaxX()*10;
+                float y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
+                float z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
+                //                                glVertex3f(x,int(y*1000)/100,z);
+                glVertex3f(x,y,z);
             }
 
         }
@@ -138,8 +158,8 @@ void VueParEtape::affichageCloud()
 
         j++;
     }
-     glEnd();
- }
+    glEnd();
+}
 void VueParEtape::affichageSegm()
 {
     std::stringstream ss;
@@ -148,7 +168,7 @@ void VueParEtape::affichageSegm()
 
     QHash<QString, QVector<pcl::PointXYZ*>*> h=this->scnreaderFond.getSegmentation();
 
-   if(!h.contains(chaine))
+    if(!h.contains(chaine))
     {
         try{
             this->scnreaderFond.planar_segmentation(this->ftpDI, this->ftpFI);
@@ -156,13 +176,13 @@ void VueParEtape::affichageSegm()
             QMessageBox::critical(0, "Error", e.what());
         }
     }
-     QVector <pcl::PointXYZ*>* vect=this->scnreaderFond.getSegmentation().value(QString::fromStdString (ss.str()));
+    QVector <pcl::PointXYZ*>* vect=this->scnreaderFond.getSegmentation().value(QString::fromStdString (ss.str()));
     glBegin(GL_POINTS);
-        for(int j=0;j<vect->size();j++)
-        {
-            glColor3f(0.0,0.0,1.0);
-            glVertex3f((* (vect->at(j))).x,(*(vect->at(j))).y,((* (vect->at(j))).z-this->ftpDI)*0.1);
-        }
+    for(int j=0;j<vect->size();j++)
+    {
+        glColor3f(0.0,0.0,1.0);
+        glVertex3f((* (vect->at(j))).x,(*(vect->at(j))).y,((* (vect->at(j))).z-this->ftpDI)*0.1);
+    }
     glEnd();
 
 }
@@ -181,6 +201,11 @@ void VueParEtape::loadCloudFromTXT(){
             {
                 this->ftpDI=this->scnreaderFond.getFtpd();
                 this->ftpFI=this->scnreaderFond.getFtpd();
+                QVector <pcl::PointXYZ *> rails=this->scnreaderFond.getLesRails().getCloud();
+              /*  for(int i=0;i<rails.size();i++){
+                    if( rails[i]->x<0)
+                              rails[i]->y+=1;
+                }*/
             }
             else throw Erreur("Le fichier ne contient pas de point");
             //this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
@@ -209,7 +234,7 @@ void VueParEtape::loadCloud(){
                 this->ftpFI=this->scnreaderFond.getFtpd();
             }
             else throw Erreur("Le fichier ne contient pas de point");
-           // this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
+            // this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
             //this->ftpCourant=this->scnreaderFond.getClouds(0)->points[0].z;
         }
 
@@ -282,7 +307,7 @@ void VueParEtape::planarSegmentation(int d, int f){
 }
 
 void VueParEtape::extractionCloud(int i){
-     this->scnreaderFond.extractionCloud(i,i);
+    this->scnreaderFond.extractionCloud(i,i);
 }
 
 //===============================================
@@ -290,7 +315,16 @@ void VueParEtape::extractionCloud(int i){
 //===============================================
 void VueParEtape::keyPressEvent(QKeyEvent *keyEvent)
 {
-
+    if(keyEvent->key()==Qt::Key_M){
+        this->mirx-=0.01;
+        std::cout<<this->mirx<<std::endl;
+    }
+    else
+    if(keyEvent->key()==Qt::Key_N){
+        this->mirx+=0.01;
+        std::cout<<this->mirx<<std::endl;
+    }
+    else
     if(keyEvent->key()==Qt::Key_W){
         this->pZ++;
         this->lZ++;

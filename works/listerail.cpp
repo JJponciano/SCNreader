@@ -35,12 +35,12 @@ ListeRail::~ListeRail()
 void ListeRail::addRail(RailCluster rail)
 {
     // add the rail
-   this->lesRails.push_back(rail);
+    this->lesRails.push_back(rail);
     // test if the rail contain a switch
-//        if(growingRegions(rail)){
-//            // add the footpulse to the liste of the switch
-//            //this->switchDetected.push_back(rail.getFootpulse());
-//        }
+    //        if(growingRegions(rail)){
+    //            // add the footpulse to the liste of the switch
+    this->switchDetected.push_back(rail.getFootpulse());
+    //        }
 }
 
 bool ListeRail::growingRegions(RailCluster rail)
@@ -66,22 +66,22 @@ bool ListeRail::growingRegions(RailCluster rail)
             newRegion.push_back(currentPoint);
             this->regions.push_back(newRegion);
         }else if(countRegions.size()==1){
-                //the point is added into the region
-                this->regions[countRegions.at(0)].push_back(currentPoint);
-                //test if the region is not too big after this adding.
-                regionOK=growingOk(this->regions.at(countRegions.at(0)));
-                //if the regions is not ok, you have a switch
-                if(!regionOK){
-                    //split the region
-                    this->split(countRegions.at(0));
-                }
-            }else{
-                // if the point have not a region
-                //create a regions for it and add it
-                QVector <pcl::PointXYZ *>newRegion;
-                newRegion.push_back(currentPoint);
-                this->regions.push_back(newRegion);
+            //the point is added into the region
+            this->regions[countRegions.at(0)].push_back(currentPoint);
+            //test if the region is not too big after this adding.
+            regionOK=growingOk(this->regions.at(countRegions.at(0)));
+            //if the regions is not ok, you have a switch
+            if(!regionOK){
+                //split the region
+                this->split(countRegions.at(0));
             }
+        }else{
+            // if the point have not a region
+            //create a regions for it and add it
+            QVector <pcl::PointXYZ *>newRegion;
+            newRegion.push_back(currentPoint);
+            this->regions.push_back(newRegion);
+        }
     }
     return (regionOK==false)||mergeRegions;
 }
@@ -116,8 +116,8 @@ void ListeRail::split(int regindex)
             }
             //if the point does not belong to the first region
             if(!added)
-            //it is added to the other region
-            newRegion2.push_back(pt);
+                //it is added to the other region
+                newRegion2.push_back(pt);
         }
     }
     // remove the regions
@@ -149,17 +149,17 @@ void ListeRail::setSwitchDetected(const QVector<int> &value)
 {
     switchDetected = value;
 }
- QVector <pcl::PointXYZ *> ListeRail::getCloud()const{
-     QVector <pcl::PointXYZ *>cloud;
-     //for each rail
-     for(int i=0;i<this->lesRails.size();i++){
-         //add the list of the points
-         for(int j=0;j<this->lesRails.at(i).getPoints().size();j++){
-             cloud.push_back(this->lesRails.at(i).getPoints().at(j));
-         }
-     }
-return cloud;
- }
+QVector <pcl::PointXYZ *> ListeRail::getCloud()const{
+    QVector <pcl::PointXYZ *>cloud;
+    //for each rail
+    for(int i=0;i<this->lesRails.size();i++){
+        //add the list of the points
+        for(int j=0;j<this->lesRails.at(i).getPoints().size();j++){
+            cloud.push_back(this->lesRails.at(i).getPoints().at(j));
+        }
+    }
+    return cloud;
+}
 
 bool ListeRail::growingOk(QVector <pcl::PointXYZ *> reg)
 {
@@ -168,26 +168,35 @@ bool ListeRail::growingOk(QVector <pcl::PointXYZ *> reg)
     //search the extremum of the x coordinates in the region
     float xmin=reg.at(0)->x;
     float xmax=reg.at(0)->x;
-      for(int i=1;i<reg.size();i++){
-          if(reg.at(i)->x<xmin)xmin=reg.at(i)->x;
-          else    if(reg.at(i)->x>xmax)xmax=reg.at(i)->x;
-      }
-      //compare the distance between the extremums with the maximum authorized.
-      return (xmax-xmin)<widthMax;
+    for(int i=1;i<reg.size();i++){
+        if(reg.at(i)->x<xmin)xmin=reg.at(i)->x;
+        else    if(reg.at(i)->x>xmax)xmax=reg.at(i)->x;
+    }
+    //compare the distance between the extremums with the maximum authorized.
+    return (xmax-xmin)<widthMax;
 }
 
 bool ListeRail::isInRegion(QVector <pcl::PointXYZ *> reg, pcl::PointXYZ * pt)
 {
     //for each point of the region
-    for(int i=0;i<reg.size();i++){
-        pcl::PointXYZ *currentPoint=reg.at(i);
-        //test if the points avec the same width with and height the point to be tested
-        if(this->lesRails.size()!=0)
-        if(this->lesRails.at(0).sameWidth(currentPoint,pt)&&this->lesRails.at(0).sameHeight(currentPoint,pt))
-            return true;
-    }
+    if(this->lesRails.size()!=0)
+        for(int i=0;i<reg.size();i++){
+            pcl::PointXYZ *currentPoint=reg.at(i);
+            //test if the points avec the same width with and height the point to be tested
+            if(this->lesRails.at(0).sameWidth(currentPoint,pt)&&this->lesRails.at(0).sameHeight(currentPoint,pt))
+                return true;
+        }
     return false;
 
 }
+void ListeRail::clear()
+{
+    QVector <int>s;///< list of the footpulste with switch
+    QVector <RailCluster> ls;///< all rails
+    QVector<QVector <pcl::PointXYZ *>>r;///<regions detected
 
+    this->lesRails=ls;
+    this->switchDetected=s;
+    this->regions=r;
+}
 

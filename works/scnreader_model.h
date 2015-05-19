@@ -107,6 +107,13 @@ public:
 
       ListeRail getLesRails() const;
 
+      /**
+       * @brief scnreader_model::getPartInCloud transform a vector of point in a cloud
+       * @param vecteur is the vector which we will transform
+       * @return the cloud corresponding to the vector
+       */
+      pcl::PointCloud<pcl::PointXYZ>::Ptr getVectInCloud(QVector<pcl::PointXYZ *> vecteur);
+
 private:
       /**
        * @brief samePoint watch if two points are the same or not

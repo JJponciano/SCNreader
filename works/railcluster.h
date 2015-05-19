@@ -156,6 +156,7 @@ float gap(QVector <pcl::PointXYZ *> reg) const;
     float lm; ///< Average width of railway rail
     QVector <pcl::PointXYZ *> points;///< points of railway rail
     QVector <pcl::PointXYZ *> blacklist;///< points tested and removed
+    pcl::PointXYZ averagePoint(QVector<pcl::PointXYZ *> reg);
 };
 
 #endif // RAILCLUSTER_H

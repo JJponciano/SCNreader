@@ -590,6 +590,7 @@ void scnreader_model::clear()
     this->nuage.clear();
     this->segmentation.clear();
     this->extraction.clear();
+
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f, QVector<int>* tailles)
@@ -611,6 +612,22 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f
             i++;
         }
         else throw Erreur("Interval de footpulses discontinu dans la segmentation");
+    }
+    CloudTemp->width = CloudTemp->points.size();
+    CloudTemp->height = 1;
+    CloudTemp->is_dense = false;
+    CloudTemp->points.resize (CloudTemp->width * CloudTemp->height);
+    return CloudTemp;
+}
+
+pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<pcl::PointXYZ *> vecteur)
+{
+    pcl::PointCloud<pcl::PointXYZ>::Ptr CloudTemp(new pcl::PointCloud<pcl::PointXYZ>);
+    //Fill the cloud with the points which are in the vector
+    for(int i=0; i< vecteur.size(); i++)
+    {
+        pcl::PointXYZ p=*( vecteur.at(i));
+        CloudTemp->points.push_back(p);
     }
     CloudTemp->width = CloudTemp->points.size();
     CloudTemp->height = 1;
@@ -734,15 +751,16 @@ void scnreader_model::createRail()
             nbrails=100;
 
         //create rails
-        RailCluster  r (0.2,0.1,1.0,*this->nuage.value(this->ftpd));
+        RailCluster  r (0.18,0.08,1.5,*this->nuage.value(this->ftpd));
         RailCluster rc=r;
         this->lesRails.addRail(r);
         for(int i=1; i<nbrails;i++)
         {
-            RailCluster r2(0.2,0.1,1.0,* (this->nuage.value(this->ftpd+i)), rc);
+            RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(this->ftpd+i)), rc);
             rc=r2;
-            // this->lesRails.addRail(r2);
+            this->lesRails.addRail(r2);
         }
     }
     else throw Erreur("Les rails n'ont pas pu etre crees car le nuage de points est vide.");
 }
+

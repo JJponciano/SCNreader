@@ -128,7 +128,7 @@
            <item row="4" column="0">
             <widget class="QCheckBox" name="pushExtract">
              <property name="text">
-              <string>Son extraction</string>
+              <string>Les rails</string>
              </property>
             </widget>
            </item>

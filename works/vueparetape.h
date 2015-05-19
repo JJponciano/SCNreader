@@ -157,7 +157,7 @@ private:
     float pz;
     bool firstP;
     std::string nomFichier;
-
+    float mirx;
   int sizeCloud;
 };
 
