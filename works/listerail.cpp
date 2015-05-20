@@ -25,22 +25,84 @@
 
 ListeRail::ListeRail()
 {
+     this->maxSize=500;
+}
 
+ListeRail::ListeRail(int maxSize)
+{
+    this->maxSize=maxSize;
+}
+ListeRail::ListeRail(QVector <pcl::PointXYZ *> cloud,int maxSize)
+{
+    // if there are points in cloud
+    if(cloud.size()>0)
+    {
+        //create a rail
+        RailCluster rc;
+        // add point to rail
+        rc.addPoint(cloud.at(0));
+        // add rail
+        this->lesRails.push_back(rc);
+    }
+
+    //For each point of cloud
+    for( int i=1; i<cloud.size();i++)
+    {
+        //we keep his footpulse
+        int ftp=cloud.at(i)->z;
+        //bool to know if the point is added
+        bool isAdd=false;
+        //then we cover tracks which exists to know if it exists one with the same footpulse
+        for( int j=0; j<this->lesRails.size();j++)
+        {
+            //if yes
+            if(this->lesRails.at(j).getFootpulse()==ftp)
+            {
+                //we add the current point in the corresponding track
+                this->lesRails[j].addPoint(cloud.at(i));
+                isAdd=true;
+            }
+        }
+        //if there are not a track with the same footpulse, we create a new tracks to add the point
+        if(!isAdd)
+        {
+            //create a rail
+            RailCluster rc;
+            // add point to rail
+            rc.addPoint(cloud.at(i));
+            // add rail
+            this->lesRails.push_back(rc);
+        }
+    }
+    this->run();
 }
 
 ListeRail::~ListeRail()
 {
 }
 
-void ListeRail::addRail(RailCluster rail)
+bool ListeRail::addRail(RailCluster rail)
 {
+
     // add the rail
     this->lesRails.push_back(rail);
-    // test if the rail contain a switch
-    //        if(growingRegions(rail)){
-    //            // add the footpulse to the liste of the switch
-    this->switchDetected.push_back(rail.getFootpulse());
-    //        }
+    //test if the size is too big
+    if(this->lesRails.size()>=this->maxSize)
+    {
+        this->lesRails.removeFirst();
+        return true;
+    }
+    else
+        return false;
+}
+void ListeRail::run()
+{
+    for(int i=0;i<this->lesRails.size();i++)
+        // test if the rail contain a switch
+        if(growingRegions(this->lesRails.at(i))){
+            //            // add the footpulse to the liste of the switch
+            this->switchDetected.push_back(this->lesRails.at(i).getFootpulse());
+        }
 }
 
 bool ListeRail::growingRegions(RailCluster rail)
@@ -60,8 +122,24 @@ bool ListeRail::growingRegions(RailCluster rail)
         if(countRegions.size()>1){
             mergeRegions=true;
             //you remove all regions which the point could be added, and create a new region.
+            int tooSmall=this->regions[countRegions.at(0)].size();
             for(int j=0;j<countRegions.size();j++)
-                this->regions.remove(countRegions.at(j));
+            {
+                if(this->regions[countRegions.at(j)].size()<tooSmall)tooSmall=this->regions[countRegions.at(j)].size();;
+                QVector <pcl::PointXYZ *> vec;
+                this->regions[countRegions.at(j)]=vec;
+            }
+            //if the region merge is too small, we have not a switch
+            if(tooSmall<10)
+                mergeRegions=false;
+            for(int j=0;j<this->regions.size();j++)
+            {
+                if(this->regions.at(j).isEmpty())
+                {
+                    this->regions.removeAt(j);
+                    j--;
+                }
+            }
             QVector <pcl::PointXYZ *>newRegion;
             newRegion.push_back(currentPoint);
             this->regions.push_back(newRegion);
@@ -136,6 +214,16 @@ void ListeRail::setLesRails(const QVector<RailCluster> &value)
 {
     lesRails = value;
 }
+int ListeRail::getMaxSize() const
+{
+    return maxSize;
+}
+
+void ListeRail::setMaxSize(int value)
+{
+    maxSize = value;
+}
+
 
 QVector<int> ListeRail::getSwitchDetected() const
 {
@@ -180,10 +268,11 @@ bool ListeRail::isInRegion(QVector <pcl::PointXYZ *> reg, pcl::PointXYZ * pt)
 {
     //for each point of the region
     if(this->lesRails.size()!=0)
-        for(int i=0;i<reg.size();i++){
+        for(int i=reg.size()-50;i<reg.size();i++){
+            if(i<0)i=0;
             pcl::PointXYZ *currentPoint=reg.at(i);
             //test if the points avec the same width with and height the point to be tested
-            if(this->lesRails.at(0).sameWidth(currentPoint,pt)&&this->lesRails.at(0).sameHeight(currentPoint,pt))
+            if(this->lesRails.at(0).widthDistance(currentPoint,pt))
                 return true;
         }
     return false;

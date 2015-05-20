@@ -108,13 +108,25 @@ public:
       ListeRail getLesRails() const;
 
       /**
-       * @brief scnreader_model::getPartInCloud transform a vector of point in a cloud
+       * @brief scnreader_model::getVectInCloud transform a vector of point in a cloud
        * @param vecteur is the vector which we will transform
        * @return the cloud corresponding to the vector
        */
       pcl::PointCloud<pcl::PointXYZ>::Ptr getVectInCloud(QVector<pcl::PointXYZ *> vecteur);
+      /**
+       * @brief scnreader_model::getCloudInVect transform a cloud of point in a vector
+       * @param cloud is the cloud which we will transform
+       * @return the vector corresponding to the cloud
+       */
+      QVector<pcl::PointXYZ *> getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
+      ListeRail getLesRailsOptimize() const;
+      void setLesRailsOptimize(const ListeRail &value);
+
+      pcl::PointCloud<pcl::PointXYZ>::Ptr getResultRANSAC() const;
+      void setResultRANSAC(const pcl::PointCloud<pcl::PointXYZ>::Ptr &value);
 
 private:
+       int workWindows;
       /**
        * @brief samePoint watch if two points are the same or not
        * @param ptP the point which is contained in QHash
@@ -157,7 +169,7 @@ private:
      * @param cloudTemp is the cloud which we will transform
      * @return the vector of points corresponding
      */
-    QVector<pcl::PointXYZ *> * getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp);
+    QVector<pcl::PointXYZ *> * getCloudInVect2(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp);
 
     /**
      * @brief scnreader_model::getPtWithInd take the points correponding to indices which are given
@@ -194,6 +206,11 @@ private:
       *
       */
      ListeRail lesRails;
+     ListeRail lesRailsOptimize;
+
+     pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC;
+
+     void optimization();
 };
 
 #endif // SCNREADER_MODULE_H

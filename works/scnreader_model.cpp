@@ -23,6 +23,9 @@
 
 scnreader_model::scnreader_model():ToolsPCL()
 {
+    ListeRail lr(workWindows);
+    this->lesRails=lr;
+    workWindows=500;
     this->ftpd=0;
     this->ftpf=0;
 }
@@ -629,11 +632,28 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<pcl:
         pcl::PointXYZ p=*( vecteur.at(i));
         CloudTemp->points.push_back(p);
     }
+    //update of cloud
     CloudTemp->width = CloudTemp->points.size();
     CloudTemp->height = 1;
     CloudTemp->is_dense = false;
     CloudTemp->points.resize (CloudTemp->width * CloudTemp->height);
     return CloudTemp;
+}
+
+ QVector<pcl::PointXYZ *> scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+{
+    QVector<pcl::PointXYZ *> vecteur;
+    //Fill the vector with the points which are in the cloud
+    for(int i=0; i< cloud->points.size(); i++)
+    {
+        float x=cloud->points.at(i).x;
+        float y=cloud->points.at(i).y;
+        float z=cloud->points.at(i).z;
+        pcl::PointXYZ *p=new pcl::PointXYZ(x,y,z);
+        vecteur.push_back(p);
+    }
+
+    return vecteur;
 }
 
 QVector<pcl::PointXYZ *>* scnreader_model::getPtWithInd(int d, int f, std::vector<int> indices, QVector<int>* tailles)
@@ -708,6 +728,26 @@ QVector<pcl::PointXYZ *>* scnreader_model::getPtWithInd(int d, int f, std::vecto
     }
     return v;
 }
+pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getResultRANSAC() const
+{
+    return resultRANSAC;
+}
+
+void scnreader_model::setResultRANSAC(const pcl::PointCloud<pcl::PointXYZ>::Ptr &value)
+{
+    resultRANSAC = value;
+}
+
+ListeRail scnreader_model::getLesRailsOptimize() const
+{
+    return lesRailsOptimize;
+}
+
+void scnreader_model::setLesRailsOptimize(const ListeRail &value)
+{
+    lesRailsOptimize = value;
+}
+
 ListeRail scnreader_model::getLesRails() const
 {
     return lesRails;
@@ -715,7 +755,7 @@ ListeRail scnreader_model::getLesRails() const
 
 
 
-QVector<pcl::PointXYZ *> * scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp)
+QVector<pcl::PointXYZ *> * scnreader_model::getCloudInVect2(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp)
 {
     /*QVector<pcl::PointXYZ *> * v;
     //TODO
@@ -745,10 +785,10 @@ void scnreader_model::createRail()
         //number of footpulses we test
         int nbrails;
 
-        if(this->ftpf-this->ftpd<100)
+        if(this->ftpf-this->ftpd<500)
             nbrails=this->ftpf-this->ftpd;
         else
-            nbrails=100;
+            nbrails=500;
 
         //create rails
         RailCluster  r (0.18,0.08,1.5,*this->nuage.value(this->ftpd));
@@ -760,7 +800,19 @@ void scnreader_model::createRail()
             rc=r2;
             this->lesRails.addRail(r2);
         }
+        this->optimization();
+
     }
     else throw Erreur("Les rails n'ont pas pu etre crees car le nuage de points est vide.");
 }
 
+void scnreader_model::optimization()
+{
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=this->getVectInCloud(this->lesRails.getCloud());
+
+    this->resultRANSAC=this->ransac(cloud);
+     //this->resultRANSAC=this->ransac(resultRANSAC);
+
+    ListeRail lr(this->getCloudInVect(this->resultRANSAC),workWindows);
+    this->lesRailsOptimize=lr;
+}

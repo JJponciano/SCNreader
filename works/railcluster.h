@@ -61,6 +61,14 @@ public:
       * @brief RailCluster destructor
       */
     ~RailCluster();
+
+     /**
+      * @brief addPoint add point without other processing.
+      * The point must have a same z than other points already added.
+      * Otherwise, the point cannot be added
+      * @param p point added
+      */
+     void addPoint(pcl::PointXYZ *p);
     /**
      * @brief add Search isoled track
      *  This function tests for each point of pts if it is into a bounding box

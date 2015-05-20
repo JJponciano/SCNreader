@@ -96,14 +96,11 @@ void VueParEtape::paintGL()
     {
         QVector <pcl::PointXYZ *> rails=this->scnreaderFond.getLesRails().getCloud();
         //std::cout<<(rails.size())<<std::endl;
-        QVector <int> switchs= scnreaderFond.getLesRails().getSwitchDetected();
+
         glBegin(GL_POINTS);
         for(int i=0; i<rails.size(); i++)
         {
-            if(switchs.contains((int) (rails.at(i)->z)))
-                glColor3f(1.0,0.0,0.0);
-            else
-                glColor3f(0.0,1.0,1.0);
+            glColor3f(0.0,1.0,1.0);
             glVertex3f(rails.at(i)->x, rails.at(i)->y, (rails.at(i)->z-this->ftpDI)*0.1);
         }
         glEnd();
@@ -111,16 +108,18 @@ void VueParEtape::paintGL()
 
     if(affr)
     {
-        QVector <pcl::PointXYZ *> rails=this->scnreaderFond.getLesRails().getCloud();
-
-        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=this->scnreaderFond.getVectInCloud(rails);
-
-        pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC=this->scnreaderFond.ransac(cloud);
+        pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC=this->scnreaderFond.getResultRANSAC();
+        QVector <int> switchs= scnreaderFond.getLesRailsOptimize().getSwitchDetected();
         glBegin(GL_POINTS);
         for(int i=0; i<resultRANSAC->points.size(); i++)
         {
-            glColor3f(1.0,0.0,1.0);
-            glVertex3f(resultRANSAC->points.at(i).x, resultRANSAC->points.at(i).y, (resultRANSAC->points.at(i).z-this->ftpDI)*0.1);
+            int z=resultRANSAC->points.at(i).z;
+            if(switchs.contains(z))
+                glColor3f(1.0,1.0,0.0);
+            else
+                glColor3f(1.0,0.0,1.0);
+            glVertex3f(resultRANSAC->points.at(i).x, resultRANSAC->points.at(i).y, (z-this->ftpDI)*0.1);
+
         }
         glEnd();
     }
@@ -315,6 +314,7 @@ void VueParEtape::extractionCloud(int i){
 //===============================================
 void VueParEtape::keyPressEvent(QKeyEvent *keyEvent)
 {
+
     if(keyEvent->key()==Qt::Key_M){
         this->mirx-=0.01;
         std::cout<<this->mirx<<std::endl;

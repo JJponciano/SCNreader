@@ -32,14 +32,17 @@
 class ListeRail
 {
 public:
-    ListeRail();
+     ListeRail();
+    ListeRail(int maxSize);
+    ListeRail(QVector <pcl::PointXYZ *> cloud, int maxSize);
     ~ListeRail();
 
     /**
     * @brief addRail add a rail and test if the rail contains a switch
     * @param rail rail to be added
+    * @return true if the oldest track is removed
     */
-   void addRail(RailCluster rail);
+   bool addRail(RailCluster rail);
     /**
      * @brief growingRegions do growing regions with the rail
      * @param rail rail added to growing regions
@@ -59,7 +62,13 @@ void clear();
     QVector<RailCluster> getLesRails() const;
     void setLesRails(const QVector<RailCluster> &value);
 
+
+    int getMaxSize() const;
+    void setMaxSize(int value);
+
 private:
+    int maxSize;
+    void run();
     /**
      * @brief isInRegion test  if the point belongs to the region
      * @param reg regions to be tested

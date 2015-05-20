@@ -53,7 +53,29 @@ MainWindow::~MainWindow()
 }
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 {
-    this->qw->keyPressEvent(keyEvent);
+    if(keyEvent->key()==Qt::Key_L){
+        int ftpd=this->qw->getFtpDI()+1;
+        int ftpf=this->qw->getFtpFI()+1;
+
+        this->ui->interD->setValue(ftpd);
+        this->ui->interF->setValue(ftpf);
+
+        this->qw->setFtpDI(this->ui->interD->value());
+        this->qw->setFtpFI(this->ui->interF->value());
+    }
+    else
+    if(keyEvent->key()==Qt::Key_O){
+        int ftpd=this->qw->getFtpDI()-1;
+        int ftpf=this->qw->getFtpFI()-1;
+
+        this->ui->interD->setValue(ftpd);
+        this->ui->interF->setValue(ftpf);
+
+        this->qw->setFtpDI(this->ui->interD->value());
+        this->qw->setFtpFI(this->ui->interF->value());
+    }
+    else
+        this->qw->keyPressEvent(keyEvent);
 
 }
 void MainWindow::mouseMoveEvent(QMouseEvent *event){

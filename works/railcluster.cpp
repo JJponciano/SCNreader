@@ -24,7 +24,7 @@
 #include "../modules/exceptions/erreur.h"
 RailCluster::RailCluster()
 {
-    this->delta=0.05;
+    this->delta=0.04;
     this->hm = 0.18;
     this->lm = 0.08;
     this->em = 1.5;
@@ -35,7 +35,7 @@ RailCluster::RailCluster(float height, float width, float spacing, const QVector
     this->hm = height;
     this->lm = width;
     this->em = spacing;
-    this->delta=0.03;
+    this->delta=0.04;
     this->footpulse=footpulse.at(0)->z;
 
     //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
@@ -84,6 +84,20 @@ RailCluster::RailCluster(float height, float width, float spacing,  const QVecto
 RailCluster::~RailCluster()
 {
     this->points.clear();
+}
+
+void RailCluster::addPoint(pcl::PointXYZ *p)
+{
+    //test if is a first point added
+    if(this->points.empty()){
+        //add the point
+        this->points.push_back(p);
+        //set the footpulse
+        this->footpulse=p->z;
+    }else // if the point have the same footpulse than other points already added
+        if(p->z==this->footpulse)
+            //add it
+               this->points.push_back(p);
 }
 
 void RailCluster::add(QVector <pcl::PointXYZ *> pts)
@@ -354,9 +368,8 @@ bool RailCluster::widthDistance(pcl::PointXYZ *p1, pcl::PointXYZ *p2)const
             pv=-1.0*pv;
         //approximation
 
-        float dsup= this->lm+this->delta;
-        float dinf=this->lm-this->delta;
-        bool lesbool=(pv<=dsup&&pv>=dinf);
+        float dsup= this->lm-this->delta;
+        bool lesbool=(pv<dsup);
         return lesbool;
     }
 }
