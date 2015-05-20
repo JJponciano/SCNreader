@@ -53,7 +53,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 {
-    if(keyEvent->key()==Qt::Key_L){
+    if(keyEvent->key()==Qt::Key_O){
         int ftpd=this->qw->getFtpDI()+1;
         int ftpf=this->qw->getFtpFI()+1;
 
@@ -64,7 +64,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
         this->qw->setFtpFI(this->ui->interF->value());
     }
     else
-    if(keyEvent->key()==Qt::Key_O){
+    if(keyEvent->key()==Qt::Key_L){
         int ftpd=this->qw->getFtpDI()-1;
         int ftpf=this->qw->getFtpFI()-1;
 
