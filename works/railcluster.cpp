@@ -62,11 +62,10 @@ RailCluster::RailCluster(float height, float width, float spacing,  const QVecto
         okfoot.push_back(point);
     }
     this->footpulse=okfoot.at(0).getZ();
-    //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
-    this->add(okfoot);
 
-    this->match(okfoot);
-
+  //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
+  this->add(okfoot);
+   // this->match(okfoot);
     //segmentation again
     QVector <PointGL > ptemp=this->points;
     this->points.clear();
@@ -108,12 +107,13 @@ RailCluster::RailCluster(float height, float width, float spacing,  const QVecto
     //4) growing
     // this->growing(rail,footpulse);
 
-    this->match(okfoot);
-
+   // this->match(okfoot);
+/*
     //segmentation again
     QVector <PointGL> ptemp=this->points;
      this->points.clear();
      this->add(ptemp);
+ */
 }
 
 RailCluster::~RailCluster()
@@ -168,6 +168,7 @@ void RailCluster::add(const QVector<PointGL> pts)
     QVector <PointGL> seq;
     bool again=true;
     for( int i=0;i<pts.size();i++){
+
         //if is a first points
         if(seq.size()==0){
             seq.push_back(pts.at(i));
@@ -192,7 +193,7 @@ void RailCluster::add(const QVector<PointGL> pts)
                 for(int j=0;j<seq.size();j++){
                     this->addPoint(seq.at(j));
                 }
-            }else
+            }
                 //this sequence is may be not a track
                 seq.clear();
         }

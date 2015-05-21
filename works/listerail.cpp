@@ -34,6 +34,7 @@ ListeRail::ListeRail(int maxSize)
 }
 ListeRail::ListeRail(QVector <PointGL > cloud,int maxSize)
 {
+     this->maxSize=maxSize;
     // if there are points in cloud
     if(cloud.size()>0)
     {
@@ -78,6 +79,7 @@ ListeRail::ListeRail(QVector <PointGL > cloud,int maxSize)
 }
 ListeRail::ListeRail(QVector <PointGL *> cloud,int maxSize)
 {
+     this->maxSize=maxSize;
     // if there are points in cloud
     if(cloud.size()>0)
     {

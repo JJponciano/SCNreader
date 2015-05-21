@@ -826,15 +826,20 @@ void scnreader_model::createRail()
             nbrails=500;
 
         //create rails
+        std::cout<<"pre-start"<<std::endl;
+
         RailCluster  r (0.18,0.08,1.5,*this->nuage.value(this->ftpd));
         RailCluster rc=r;
+        std::cout<<"start"<<std::endl;
         this->lesRails.addRail(r);
         for(int i=1; i<nbrails;i++)
         {
+            std::cout<<i<<std::endl;
             RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(this->ftpd+i)), rc);
             rc=r2;
             this->lesRails.addRail(r2);
         }
+          std::cout<<"end"<<std::endl;
         this->optimization();
 
     }
