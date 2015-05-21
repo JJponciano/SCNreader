@@ -35,6 +35,7 @@ public:
      ListeRail();
     ListeRail(int maxSize);
     ListeRail(QVector <PointGL *> cloud, int maxSize);
+     ListeRail(QVector <PointGL> cloud, int maxSize);
     ~ListeRail();
 
     /**
@@ -53,7 +54,7 @@ public:
 void clear();
 
     //accesseur
-    QVector <PointGL *> getCloud()const;
+    QVector<PointGL> getCloud()const;
 
   int getNumberSwitchDetected() const;
     QVector<int> getSwitchDetected() const;

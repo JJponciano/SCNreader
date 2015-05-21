@@ -639,16 +639,16 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<pcl:
     CloudTemp->points.resize (CloudTemp->width * CloudTemp->height);
     return CloudTemp;
 }
-pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<PointGL *> vecteur)
+pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<PointGL > vecteur)
 {
     pcl::PointCloud<pcl::PointXYZ>::Ptr CloudTemp(new pcl::PointCloud<pcl::PointXYZ>);
     //Fill the cloud with the points which are in the vector
     for(int i=0; i< vecteur.size(); i++)
     {
         pcl::PointXYZ p;
-        p.x=vecteur.at(i)->getX();
-        p.y=vecteur.at(i)->getY();
-        p.z=vecteur.at(i)->getZ();
+        p.x=vecteur.at(i).getX();
+        p.y=vecteur.at(i).getY();
+        p.z=vecteur.at(i).getZ();
         CloudTemp->points.push_back(p);
     }
     //update of cloud
@@ -658,6 +658,7 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<Poin
     CloudTemp->points.resize (CloudTemp->width * CloudTemp->height);
     return CloudTemp;
 }
+
 
  QVector<pcl::PointXYZ *> scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {
@@ -669,6 +670,21 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<Poin
         float y=cloud->points.at(i).y;
         float z=cloud->points.at(i).z;
         pcl::PointXYZ *p=new pcl::PointXYZ(x,y,z);
+        vecteur.push_back(p);
+    }
+
+    return vecteur;
+}
+ QVector<PointGL> scnreader_model::getCloudInVectpoint(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+{
+    QVector<PointGL> vecteur;
+    //Fill the vector with the points which are in the cloud
+    for(int i=0; i< cloud->points.size(); i++)
+    {
+        float x=cloud->points.at(i).x;
+        float y=cloud->points.at(i).y;
+        float z=cloud->points.at(i).z;
+        PointGL p(x,y,z);
         vecteur.push_back(p);
     }
 
@@ -832,6 +848,6 @@ void scnreader_model::optimization()
     this->resultRANSAC=this->ransac(cloud);
      //this->resultRANSAC=this->ransac(resultRANSAC);
 
-    ListeRail lr(this->getCloudInVect(this->resultRANSAC),workWindows);
+    ListeRail lr(this->getCloudInVectpoint(this->resultRANSAC),workWindows);
     this->lesRailsOptimize=lr;
 }

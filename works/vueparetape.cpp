@@ -94,14 +94,14 @@ void VueParEtape::paintGL()
     }
     if(affe)
     {
-        QVector <PointGL*> rails=this->scnreaderFond.getLesRails().getCloud();
+        QVector <PointGL> rails=this->scnreaderFond.getLesRails().getCloud();
         //std::cout<<(rails.size())<<std::endl;
 
         glBegin(GL_POINTS);
         for(int i=0; i<rails.size(); i++)
         {
             glColor3f(0.0,1.0,1.0);
-            glVertex3f(rails.at(i)->getX(), rails.at(i)->getY(), (rails.at(i)->getZ()-this->ftpDI)*0.1);
+            glVertex3f(rails.at(i).getX(), rails.at(i).getY(), (rails.at(i).getZ()-this->ftpDI)*0.1);
         }
         glEnd();
     }
@@ -200,7 +200,7 @@ void VueParEtape::loadCloudFromTXT(){
             {
                 this->ftpDI=this->scnreaderFond.getFtpd();
                 this->ftpFI=this->scnreaderFond.getFtpd();
-                QVector <PointGL *> rails=this->scnreaderFond.getLesRails().getCloud();
+                QVector <PointGL > rails=this->scnreaderFond.getLesRails().getCloud();
               /*  for(int i=0;i<rails.size();i++){
                     if( rails[i]->x<0)
                               rails[i]->y+=1;

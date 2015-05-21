@@ -124,7 +124,7 @@ public:
      * @param a point to be tested
      * @return true if points are similars
      */
-    bool equals2D(const PointGL a);
+    bool equals2D(const PointGL a) const;
 private:
     float rad;
     float x;

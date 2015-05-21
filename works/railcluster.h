@@ -99,13 +99,13 @@ public:
      *  between two railways rail. So, if it is inside, it is added .
      * @param pts list of point to test and add
      */
-    void add(const QVector<PointGL *> pts);
+    void add(const QVector<PointGL> pts);
 
     /**
      * @brief remove remove a point of the list
      * @param pt point to remove
      */
-    void remove(PointGL * pt);
+    void remove(PointGL pt);
 
     /**
      * @brief match  Search a cooresponding track
@@ -116,7 +116,7 @@ public:
      * @param pts list of point to match
      * @return bool said if a point has been added.
      */
-    bool match(QVector <PointGL *> pts);
+    bool match(QVector <PointGL> pts);
 
     /**
      * @brief addSimilarePoint Add the same point to the point already added
@@ -125,13 +125,13 @@ public:
      * @param pts list of point to add
      * @return bool said if a point has been added.
      */
-    bool addSimilarePoint(QVector <PointGL *> pts);
+    bool addSimilarePoint(QVector <PointGL > pts);
     /**
      * @brief growing
      * @param rail
      * @param pts
      */
-    bool growing(RailCluster rail, QVector <PointGL *> pts);
+    bool growing(RailCluster rail, QVector <PointGL > pts);
 
     /**
      * @brief sameHeight test if points have the sames height
@@ -169,8 +169,8 @@ public:
     float getHm()const;
     float getLm()const;
 
-    QVector<PointGL *> getPoints() const;
-    void setPoints(const QVector<PointGL *> &value);
+    QVector<PointGL> getPoints() const;
+    void setPoints(const QVector<PointGL> value);
 
     QVector<PointGL> getBlacklist() const;
     void setBlacklist(const QVector<PointGL > value);
@@ -185,7 +185,7 @@ float gap(QVector <PointGL> reg) const;
     float em; ///< Average spacing between two railways rail
     float hm; ///< Average height of railway rail
     float lm; ///< Average width of railway rail
-    QVector <PointGL *> points;///< points of railway rail
+    QVector <PointGL > points;///< points of railway rail
     QVector <PointGL > blacklist;///< points tested and removed
     PointGL averagePoint(QVector<PointGL > reg) const;
     bool isContains(PointGL p)const;

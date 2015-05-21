@@ -67,7 +67,7 @@ bool PointGL::operator==(const PointGL &a)
     return roundX== aX&&roundY== aY &&roundZ== aZ;
 
 }
-bool PointGL::equals2D(const PointGL a){
+bool PointGL::equals2D(const PointGL a)const{
     //rounded to the thousandth
     int roundX=this->x*epsilon ;
     int roundY=this->x*epsilon ;

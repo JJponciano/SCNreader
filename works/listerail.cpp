@@ -32,6 +32,50 @@ ListeRail::ListeRail(int maxSize)
 {
     this->maxSize=maxSize;
 }
+ListeRail::ListeRail(QVector <PointGL > cloud,int maxSize)
+{
+    // if there are points in cloud
+    if(cloud.size()>0)
+    {
+        //create a rail
+        RailCluster rc;
+        // add point to rail
+        rc.addPoint(cloud.at(0));
+        // add rail
+        this->lesRails.push_back(rc);
+    }
+
+    //For each point of cloud
+    for( int i=1; i<cloud.size();i++)
+    {
+        //we keep his footpulse
+        int ftp=cloud.at(i).getZ();
+        //bool to know if the point is added
+        bool isAdd=false;
+        //then we cover tracks which exists to know if it exists one with the same footpulse
+        for( int j=0; j<this->lesRails.size();j++)
+        {
+            //if yes
+            if(this->lesRails.at(j).getFootpulse()==ftp)
+            {
+                //we add the current point in the corresponding track
+                this->lesRails[j].addPoint(cloud.at(i));
+                isAdd=true;
+            }
+        }
+        //if there are not a track with the same footpulse, we create a new tracks to add the point
+        if(!isAdd)
+        {
+            //create a rail
+            RailCluster rc;
+            // add point to rail
+            rc.addPoint(cloud.at(i));
+            // add rail
+            this->lesRails.push_back(rc);
+        }
+    }
+    this->run();
+}
 ListeRail::ListeRail(QVector <PointGL *> cloud,int maxSize)
 {
     // if there are points in cloud
@@ -111,7 +155,7 @@ bool ListeRail::growingRegions(RailCluster rail)
     bool regionOK=true;
     //for each point of the rail
     for(int i=0;i<rail.getPoints().size();i++){
-        PointGL currentPoint=*rail.getPoints().at(i);
+        PointGL currentPoint=rail.getPoints().at(i);
         // Count the number of regions which currentPoint is in
         QVector<int> countRegions=this->getRegions(currentPoint);
 
@@ -256,8 +300,8 @@ void ListeRail::setSwitchDetected(const QVector<int> &value)
 {
     switchDetected = value;
 }
-QVector <PointGL *> ListeRail::getCloud()const{
-    QVector <PointGL *>cloud;
+QVector <PointGL > ListeRail::getCloud()const{
+    QVector <PointGL >cloud;
     //for each rail
     for(int i=0;i<this->lesRails.size();i++){
         //add the list of the points

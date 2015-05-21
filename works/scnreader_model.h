@@ -108,11 +108,18 @@ public:
       ListeRail getLesRails() const;
 
       /**
-       * @brief scnreader_model::getVectInCloud transform a vector of point in a cloud
+       * @brief getVectInCloud transform a vector of point in a cloud
        * @param vecteur is the vector which we will transform
        * @return the cloud corresponding to the vector
        */
       pcl::PointCloud<pcl::PointXYZ>::Ptr getVectInCloud(QVector<pcl::PointXYZ *> vecteur);
+      /**
+       * @brief getVectInCloud transform a vector of point in a cloud
+       * @param vecteur is the vector which we will transform
+       * @return the cloud corresponding to the vector
+       */
+      pcl::PointCloud<pcl::PointXYZ>::Ptr getVectInCloud(QVector<PointGL> vecteur);
+
       /**
        * @brief scnreader_model::getCloudInVect transform a cloud of point in a vector
        * @param cloud is the cloud which we will transform
@@ -125,6 +132,7 @@ public:
       pcl::PointCloud<pcl::PointXYZ>::Ptr getResultRANSAC() const;
       void setResultRANSAC(const pcl::PointCloud<pcl::PointXYZ>::Ptr &value);
 
+      QVector<PointGL> getCloudInVectpoint(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 private:
        int workWindows;
       /**
@@ -211,7 +219,6 @@ private:
      pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC;
 
      void optimization();
-     pcl::PointCloud<pcl::PointXYZ>::Ptr getVectInCloud(QVector<PointGL *> vecteur);
 };
 
 #endif // SCNREADER_MODULE_H
