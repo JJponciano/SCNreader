@@ -125,8 +125,14 @@ public:
       pcl::PointCloud<pcl::PointXYZ>::Ptr getResultRANSAC() const;
       void setResultRANSAC(const pcl::PointCloud<pcl::PointXYZ>::Ptr &value);
 
+      QVector<int> getLesSwitchs() const;
+      void setLesSwitchs(const QVector<int> &value);
+
+      QString getNomFile() const;
+      void setNomFile(const QString &value);
+
 private:
-       int workWindows;
+      int workWindows;
       /**
        * @brief samePoint watch if two points are the same or not
        * @param ptP the point which is contained in QHash
@@ -209,8 +215,12 @@ private:
      ListeRail lesRailsOptimize;
 
      pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC;
-
+     QVector <int>LesSwitchs;///< list of the footpulse corresponding to switchs
+     QString nomFile;
      void optimization();
+     bool cfs;
+     void enregistre(QString noms);
+     void VideEtEnregistre(QString noms);
 };
 
 #endif // SCNREADER_MODULE_H

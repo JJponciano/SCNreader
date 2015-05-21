@@ -128,10 +128,14 @@ public:
    void setaffC(bool b);
    void setaffR(bool b);
 
+   bool getAffswitch() const;
+   void setAffswitch(bool value);
+
 private:
 
    void affichageCloud();
    void affichageSegm();
+   void affichageSwitch();
   scnreader_model scnreaderFond;
   //int ftpdeDepart;
   //int ftpCourant;
@@ -149,6 +153,7 @@ private:
     int ftpFI;
   //boolean permettant de gérer l'affichage
     bool affs;
+    bool affswitch;
     bool affe;
     bool affc;
     bool affr;
@@ -158,7 +163,8 @@ private:
     bool firstP;
     std::string nomFichier;
     float mirx;
-  int sizeCloud;
+    int sizeCloud;
+    QString KeepName(QString fileName);
 };
 
 #endif // VUEPARETAPE_H

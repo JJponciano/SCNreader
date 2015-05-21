@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->pushExtract, SIGNAL(clicked()), this, SLOT(extract()));
     QObject::connect(ui->pushPS, SIGNAL(clicked()), this, SLOT(planarSeg()));
     QObject::connect(ui->pushC, SIGNAL(clicked()), this, SLOT(affichageOK()));
+    QObject::connect(ui->affswitch, SIGNAL(clicked()), this, SLOT(affichageSwitch()));
 
     QObject::connect(ui->ransac, SIGNAL(clicked()), this, SLOT(afficheRansac()));
 
@@ -186,7 +187,14 @@ void MainWindow::planarSeg(){
     this->qw->setaffS(ui->pushPS->isChecked());
 }
 void MainWindow::affichageOK(){
+    if(ui->pushC->isChecked())
+        ui->affswitch->setChecked(false);
     this->qw->setaffC(ui->pushC->isChecked());
+}
+void MainWindow::affichageSwitch(){
+    if(ui->affswitch->isChecked())
+        ui->pushC->setChecked(false);
+    this->qw->setAffswitch(ui->affswitch->isChecked());
 }
 
 void MainWindow::afficheRansac(){

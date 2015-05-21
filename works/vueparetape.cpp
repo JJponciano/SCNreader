@@ -78,18 +78,14 @@ void VueParEtape::paintGL()
 
     if(affc)
     {
-        affichageCloud();
-
+        this->affichageCloud();
     }
-
-
-    if(affs)
+    if(affswitch)
     {
-        /*  if(!this->scnreaderFond.getSegmentation().size()>0)
-        {
-            this->scnreaderFond.planar_segmentation(this->ftpDI, this->ftpFI);
-        }
-*/
+        this->affichageSwitch();
+    }
+    if(affs)
+    { 
         this->affichageSegm();
     }
     if(affe)
@@ -128,11 +124,17 @@ void VueParEtape::paintGL()
 }
 
 // ------------------------------------------ Action Functions ------------------------------------------
+void VueParEtape::affichageSwitch()
+{
+    //TODO
+}
+
 void VueParEtape::affichageCloud()
 {
     glBegin(GL_POINTS);
     int j=this->ftpDI;
     bool stop=false;
+    QVector <int> switchs= scnreaderFond.getLesSwitchs();
     while( !stop && j<=this->ftpFI)
     {
         if(this->scnreaderFond.getNuage().contains(j))
@@ -142,12 +144,16 @@ void VueParEtape::affichageCloud()
             for(int i=0; i<v->size(); i++)
             {
                 glPointSize(1);
-                glColor3f(1.0,1.0,1.0);
+
                 //normalizes points with model->max of cordinates previously finded
                 float x=(* (v->at(i))).x;//scnreaderFond.getMaxX()*10;
                 float y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
                 float z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
                 //                                glVertex3f(x,int(y*1000)/100,z);
+                if(switchs.contains((* (v->at(i))).z))
+                    glColor3f(1.0,0.0,0.0);
+                else
+                    glColor3f(1.0,1.0,1.0);
                 glVertex3f(x,y,z);
             }
 
@@ -185,6 +191,16 @@ void VueParEtape::affichageSegm()
     glEnd();
 
 }
+bool VueParEtape::getAffswitch() const
+{
+    return affswitch;
+}
+
+void VueParEtape::setAffswitch(bool value)
+{
+    affswitch = value;
+}
+
 
 void VueParEtape::loadCloudFromTXT(){
     try{
@@ -194,8 +210,12 @@ void VueParEtape::loadCloudFromTXT(){
         // if user have seleted a directory
         if (!fileName.isEmpty())
         {
-            this->scnreaderFond.loadCloudFromTXT2(fileName.toStdString());
+
             this->nomFichier=fileName.toStdString();
+            this->scnreaderFond.setNomFile(this->KeepName(fileName));
+
+            this->scnreaderFond.loadCloudFromTXT2(fileName.toStdString());
+
             if(this->scnreaderFond.getNuage().size() > 0)
             {
                 this->ftpDI=this->scnreaderFond.getFtpd();
@@ -414,4 +434,14 @@ void VueParEtape::mousePressEvent(QMouseEvent *event){
 }
 void VueParEtape::mouseReleaseEvent(QMouseEvent *event){
     View_ground_GL::mouseReleaseEvent(event);
+}
+QString VueParEtape::KeepName(QString fileName)
+{
+    QStringList result =fileName.split("/");
+    QString n=result.at(result.size()-1);
+    result =n.split(".");
+    n="";
+    for(int i=0; i<result.size()-1; i++)
+        n.push_back(result.at(i));
+    return n;
 }

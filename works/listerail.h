@@ -50,7 +50,7 @@ public:
      */
     bool growingRegions(RailCluster rail);
 
-void clear();
+
 
     //accesseur
     QVector <pcl::PointXYZ *> getCloud()const;
@@ -66,9 +66,19 @@ void clear();
     int getMaxSize() const;
     void setMaxSize(int value);
 
+    /**
+     * @brief clear reinit ListeRail
+     */
+     void clear();
+
 private:
     int maxSize;
+
+    /**
+     * @brief run is the treatment to detect switchs
+     */
     void run();
+
     /**
      * @brief isInRegion test  if the point belongs to the region
      * @param reg regions to be tested
@@ -87,7 +97,8 @@ private:
      * @param regindex index of the region to be splited
      */
     void split(int regindex);
-        QVector <int>switchDetected;///< list of the footpulste with switch
+
+    QVector <int>switchDetected;///< list of the footpulste with switch
     QVector <RailCluster> lesRails;///< all rails
     QVector<QVector <pcl::PointXYZ *>>regions;///<regions detected
 
