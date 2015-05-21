@@ -211,6 +211,7 @@ private:
      pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC;
 
      void optimization();
+     pcl::PointCloud<pcl::PointXYZ>::Ptr getVectInCloud(QVector<PointGL *> vecteur);
 };
 
 #endif // SCNREADER_MODULE_H

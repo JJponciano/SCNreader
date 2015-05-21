@@ -639,6 +639,25 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<pcl:
     CloudTemp->points.resize (CloudTemp->width * CloudTemp->height);
     return CloudTemp;
 }
+pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<PointGL *> vecteur)
+{
+    pcl::PointCloud<pcl::PointXYZ>::Ptr CloudTemp(new pcl::PointCloud<pcl::PointXYZ>);
+    //Fill the cloud with the points which are in the vector
+    for(int i=0; i< vecteur.size(); i++)
+    {
+        pcl::PointXYZ p;
+        p.x=vecteur.at(i)->getX();
+        p.y=vecteur.at(i)->getY();
+        p.z=vecteur.at(i)->getZ();
+        CloudTemp->points.push_back(p);
+    }
+    //update of cloud
+    CloudTemp->width = CloudTemp->points.size();
+    CloudTemp->height = 1;
+    CloudTemp->is_dense = false;
+    CloudTemp->points.resize (CloudTemp->width * CloudTemp->height);
+    return CloudTemp;
+}
 
  QVector<pcl::PointXYZ *> scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {

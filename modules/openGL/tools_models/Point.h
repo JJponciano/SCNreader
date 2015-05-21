@@ -32,6 +32,8 @@ public:
      */
     PointGL(float x, float y,float z);
     PointGL(const PointGL& orig);
+
+    bool operator==(PointGL const& a);
     virtual ~PointGL();
     /**
      * Récupération de l'abscisse du point
@@ -103,12 +105,32 @@ public:
      * @param z
      */
     void scale(float x,float y,float z);
-    
+
+    /**
+     * @brief truncation rounded to trunc th
+     * @param trun significant figure guard, power of 10
+     * @param f float to be truncated
+     * @return the float truncated
+     */
+    float truncation(int trunc,float f);
+    int getEpsilon() const;
+    /**
+     * @brief setEpsilon setter
+     * @param value  Significant figure guard, power of 10(10 or 100 or 1000...)
+     */
+    void setEpsilon(int value);
+    /**
+     * @brief equals2D test if points are equals in 2D ( without z coordinate)
+     * @param a point to be tested
+     * @return true if points are similars
+     */
+    bool equals2D(const PointGL a);
 private:
     float rad;
     float x;
     float y;
     float z;
+    int epsilon;///< use for tested if float are equals. Significant figure guard, power of 10
     std::vector<float>normalMoyenne;
 };
 

@@ -34,7 +34,7 @@ class ListeRail
 public:
      ListeRail();
     ListeRail(int maxSize);
-    ListeRail(QVector <pcl::PointXYZ *> cloud, int maxSize);
+    ListeRail(QVector <PointGL *> cloud, int maxSize);
     ~ListeRail();
 
     /**
@@ -53,7 +53,7 @@ public:
 void clear();
 
     //accesseur
-    QVector <pcl::PointXYZ *> getCloud()const;
+    QVector <PointGL *> getCloud()const;
 
   int getNumberSwitchDetected() const;
     QVector<int> getSwitchDetected() const;
@@ -75,13 +75,13 @@ private:
      * @param pt pt to be tested if is in reg.
      * @return true if the point belongs to the region
      */
-    bool isInRegion(QVector <pcl::PointXYZ *> reg, pcl::PointXYZ * pt);
+    bool isInRegion(const QVector<PointGL> reg, PointGL  pt) const;
     /**
      * @brief growingOk test if the region is not too big after this adding.
      * @param reg region to be tested
      * @return true if the regions is not too big
      */
-    bool growingOk(QVector <pcl::PointXYZ *> reg);
+    bool growingOk(const QVector<PointGL> reg) const;
     /**
      * @brief split split a region in two regions
      * @param regindex index of the region to be splited
@@ -89,8 +89,10 @@ private:
     void split(int regindex);
         QVector <int>switchDetected;///< list of the footpulste with switch
     QVector <RailCluster> lesRails;///< all rails
-    QVector<QVector <pcl::PointXYZ *>>regions;///<regions detected
+    QVector<QVector <PointGL >>regions;///<regions detected
 
+    bool emptyRegion(QVector<int> countRegions);
+    QVector<int> getRegions(PointGL currentPoint);
 };
 
 #endif // LISTERAIL_H

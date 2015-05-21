@@ -18,6 +18,7 @@ PointGL::PointGL() {
     this->x = 0;
     this->y = 0;
     this->z = 0;
+    this->epsilon=1000;
 }
 
 PointGL::PointGL(float x, float y,float z) {
@@ -25,6 +26,7 @@ PointGL::PointGL(float x, float y,float z) {
     this->x = x;
     this->y = y;
     this->z = z;
+    this->epsilon=1000;
 }
 
 PointGL::PointGL(const PointGL& orig) {
@@ -32,6 +34,49 @@ PointGL::PointGL(const PointGL& orig) {
     this->x = orig.x;
     this->y = orig.y;
     this->z = orig.z;
+    this->epsilon=1000;
+}
+float PointGL::truncation(int trunc, float f){
+    int ftrunc=f*trunc;
+    float f2=((float)ftrunc)/((float)trunc);
+            return f2;
+}
+int PointGL::getEpsilon() const
+{
+    return epsilon;
+}
+
+void PointGL::setEpsilon(int value)
+{
+    if(value%10==0&&value>0)
+    epsilon = value;
+}
+
+
+bool PointGL::operator==(const PointGL &a)
+{
+    //rounded to the thousandth
+    int roundX=this->x*epsilon ;
+    int roundY=this->x*epsilon ;
+    int roundZ=this->x*epsilon ;
+
+    int aX=a.getX()*epsilon ;
+    int aY=a.getY()*epsilon ;
+    int aZ=a.getZ()*epsilon ;
+
+    return roundX== aX&&roundY== aY &&roundZ== aZ;
+
+}
+bool PointGL::equals2D(const PointGL a){
+    //rounded to the thousandth
+    int roundX=this->x*epsilon ;
+    int roundY=this->x*epsilon ;
+
+
+    int aX=a.getX()*epsilon ;
+    int aY=a.getY()*epsilon ;
+
+    return roundX== aX&&roundY== aY;
 }
 
 PointGL::~PointGL() {
