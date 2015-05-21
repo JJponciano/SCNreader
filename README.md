@@ -3,12 +3,22 @@ This is reader for scn file format
 
 We want to detect a switch in the different cloud loaded.
 
-For detected a switch we should beginning with detected a track.
-You can use a work windows for detectig the ground.
-1)For detected a track, you could removed all of the points of the ground for each foot pulse to get only the local maximums.
+We have achieved a first version of a programm which detect switch. But, it aplies only on the part of file. So, before to make statistic, we must extend the treatment on all the file, and we must ameliorate, clean it. For that, there are two main tasks:
 
-1.bis)Then, if you want, you could extracted each local maximum in a cluster to keep only the average point of each cluster. 
+==========================================EXPENDABLE======================================================
 
-2)You have more lines and each line could be a track. To determine which line is a rail, you would select a line two by two and you would test if the minimum distance between two point of this lines is the same, foot pulse after foot pulse.
+- Extend the treatment to apply on all file.
+- Write in the text file footpulses which corresponding of detected switchs.
+ 
+BE CAREFULL:
+- Don't duplicate treatments.
+- Use "ListeRail" as a window to do advance the treatment.
 
-3)Finaly,
+=========================================OPTIMIZATION=====================================================
+
+- Remove the most possible of pointers.
+- Test memory leak.
+- Optimize algorithms, almost their complexity.
+- Make secure prospective errors.
+- Programming with multi-thread, to run quickly.
+
