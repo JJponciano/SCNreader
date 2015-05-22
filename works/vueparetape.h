@@ -131,6 +131,14 @@ public:
    bool getAffswitch() const;
    void setAffswitch(bool value);
 
+   int getNumS();
+   void setNumS(int value);
+
+   int getPosSwitch() const;
+   void IncreasePosSwitch();
+   void DecreasePosSwitch();
+   void calculNumWithPos();
+
 private:
 
    void affichageCloud();
@@ -165,6 +173,16 @@ private:
     float mirx;
     int sizeCloud;
     QString KeepName(QString fileName);
+
+    //numero of switch
+    int numS;
+    //position of switch
+    int posSwitch;
+    //all switch which are detected
+    QVector < QVector <int> > SwitchDetected;
+    int sizeAllSwitch();
+    void LectureSw(QString nameF);
+    bool AucunSwitch();
 };
 
 #endif // VUEPARETAPE_H

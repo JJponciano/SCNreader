@@ -165,7 +165,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit">
+            <widget class="QLineEdit" name="numsw">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -176,14 +176,14 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_7">
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="swpcd">
              <property name="text">
               <string>Previous detected Switch </string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="swsuiv">
              <property name="text">
               <string>Next detected Switch </string>
              </property>

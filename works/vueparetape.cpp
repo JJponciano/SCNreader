@@ -33,10 +33,13 @@ VueParEtape::VueParEtape(QWidget *parent): groundGLWidget(parent)
     this->py=0;
     this->pz=0;
     this->affs=false;
+    this->affswitch=false;
     this->affe=false;
     this->affr=false;
     this->affc=true;
     this->mirx=0;
+    this->numS=-1;
+    this->posSwitch=0;
 }
 
 VueParEtape::~VueParEtape()
@@ -91,7 +94,6 @@ void VueParEtape::paintGL()
     if(affe)
     {
         QVector <pcl::PointXYZ *> rails=this->scnreaderFond.getLesRails().getCloud();
-        //std::cout<<(rails.size())<<std::endl;
 
         glBegin(GL_POINTS);
         for(int i=0; i<rails.size(); i++)
@@ -126,7 +128,40 @@ void VueParEtape::paintGL()
 // ------------------------------------------ Action Functions ------------------------------------------
 void VueParEtape::affichageSwitch()
 {
-    //TODO
+    if(!AucunSwitch())
+    {
+        int deb= this->numS-50;
+        if(deb<this->scnreaderFond.getFtpd())
+            deb=this->scnreaderFond.getFtpd();
+        int fin= this->numS+50;
+        if(fin>this->scnreaderFond.getFtpf())
+            fin=this->scnreaderFond.getFtpf();
+
+        glBegin(GL_POINTS);
+        for(int j=deb; j<=fin; j++)
+        {
+            if(this->scnreaderFond.getNuage().contains(j))
+            {
+                QVector <pcl::PointXYZ*>* v=this->scnreaderFond.getNuage().value(j);
+                if(j==this->numS)
+                    glColor3f(1.0,0.0,0.0);
+                else
+                    glColor3f(1.0,1.0,1.0);
+
+                for(int i=0; i<v->size(); i++)
+                {
+                    glPointSize(1);
+                    //keep coordinates of points to draw them
+                    float x=(* (v->at(i))).x;
+                    float y=(* (v->at(i))).y;
+                    float z=((* (v->at(i))).z-this->numS)*0.1;
+                    glVertex3f(x,y,z);
+                }
+
+            }
+        }
+        glEnd();
+    }
 }
 
 void VueParEtape::affichageCloud()
@@ -212,7 +247,8 @@ void VueParEtape::loadCloudFromTXT(){
         {
 
             this->nomFichier=fileName.toStdString();
-            this->scnreaderFond.setNomFile(this->KeepName(fileName));
+            QString nom=this->KeepName(fileName);
+            this->scnreaderFond.setNomFile(nom);
 
             this->scnreaderFond.loadCloudFromTXT2(fileName.toStdString());
 
@@ -227,6 +263,7 @@ void VueParEtape::loadCloudFromTXT(){
                 }*/
             }
             else throw Erreur("Le fichier ne contient pas de point");
+            this->LectureSw(nom);
             //this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
             //this->ftpCourant=this->scnreaderFond.getClouds(0)->points[0].z;
         }
@@ -316,6 +353,15 @@ void VueParEtape::loadFromSCN(){
 
 void VueParEtape::clear(){
     this->scnreaderFond.clear();
+    this->SwitchDetected.clear();
+    this->affs=false;
+    this->affswitch=false;
+    this->affe=false;
+    this->affr=false;
+    this->affc=true;
+    this->mirx=0;
+    this->numS=-1;
+    this->posSwitch=0;
 }
 void VueParEtape::planarSegmentation(int d, int f){
     try{
@@ -444,4 +490,118 @@ QString VueParEtape::KeepName(QString fileName)
     for(int i=0; i<result.size()-1; i++)
         n.push_back(result.at(i));
     return n;
+}
+int VueParEtape::getPosSwitch() const
+{
+    return posSwitch;
+}
+
+void VueParEtape::IncreasePosSwitch()
+{
+    if(this->posSwitch<sizeAllSwitch()-1)
+    {
+        posSwitch ++;
+        calculNumWithPos();
+    }
+}
+
+void VueParEtape::DecreasePosSwitch()
+{
+    if(this->posSwitch>0)
+    {
+        posSwitch --;
+        calculNumWithPos();
+    }
+}
+
+int VueParEtape::getNumS()
+{
+    if(AucunSwitch())
+        this->numS=-1;
+    return numS;
+}
+
+void VueParEtape::setNumS(int value)
+{
+    numS = value;
+}
+
+void VueParEtape::calculNumWithPos()
+{
+    if(!this->SwitchDetected.isEmpty())
+    {
+        int pos=this->posSwitch;
+        for(int i=0; i<this->SwitchDetected.size(); i++)
+        {
+            if(pos<this->SwitchDetected.at(i).size())
+                this->numS=this->SwitchDetected.at(i).at(pos);
+            else
+                pos=pos-this->SwitchDetected.at(i).size();
+        }
+    }
+}
+
+int VueParEtape::sizeAllSwitch()
+{
+    if(this->SwitchDetected.isEmpty())
+    {
+        return 0;
+    }
+    else
+    {
+        int nbs=0;
+        for(int i=0; i<this->SwitchDetected.size(); i++)
+            nbs+=this->SwitchDetected.at(i).size();
+        return nbs;
+    }
+}
+bool VueParEtape::AucunSwitch()
+{
+    if(this->SwitchDetected.isEmpty())
+    {
+        return true;
+    }
+    else
+    {
+        int nbs=0;
+        int i=0;
+        while(nbs==0 && i<this->SwitchDetected.size())
+        {
+            nbs+=this->SwitchDetected.at(i).size();
+            i++;
+        }
+        return (nbs==0);
+    }
+}
+
+void VueParEtape::LectureSw(QString nameF)
+{
+    QString noms=nameF;
+    noms.push_back("_switch.txt");
+    QFile fichier(noms);
+    if(fichier.open(QIODevice::ReadOnly | QIODevice::Text)){
+        //if you can, initialize flu and line
+        QTextStream flux(&fichier);
+        QString ligne;
+        QVector<int> vect;
+        while(!flux.atEnd())
+        {
+            ligne= flux.readLine();
+            vect.push_back(ligne.toInt());
+
+
+            if(vect.size()>=this->scnreaderFond.getCapacity()-1)
+            {
+               this->SwitchDetected.push_back(vect);
+               QVector<int> vect2;
+               vect=vect2;
+            }
+
+        }
+        this->SwitchDetected.push_back(vect);
+        fichier.close();
+        if(!this->SwitchDetected.isEmpty())
+            this->numS=this->SwitchDetected.at(0).at(0);
+    }
+    else throw Erreur(" The file of switch can not be openned, check the write permission!");
 }

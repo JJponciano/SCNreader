@@ -131,7 +131,11 @@ public:
       QString getNomFile() const;
       void setNomFile(const QString &value);
 
+      int getCapacity() const;
+      void setCapacity(int c);
+
 private:
+      int capacity;
       int workWindows;
       /**
        * @brief samePoint watch if two points are the same or not

@@ -30,6 +30,8 @@ scnreader_model::scnreader_model():ToolsPCL()
     this->lesRails=lr;
     nomFile="";
     this->cfs=false;
+    //constant value
+    this->capacity=10000000;
 }
 
 scnreader_model::~scnreader_model()
@@ -711,7 +713,7 @@ QVector<pcl::PointXYZ *>* scnreader_model::getPtWithInd(int d, int f, std::vecto
         {
 
             int num=indiceC-nb+tailles->at(ind);
-            std::cout<<indiceC<<","<<nb<< "," << num<<std::endl;
+
             if(num<vec->size())
             {
                 v->push_back(vec->at(num));
@@ -738,6 +740,15 @@ QString scnreader_model::getNomFile() const
 void scnreader_model::setNomFile(const QString &value)
 {
     nomFile = value;
+}
+int scnreader_model::getCapacity() const
+{
+    return capacity;
+}
+
+void scnreader_model::setCapacity(int c)
+{
+    throw Erreur("The capacity must not be modified");
 }
 
 QVector<int> scnreader_model::getLesSwitchs() const
@@ -844,48 +855,48 @@ void scnreader_model::createRail()
                 }
             }
             //we reinit lesRailsOptimize et resultRansac
-            this->lesRailsOptimize.clear();
-            this->resultRANSAC->clear();
+//            this->lesRailsOptimize.clear();
+//            this->resultRANSAC->clear();
 
-            //we continue to cover all the cloud with a window which we move footpulse by footpulse
-            while(fw<=this->ftpf)
-            {
-                //we add a new track and remove the first in track in window
-                RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(fw)), rc);
-                rc=r2;
-                this->lesRails.addRail(r2);
+//            //we continue to cover all the cloud with a window which we move footpulse by footpulse
+//            while(fw<=this->ftpf)
+//            {
+//                //we add a new track and remove the first in track in window
+//                RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(fw)), rc);
+//                rc=r2;
+//                this->lesRails.addRail(r2);
 
-                //we do the treatment to detect switchs in this window
-                this->optimization();
-                //we keep detected switch in this window
-                nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
-                for(int i=0; i<nbswitch;i++)
-                {
-                    int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
-                    //we verify that the size of vector doesn't exceed the cvector's capacity
-                    if(this->LesSwitchs.size()<this->LesSwitchs.capacity()-1)
-                    {
-                        if(!this->LesSwitchs.contains(ftp))
-                            this->LesSwitchs.push_back(ftp);
-                    }
-                    //if it exceeds
-                    else
-                    {
-                        //----------------we write footpulses in a text file
+//                //we do the treatment to detect switchs in this window
+//                this->optimization();
+//                //we keep detected switch in this window
+//                nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
+//                for(int i=0; i<nbswitch;i++)
+//                {
+//                    int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
+//                    //we verify that the size of vector doesn't exceed the cvector's capacity
+//                    if(this->LesSwitchs.size()<this->capacity)
+//                    {
+//                        if(!this->LesSwitchs.contains(ftp))
+//                            this->LesSwitchs.push_back(ftp);
+//                    }
+//                    //if it exceeds
+//                    else
+//                    {
+//                        //----------------we write footpulses in a text file
 
-                            VideEtEnregistre(noms);
-                    }
+//                            VideEtEnregistre(noms);
+//                    }
 
-                }
+//                }
 
-                //we reinit lesRailsOptimize et resultRansac
-                this->lesRailsOptimize.clear();
-                this->resultRANSAC->clear();
+//                //we reinit lesRailsOptimize et resultRansac
+//                this->lesRailsOptimize.clear();
+//                this->resultRANSAC->clear();
 
-                //we move the window
-                dw++;
-                fw++;
-            }
+//                //we move the window
+//                dw++;
+//                fw++;
+//            }
 
             //----------------we write footpulses of switch in a text file
             this->enregistre(noms);
