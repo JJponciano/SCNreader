@@ -87,7 +87,7 @@ RailCluster::RailCluster(float height, float width, float spacing, const QVector
     }
     //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
     this->add(okfoot);
-     this->match(okfoot);
+    this->match(okfoot);
 }
 
 RailCluster::RailCluster(float height, float width, float spacing,  const QVector<PointGL *> footpulse,  const RailCluster rail)
@@ -108,12 +108,12 @@ RailCluster::RailCluster(float height, float width, float spacing,  const QVecto
     //4) growing
     // this->growing(rail,footpulse);
 
-   this->match(okfoot);
+    this->match(okfoot);
 
     //segmentation again
-    QVector <PointGL> ptemp=this->points;
-     this->points.clear();
-     this->add(ptemp);
+  /*  QVector <PointGL> ptemp=this->points;
+    this->points.clear();
+    this->add(ptemp);*/
 
 }
 
@@ -168,28 +168,26 @@ void RailCluster::add(const QVector<PointGL> pts)
     //Selecting points following with a similar height to create a sequence
     QVector <PointGL> seq;
     bool again=true;
-    for( int i=0;i<pts.size();i++){
+    //it is a first point of the sequence
+    seq.push_back(pts.at(0));
+    for( int i=1;i<pts.size();i++) {
 
-        //if is a first points
-        if(seq.size()==0){
+        PointGL averageP=this->averagePoint(seq);
+        //if the point is at a height below hm/2 from the previous point, it is adding
+        if(this->sameHeight(pts.at(i),averageP))
             seq.push_back(pts.at(i));
-        }else{
-            PointGL averageP=this->averagePoint(seq);
-            //if the point is at a height below hm/2 from the previous point, it is adding
-            if(this->sameHeight(pts.at(i),averageP))
-                seq.push_back(pts.at(i));
-            //else, the sequence is finiched
-            else {
-                again=false;
-                i--;
-            }
+        //else, the sequence is finiched
+        else {
+            again=false;
         }
         //if the sequence is finiched
         if(!again||(i+1)==pts.size()){
             // start a new sequence
             again=true;
             // test if the size of the sequence is below to lm
-            if(gap(seq)<=this->lm){
+            // if the last point of a track is below another point, if not a tack
+            if((gap(seq)<=this->lm)&&(seq.last().getY()>pts.at(i).getY())){
+
                 //points of the sequence are a track and are added
                 for(int j=0;j<seq.size();j++){
                     this->addPoint(seq.at(j));
@@ -197,6 +195,7 @@ void RailCluster::add(const QVector<PointGL> pts)
             }
             //this sequence is may be not a track
             seq.clear();
+            seq.push_back(pts.at(i));
         }
     }
 }
@@ -207,8 +206,8 @@ void RailCluster::remove(PointGL  pt){
     if(i>=0){
         //test if the point is not blacklisted
         if(!this->isBlackListed(this->points.at(i)))
-        //blackliste the point
-        this->blacklist.push_back(this->points.at(i));
+            //blackliste the point
+            this->blacklist.push_back(this->points.at(i));
         // remove point
         this->points.remove(i);
     }
@@ -249,7 +248,7 @@ bool RailCluster::match(QVector<PointGL> pts)
 {
     bool pointadded=false;
     //for each point keeped
-     QVector <PointGL > ptemp=this->points;
+    QVector <PointGL > ptemp=this->points;
     for(int i=0;i<ptemp.size();i++){
         //test if it exists points which have the same height and which is at a distance of as em
         PointGL currentPoint=ptemp.at(i);
@@ -274,18 +273,18 @@ int RailCluster::searchCorresponding(PointGL currentPoint,QVector<PointGL> *pts)
     // for each point not yet keeped search a corresponding
     for(int j=0;j<pts->size();j++){
         PointGL testPoint=pts->at(j);
-       if(!this->isBlackListed(testPoint)){
+        if(!this->isBlackListed(testPoint)){
             // if the point have a corresponding
             if(this->spacingDistance(currentPoint,testPoint)&& this->sameHeight(currentPoint,testPoint)){
                 corresp=true;
                 //test if it is already added and if is not already added, add i
-               // if(this->addPoint(testPoint)){
-                    // flag: it have added a point
-                    pointadded=true;
+                // if(this->addPoint(testPoint)){
+                // flag: it have added a point
+                pointadded=true;
                 //}
 
             }
-       }
+        }
     }
     int val=0;
     if(corresp)val++;
