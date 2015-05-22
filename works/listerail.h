@@ -94,6 +94,8 @@ private:
 
     bool emptyRegion(QVector<int> countRegions);
     QVector<int> getRegions(PointGL currentPoint);
+    void debuitage();
+    void initialization(QVector<PointGL> cloud, int maxSize);
 };
 
 #endif // LISTERAIL_H

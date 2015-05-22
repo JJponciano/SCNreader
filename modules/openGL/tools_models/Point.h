@@ -2,12 +2,12 @@
  * @author PONCIANO Jean-Jacques et PRUDHOMME Claire
  * @date 13/03/2014
  *
- * Cette oeuvre, création, code, site ou texte est sous licence Creative Commons  Attribution - Pas d’Utilisation Commerciale - 
- * Partage dans les Mêmes Conditions 4.0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante 
+ * Cette oeuvre, création, code, site ou texte est sous licence Creative Commons  Attribution - Pas d’Utilisation Commerciale -
+ * Partage dans les Mêmes Conditions 4.0 International. Pour accéder à une copie de cette licence, merci de vous rendre à l'adresse suivante
  * http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr ou envoyez un courrier à Creative Commons, 444 Castro Street, Suite 900,
  * Mountain View, California, 94041, USA.
- * Copyright  2014  
- * 
+ * Copyright  2014
+ *
  * Contact: ponciano.jeanjacques@gmail.com
  */
 
@@ -32,17 +32,18 @@ public:
      */
     PointGL(float x, float y,float z);
     PointGL(const PointGL& orig);
-
+    bool operator<( PointGL const &rhs);
+     //bool operator <( const PointGL &rhs1, const PointGL &rhs);
     bool operator==(PointGL const& a);
     virtual ~PointGL();
     /**
      * Récupération de l'abscisse du point
-     * @return  abscisse du point 
+     * @return  abscisse du point
      */
     float getX()const;
     /**
      * Récupération de l'ordonnée du point
-     * @return  ordonnée du point 
+     * @return  ordonnée du point
      */
     float getY()const;
     /**
@@ -54,13 +55,13 @@ public:
      * Modification de l'abscisse du point
      * @param a nouvel abscisse
      */
-     void setX(float a);
-      /**
+    void setX(float a);
+    /**
      * Modification de l'ordonné du point
      * @param a nouvel ordonné
      */
     void setY(float a);
-     /**
+    /**
      * Modification de la prodondeur du point
      * @param a nouvelle prodondeur
      */
@@ -73,14 +74,14 @@ public:
     void setNormalMoyenne(std::vector<float>n);
     /**
      * Modifie la valeur de la normal moyenne  en ce point
-     * @param x 
+     * @param x
      * @param y
      * @param z
      */
     void setNormalMoyenne(float x, float y, float z);
     /**
      * Récupération du vecteur normal à la face
-     * @return le vecteur normal 
+     * @return le vecteur normal
      */
     std::vector<float> getNormal()const;
     /**
@@ -91,11 +92,11 @@ public:
      */
     void translation(float x,float y,float z);
     /**
-     * Opération de rotation 
+     * Opération de rotation
      * @param angle angle de rotation
-     * @param x axe de rotation 
-     * @param y axe de rotation 
-     * @param z axe de rotation 
+     * @param x axe de rotation
+     * @param y axe de rotation
+     * @param z axe de rotation
      */
     void rotation(float a, int x,int y,int z);
     /**

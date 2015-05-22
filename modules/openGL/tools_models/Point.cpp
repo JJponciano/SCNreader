@@ -67,6 +67,37 @@ bool PointGL::operator==(const PointGL &a)
     return roundX== aX&&roundY== aY &&roundZ== aZ;
 
 }
+// Surcharge de l'opérateur <
+   bool PointGL::operator<( PointGL const &rhs)
+  {
+       bool inf;
+       //test if the points have same X
+       int roundX=this->x*epsilon ;
+        int aX=rhs.getX()*epsilon ;
+        bool equals=roundX== aX;
+      if(equals){
+          //compare z
+          inf=(this->getZ() < rhs.getZ());
+      }else // compare x
+         inf=(this->getX() < rhs.getX());
+      return inf;
+   }
+
+//   bool PointGL::operator <(const PointGL &rhs1, const PointGL &rhs)
+//   {
+
+//       bool inf;
+//       //test if the points have same X
+//       int roundX=rhs1.getX()*epsilon ;
+//        int aX=rhs.getX()*epsilon ;
+//        bool equals=roundX== aX;
+//      if(equals){
+//          //compare z
+//          inf=(rhs1.getZ() < rhs.getZ());
+//      }else // compare x
+//         inf=(rhs1.getX() < rhs.getX());
+//      return inf;
+//   }
 bool PointGL::equals2D(const PointGL a)const{
     //rounded to the thousandth
     int roundX=this->x*epsilon ;

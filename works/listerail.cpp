@@ -22,10 +22,11 @@
  * @version 0.1
  */
 #include "listerail.h"
-
+#include <algorithm>
+#include <QHash>
 ListeRail::ListeRail()
 {
-     this->maxSize=500;
+    this->maxSize=500;
 }
 
 ListeRail::ListeRail(int maxSize)
@@ -34,7 +35,10 @@ ListeRail::ListeRail(int maxSize)
 }
 ListeRail::ListeRail(QVector <PointGL > cloud,int maxSize)
 {
-     this->maxSize=maxSize;
+    this->initialization(cloud,maxSize);
+}
+void ListeRail::initialization(QVector <PointGL > cloud,int maxSize){
+    this->maxSize=maxSize;
     // if there are points in cloud
     if(cloud.size()>0)
     {
@@ -77,9 +81,10 @@ ListeRail::ListeRail(QVector <PointGL > cloud,int maxSize)
     }
     this->run();
 }
+
 ListeRail::ListeRail(QVector <PointGL *> cloud,int maxSize)
 {
-     this->maxSize=maxSize;
+    this->maxSize=maxSize;
     // if there are points in cloud
     if(cloud.size()>0)
     {
@@ -141,6 +146,63 @@ bool ListeRail::addRail(RailCluster rail)
     else
         return false;
 }
+void ListeRail::debuitage(){
+    // tout les points ayant le meme x doivent avoir la meme heuteurs.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    // il faut trier les points par x
+    QVector <PointGL >cloud=this->getCloud();
+    //new cloud
+    QVector <PointGL >new_cloud;
+    std::sort(cloud.first(),cloud.last());
+
+    //for each point which has same X
+    int currentX=cloud.at(0).getX();
+    QVector<int>pointsX;
+    pointsX.push_back(0);
+    for(int i=0;i<cloud.size();i++){
+        // point is added into the sequence if it has the same x of the sequence
+        if(cloud.at(i).getX()==currentX){
+            pointsX.push_back(i);
+        }else{
+            //if the point has not the same X, the sequence is finish
+            //now test the most common height
+            QHash <float, int> freqs;
+            for(int j=0;j<pointsX.size();j++){
+                //get height of the point
+                float height=cloud.at(pointsX.at(j)).getY();
+                //test if the height is know
+                if(freqs.contains(height)){
+                    // increase the frequency
+                    freqs.insert(height,freqs.value(height)+1);
+                }else
+                    // add the frequency
+                    freqs.insert(height,1);
+            }
+            //search the most common height
+            QList<float>	keys=freqs.keys();
+            float commonheight=freqs.value(keys.at(0));
+            int freqMax=0;
+            for(int j=1;j<keys.size();j++){
+                //get frequency for each height
+                int currentFreq=freqs.value(keys.at(j));
+                //test if the frequency is greater than commonheight
+                if(currentFreq>freqMax){
+                    freqMax=currentFreq;
+                    commonheight=freqs.value(keys.at(j));
+                }
+            }
+            PointGL pheight(0,commonheight,0);
+            // now add all point which has the same height of the common height.
+            for(int j=0;j<pointsX.size();j++){
+                if(this->lesRails.at(0).sameHeight(cloud.at(pointsX.at(j)),pheight))
+                    new_cloud.push_back(cloud.at(pointsX.at(j)));
+            }
+        }
+    }
+    this->initialization(new_cloud,this->maxSize);
+}
+
+
 void ListeRail::run()
 {
     for(int i=0;i<this->lesRails.size();i++)
@@ -161,36 +223,36 @@ bool ListeRail::growingRegions(RailCluster rail)
         // Count the number of regions which currentPoint is in
         QVector<int> countRegions=this->getRegions(currentPoint);
 
-      if(countRegions.size()==0){
-          // if the point have not a region
-          //create a regions for it and add it
-          QVector <PointGL >newRegion;
-          newRegion.push_back(currentPoint);
-          this->regions.push_back(newRegion);
-      }else// if regions do not merge
-          if(countRegions.size()==1){
-          //the point is added into the region
-          this->regions[countRegions.at(0)].push_back(currentPoint);
-          //test if the region is not too big after this adding.
-          regionOK=growingOk(this->regions.at(countRegions.at(0)));
-          //if the regions is not ok, you have a switch
-          if(!regionOK){
-              //split the region
-              this->split(countRegions.at(0));
-          }
-      }else//if a region have merged, the current point is added in a new region.
-        if(countRegions.size()>1){
-            // remove region having merged and test if the merge is a switch
-            switchByMerge=this->emptyRegion(countRegions);
-            //add a new region
+        if(countRegions.size()==0){
+            // if the point have not a region
+            //create a regions for it and add it
             QVector <PointGL >newRegion;
             newRegion.push_back(currentPoint);
             this->regions.push_back(newRegion);
-        }
+        }else// if regions do not merge
+            if(countRegions.size()==1){
+                //the point is added into the region
+                this->regions[countRegions.at(0)].push_back(currentPoint);
+                //test if the region is not too big after this adding.
+                regionOK=growingOk(this->regions.at(countRegions.at(0)));
+                //if the regions is not ok, you have a switch
+                if(!regionOK){
+                    //split the region
+                    this->split(countRegions.at(0));
+                }
+            }else//if a region have merged, the current point is added in a new region.
+                if(countRegions.size()>1){
+                    // remove region having merged and test if the merge is a switch
+                    switchByMerge=this->emptyRegion(countRegions);
+                    //add a new region
+                    QVector <PointGL >newRegion;
+                    newRegion.push_back(currentPoint);
+                    this->regions.push_back(newRegion);
+                }
     }
     return (regionOK==false)||switchByMerge;
 }
- QVector<int> ListeRail::getRegions(PointGL currentPoint){
+QVector<int> ListeRail::getRegions(PointGL currentPoint){
     // ==== Count the number of regions which currentPoint is in===
     QVector<int> countRegions;
     // test if the point belongs to regions, and counts the number of regions
@@ -255,7 +317,7 @@ void ListeRail::split(int regindex)
                     newRegion1.push_back(pt);
                     added=true;
                 }else
-                i++;
+                    i++;
             }
             //if the point does not belong to the first region
             if(!added)
