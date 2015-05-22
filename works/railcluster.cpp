@@ -45,6 +45,7 @@ RailCluster::RailCluster(float height, float width, float spacing, const QVector
     this->footpulse=okfoot.at(0).getZ();
     //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
     this->add(okfoot);
+     this->match(okfoot);
     //remove temporary vector
     okfoot.clear();
 }
@@ -64,12 +65,18 @@ RailCluster::RailCluster(float height, float width, float spacing,  const QVecto
     this->footpulse=okfoot.at(0).getZ();
 
     //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
-    this->add(okfoot);
+    QVector<PointGL >p1=this->addByWindows(okfoot,1);
+    QVector<PointGL >p2=this->addByWindows(okfoot,-1);
+    for(int i=0;i<p1.size();i++){
+        if(p2.contains(p1.at(i)))this->addPoint(p1.at(i));
+    }
+
+
     this->match(okfoot);
     //segmentation again
-    QVector <PointGL > ptemp=this->points;
+   /* QVector <PointGL > ptemp=this->points;
     this->points.clear();
-    this->add(ptemp);
+    this->add(ptemp);*/
     //remove temporary vector
     okfoot.clear();
 }
@@ -162,6 +169,115 @@ bool RailCluster::isBlackListed( PointGL p)const{
     return false;
 }
 
+QVector <PointGL> RailCluster::addByWindows(const QVector<PointGL> pts,int sens)
+{
+    QVector <PointGL> pointsFinded;
+    //Selecting points following with a similar height to create a sequence
+    QVector <PointGL> seq;
+    bool again=true;
+    //it is a first point of the sequence
+    seq.push_back(pts.at(0));
+    if(sens>0)
+    for( int i=1;i<pts.size();i++) {
+
+        PointGL averageP=this->averagePoint(seq);
+        //if the point is at a height below hm/2 from the previous point and
+        //if the distance between two points is less than width of the track, it is adding
+        if(this->sameHeight(pts.at(i),averageP))
+            seq.push_back(pts.at(i));
+        //else, the sequence is finiched
+        else {
+            again=false;
+        }
+        //if the sequence is finiched
+        if(!again||(i+1)==pts.size()){
+            // start a new sequence
+            again=true;
+            // test if the size of the sequence is below to lm
+            // if the last point of a track is below another point, if not a tack
+            if((gap(seq)<=this->lm*3)&&(seq.last().getY()>pts.at(i).getY())){
+
+                //points of the sequence are a track and are added
+                for(int j=0;j<seq.size();j++){
+                   pointsFinded.push_back(seq.at(j));
+                }
+            }
+            //this sequence is may be not a track
+            seq.clear();
+            seq.push_back(pts.at(i));
+        }
+    }
+    else{     seq.push_back(pts.last());
+            for( int i=pts.size()-2;i>=0;i--) {
+
+            PointGL averageP=this->averagePoint(seq);
+            //if the point is at a height below hm/2 from the previous point and
+            //if the distance between two points is less than width of the track, it is adding
+            if(this->sameHeight(pts.at(i),averageP))
+                seq.push_back(pts.at(i));
+            //else, the sequence is finiched
+            else {
+                again=false;
+            }
+            //if the sequence is finiched
+            if(!again||(i+1)==pts.size()){
+                // start a new sequence
+                again=true;
+                // test if the size of the sequence is below to lm
+                // if the last point of a track is below another point, if not a tack
+                if((gap(seq)<=this->lm*3)&&(seq.last().getY()>pts.at(i).getY())){
+
+                    //points of the sequence are a track and are added
+                    for(int j=0;j<seq.size();j++){
+                       pointsFinded.push_back(seq.at(j));
+                    }
+                }
+                //this sequence is may be not a track
+                seq.clear();
+                seq.push_back(pts.at(i));
+            }
+        }
+
+
+    }return pointsFinded;
+}
+void RailCluster::addByMountain(const QVector<PointGL> pts)
+{
+    //Selecting points following with a similar height to create a sequence
+    QVector <PointGL> seq;
+    bool again=true;
+    //it is a first point of the sequence
+    seq.push_back(pts.at(0));
+    for( int i=1;i<pts.size();i++) {
+
+        PointGL averageP=this->averagePoint(seq);
+        //if the point is at a height below hm/2 from the previous point, it is adding
+        //if the distance between two points  is greater than
+        if(this->sameHeight(pts.at(i),averageP))
+            seq.push_back(pts.at(i));
+        //else, the sequence is finiched
+        else {
+            again=false;
+        }
+        //if the sequence is finiched
+        if(!again||(i+1)==pts.size()){
+            // start a new sequence
+            again=true;
+            // test if the size of the sequence is below to lm
+            // if the last point of a track is below another point, if not a tack
+            if((gap(seq)<=this->lm*3)&&(seq.last().getY()>pts.at(i).getY())){
+
+                //points of the sequence are a track and are added
+                for(int j=0;j<seq.size();j++){
+                    this->addPoint(seq.at(j));
+                }
+            }
+            //this sequence is may be not a track
+            seq.clear();
+            seq.push_back(pts.at(i));
+        }
+    }
+}
 
 void RailCluster::add(const QVector<PointGL> pts)
 {
@@ -278,10 +394,10 @@ int RailCluster::searchCorresponding(PointGL currentPoint,QVector<PointGL> *pts)
             if(this->spacingDistance(currentPoint,testPoint)&& this->sameHeight(currentPoint,testPoint)){
                 corresp=true;
                 //test if it is already added and if is not already added, add i
-                // if(this->addPoint(testPoint)){
+                 if(this->addPoint(testPoint)){
                 // flag: it have added a point
                 pointadded=true;
-                //}
+                }
 
             }
         }
