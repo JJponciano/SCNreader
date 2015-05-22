@@ -185,7 +185,7 @@ void VueParEtape::affichageCloud()
                 float y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
                 float z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
                 //                                glVertex3f(x,int(y*1000)/100,z);
-                if(switchs.contains((* (v->at(i))).z))
+                if(SwitchContenu((* (v->at(i))).z))
                     glColor3f(1.0,0.0,0.0);
                 else
                     glColor3f(1.0,1.0,1.0);
@@ -571,6 +571,26 @@ bool VueParEtape::AucunSwitch()
             i++;
         }
         return (nbs==0);
+    }
+}
+
+bool VueParEtape::SwitchContenu(int ftp)
+{
+    if(AucunSwitch())
+    {
+        return false;
+    }
+    else
+    {
+        int i=0;
+        bool contenu=false;
+        while(i<this->SwitchDetected.size() && !contenu)
+        {
+            if(this->SwitchDetected.at(i).contains(ftp))
+                contenu=true;
+            i++;
+        }
+        return contenu;
     }
 }
 

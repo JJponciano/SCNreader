@@ -183,6 +183,7 @@ private:
     int sizeAllSwitch();
     void LectureSw(QString nameF);
     bool AucunSwitch();
+    bool SwitchContenu(int ftp);
 };
 
 #endif // VUEPARETAPE_H
