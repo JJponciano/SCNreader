@@ -57,8 +57,8 @@ bool PointGL::operator==(const PointGL &a)
 {
     //rounded to the thousandth
     int roundX=this->x*epsilon ;
-    int roundY=this->x*epsilon ;
-    int roundZ=this->x*epsilon ;
+    int roundY=this->y*epsilon ;
+    int roundZ=this->z*epsilon ;
 
     int aX=a.getX()*epsilon ;
     int aY=a.getY()*epsilon ;
@@ -70,7 +70,7 @@ bool PointGL::operator==(const PointGL &a)
 bool PointGL::equals2D(const PointGL a)const{
     //rounded to the thousandth
     int roundX=this->x*epsilon ;
-    int roundY=this->x*epsilon ;
+    int roundY=this->y*epsilon ;
 
 
     int aX=a.getX()*epsilon ;

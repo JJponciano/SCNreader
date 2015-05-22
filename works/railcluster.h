@@ -190,6 +190,7 @@ float gap(QVector <PointGL> reg) const;
     PointGL averagePoint(QVector<PointGL > reg) const;
     bool isContains(PointGL p)const;
     bool isBlackListed(PointGL p)const;
+    int searchCorresponding(PointGL currentPoint, QVector<PointGL> *pts);
 };
 
 #endif // RAILCLUSTER_H

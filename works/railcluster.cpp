@@ -63,9 +63,9 @@ RailCluster::RailCluster(float height, float width, float spacing,  const QVecto
     }
     this->footpulse=okfoot.at(0).getZ();
 
-  //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
-  this->add(okfoot);
-   // this->match(okfoot);
+    //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
+    this->add(okfoot);
+    this->match(okfoot);
     //segmentation again
     QVector <PointGL > ptemp=this->points;
     this->points.clear();
@@ -107,8 +107,8 @@ RailCluster::RailCluster(float height, float width, float spacing,  const QVecto
     //4) growing
     // this->growing(rail,footpulse);
 
-   // this->match(okfoot);
-/*
+    // this->match(okfoot);
+    /*
     //segmentation again
     QVector <PointGL> ptemp=this->points;
      this->points.clear();
@@ -154,7 +154,7 @@ bool RailCluster::isContains( PointGL p)const {
 }
 bool RailCluster::isBlackListed( PointGL p)const{
     // test if points containe p
-    for(int i=0;i<this->points.size();i++){
+    for(int i=0;i<this->blacklist.size();i++){
         if(p.equals2D(this->blacklist.at(i)))
             return true;
     }
@@ -194,8 +194,8 @@ void RailCluster::add(const QVector<PointGL> pts)
                     this->addPoint(seq.at(j));
                 }
             }
-                //this sequence is may be not a track
-                seq.clear();
+            //this sequence is may be not a track
+            seq.clear();
         }
     }
 }
@@ -240,45 +240,51 @@ PointGL RailCluster::averagePoint(QVector <PointGL> reg)const
 bool RailCluster::match(QVector<PointGL> pts)
 {
     bool pointadded=false;
-    /*  This function matches the points in pairs and if is necessary, it adds a point of the pair.
-        * Then, it removes and adds of the blacklist all single point. For to match points two by two,
-        * it tests for each point of this class if the point has a distance close to the average
-        * spacing of railway railand with another point into the list given close to and test if it has a similar height.*/
     //for each point keeped
-    int nbpoint=this->points.size();
-    for(int i=0;i<nbpoint;i++){
+    for(int i=0;i<this->points.size();i++){
         //test if it exists points which have the same height and which is at a distance of as em
         PointGL currentPoint=this->points.at(i);
         //bool for see if the point has a corresponding
-        bool corresp=false;
-        // for each point not yet keeped search a corresponding
-        for(int j=0;j<pts.size();j++){
-            PointGL testPoint=pts.at(j);
-            if(!this->isBlackListed(testPoint)){
-                // if the point have a corresponding
-                if(this->spacingDistance(currentPoint,testPoint)&&
-                        this->sameHeight(currentPoint,testPoint)){
-                    corresp=true;
-                    //test if it is already added and if is not already added, add i
-                    if(this->addPoint(testPoint)){
-                        // flag: it have added a point
-                        pointadded=true;
-                    }
-                }
-            }
-        }
+        int corresp=this->searchCorresponding(currentPoint,&pts);
         // if the point has not a corresponding, it is removed
-        if(!corresp){
+        if(corresp<=0){
             // it is black listed
             this->blacklist.push_back(currentPoint);
             //remove fail point
             this->points.remove(i);
             //since a point is removed, the size of the vector decrease of 1
             i--;
-            nbpoint--;
-        }
+        }else
+            // if a point is added
+            if(corresp==2){
+                // flag: it have added a point
+                pointadded=true;
+            }
     }
     return pointadded;
+}
+int RailCluster::searchCorresponding(PointGL currentPoint,QVector<PointGL> *pts){
+    bool corresp=false;
+    bool pointadded=false;
+    // for each point not yet keeped search a corresponding
+    for(int j=0;j<pts->size();j++){
+        PointGL testPoint=pts->at(j);
+       if(!this->isBlackListed(testPoint)){
+            // if the point have a corresponding
+            if(this->spacingDistance(currentPoint,testPoint)&& this->sameHeight(currentPoint,testPoint)){
+                corresp=true;
+                //test if it is already added and if is not already added, add i
+                if(this->addPoint(testPoint)){
+                    // flag: it have added a point
+                    pointadded=true;
+                }
+            }
+       }
+    }
+    int val=0;
+    if(corresp)val++;
+    if(pointadded)val++;
+    return val;
 }
 
 bool RailCluster::addSimilarePoint(QVector <PointGL > pts)
