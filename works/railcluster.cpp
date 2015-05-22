@@ -201,9 +201,16 @@ void RailCluster::add(const QVector<PointGL> pts)
 }
 
 void RailCluster::remove(PointGL  pt){
+    // search the lasr index of the point
     int i= this->points.lastIndexOf(pt);
-    if(i>=0)
+    if(i>=0){
+        //test if the point is not blacklisted
+        if(!this->isBlackListed(this->points.at(i)))
+        //blackliste the point
+        this->blacklist.push_back(this->points.at(i));
+        // remove point
         this->points.remove(i);
+    }
 }
 float RailCluster::gap(QVector <PointGL> reg)const
 {
@@ -241,19 +248,16 @@ bool RailCluster::match(QVector<PointGL> pts)
 {
     bool pointadded=false;
     //for each point keeped
-    for(int i=0;i<this->points.size();i++){
+     QVector <PointGL > ptemp=this->points;
+    for(int i=0;i<ptemp.size();i++){
         //test if it exists points which have the same height and which is at a distance of as em
-        PointGL currentPoint=this->points.at(i);
+        PointGL currentPoint=ptemp.at(i);
         //bool for see if the point has a corresponding
         int corresp=this->searchCorresponding(currentPoint,&pts);
         // if the point has not a corresponding, it is removed
         if(corresp<=0){
-            // it is black listed
-            this->blacklist.push_back(currentPoint);
             //remove fail point
-            this->points.remove(i);
-            //since a point is removed, the size of the vector decrease of 1
-            i--;
+            this->remove(currentPoint);
         }else
             // if a point is added
             if(corresp==2){
@@ -278,6 +282,7 @@ int RailCluster::searchCorresponding(PointGL currentPoint,QVector<PointGL> *pts)
                     // flag: it have added a point
                     pointadded=true;
                 }
+
             }
        }
     }
