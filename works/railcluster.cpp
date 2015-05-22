@@ -87,6 +87,7 @@ RailCluster::RailCluster(float height, float width, float spacing, const QVector
     }
     //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
     this->add(okfoot);
+     this->match(okfoot);
 }
 
 RailCluster::RailCluster(float height, float width, float spacing,  const QVector<PointGL *> footpulse,  const RailCluster rail)
@@ -107,13 +108,13 @@ RailCluster::RailCluster(float height, float width, float spacing,  const QVecto
     //4) growing
     // this->growing(rail,footpulse);
 
-    // this->match(okfoot);
-    /*
+   this->match(okfoot);
+
     //segmentation again
     QVector <PointGL> ptemp=this->points;
      this->points.clear();
      this->add(ptemp);
- */
+
 }
 
 RailCluster::~RailCluster()
@@ -278,10 +279,10 @@ int RailCluster::searchCorresponding(PointGL currentPoint,QVector<PointGL> *pts)
             if(this->spacingDistance(currentPoint,testPoint)&& this->sameHeight(currentPoint,testPoint)){
                 corresp=true;
                 //test if it is already added and if is not already added, add i
-                if(this->addPoint(testPoint)){
+               // if(this->addPoint(testPoint)){
                     // flag: it have added a point
                     pointadded=true;
-                }
+                //}
 
             }
        }
