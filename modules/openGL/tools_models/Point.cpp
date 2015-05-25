@@ -67,6 +67,27 @@ bool PointGL::operator==(const PointGL &a)
     return roundX== aX&&roundY== aY &&roundZ== aZ;
 
 }
+
+bool PointGL::operator!=(const PointGL &a)
+{
+    //rounded to the thousandth
+    int roundX=this->x*epsilon ;
+    int roundY=this->y*epsilon ;
+    int roundZ=this->z*epsilon ;
+
+    int aX=a.getX()*epsilon ;
+    int aY=a.getY()*epsilon ;
+    int aZ=a.getZ()*epsilon ;
+
+    return roundX!= aX||roundY!= aY ||roundZ!= aZ;
+}
+
+void PointGL::operator-(const PointGL &a)
+{
+    this->x-=a.getX();
+    this->y-=a.getY();
+    this->z-=a.getZ();
+}
 // Surcharge de l'opérateur <
    bool PointGL::operator<( PointGL const &rhs)
   {

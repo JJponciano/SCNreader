@@ -42,7 +42,6 @@
 #include <pcl/sample_consensus/ransac.h>
 #include <pcl/sample_consensus/sac_model_plane.h>
 #include <pcl/sample_consensus/sac_model_sphere.h>
-
 #include "../../exceptions/erreur.h"
 #include <QString>
 #include <QStringList>

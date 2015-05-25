@@ -5,9 +5,6 @@
 #include "Scene.h"
 #include "LesTextures.h"
 #include <QVector>
-#include "GL/glut.h"
-#include "GL/freeglut_std.h"
-#include "GL/freeglut.h"
 #include "../../../exceptions/erreur.h"
 class model_ground_GL
 {

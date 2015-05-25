@@ -14,9 +14,9 @@
 #ifndef MATERIEL_H
 #define	MATERIEL_H
 #include <stdlib.h>
+#include "GL/glut.h"
 #include "GL/freeglut_std.h"
 #include "GL/freeglut.h"
-
 class Materiel {
 public:
     /**

@@ -140,36 +140,49 @@ bool ListeRail::addRail(RailCluster rail)
     //test if the size is too big
     if(this->lesRails.size()>=this->maxSize)
     {
-        this->lesRails.removeFirst();
+        this->lesRails.remove(0);
         return true;
     }
     else
         return false;
 }
-void ListeRail::debuitage(){
-    // tout les points ayant le meme x doivent avoir la meme heuteurs.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-    // il faut trier les points par x
-    QVector <PointGL >cloud=this->getCloud();
-    //new cloud
-    QVector <PointGL >new_cloud;
-    std::sort(cloud.first(),cloud.last());
-
-    //for each point which has same X
-    int currentX=cloud.at(0).getX();
-    QVector<int>pointsX;
-    pointsX.push_back(0);
-    for(int i=0;i<cloud.size();i++){
-        // point is added into the sequence if it has the same x of the sequence
-        if(cloud.at(i).getX()==currentX){
-            pointsX.push_back(i);
+QVector < QVector<PointGL> > ListeRail::spitX(  QVector <PointGL>points){
+    QVector < QVector<PointGL> >pointsX;
+    QVector<int> xKnown;
+    //for each point
+    for(int i=0;i<points.size();i++){
+        //test if the point have a x coordinate known
+        if(!xKnown.contains(points.at(i).getX())){
+            // if it is not known
+            //add the coordinate to the known coordinate
+            xKnown.push_back(points.at(i).getX());
+            //create a new Vector and add the point
+            QVector<PointGL>temp;
+            temp.push_back(points.at(i));
+            pointsX.push_back(temp);
         }else{
-            //if the point has not the same X, the sequence is finish
-            //now test the most common height
-            QHash <float, int> freqs;
+            //if the point is known,
+            //get the index vector of point which has the same coordinate
+            int index=xKnown.lastIndexOf(points.at(i).getX());
+            //add the point
+            pointsX[index].push_back(points.at(i));
+        }
+    }
+    return pointsX;
+}
+
+QVector<PointGL> ListeRail::cleanFailPoints(QVector <QVector<PointGL> >points){
+    int epsilon=1000;// degres of precision
+    QVector<PointGL>new_cloud;
+    for(int i=0;i<points.size();i++){
+        QVector<PointGL>pointsX=points.at(i);
+        for(int j=0;j<pointsX.size();j++){
+            // test the most common height
+            QHash <int,int> freqs;
             for(int j=0;j<pointsX.size();j++){
                 //get height of the point
-                float height=cloud.at(pointsX.at(j)).getY();
+                int height=pointsX.at(j).getY()*epsilon;
                 //test if the height is know
                 if(freqs.contains(height)){
                     // increase the frequency
@@ -179,7 +192,7 @@ void ListeRail::debuitage(){
                     freqs.insert(height,1);
             }
             //search the most common height
-            QList<float>	keys=freqs.keys();
+            QList<int>	keys=freqs.keys();
             float commonheight=freqs.value(keys.at(0));
             int freqMax=0;
             for(int j=1;j<keys.size();j++){
@@ -194,11 +207,25 @@ void ListeRail::debuitage(){
             PointGL pheight(0,commonheight,0);
             // now add all point which has the same height of the common height.
             for(int j=0;j<pointsX.size();j++){
-                if(this->lesRails.at(0).sameHeight(cloud.at(pointsX.at(j)),pheight))
-                    new_cloud.push_back(cloud.at(pointsX.at(j)));
+                if(this->lesRails.at(0).sameHeight(pointsX.at(j),pheight))
+                    new_cloud.push_back(pointsX.at(j));
             }
         }
     }
+}
+
+void ListeRail::debuitage(){
+    // tout les points ayant le meme x doivent avoir la meme heuteurs.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    // il faut trier les points par x
+    QVector <PointGL >cloud=this->getCloud();
+
+
+    //new cloud
+    QVector <PointGL>new_cloud;
+
+
+
     this->initialization(new_cloud,this->maxSize);
 }
 
@@ -280,7 +307,7 @@ bool ListeRail::emptyRegion(QVector<int> countRegions){
     {
         if(this->regions.at(j).isEmpty())
         {
-            this->regions.removeAt(j);
+            this->regions.remove(j);
             j--;
         }
     }

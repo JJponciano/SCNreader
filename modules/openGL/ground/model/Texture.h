@@ -14,9 +14,10 @@
 #ifndef TEXTURE_H
 #define	TEXTURE_H
 #include <iostream>
-#include "GL/glut.h"
+//#include "GL/glut.h"
+//#include "GL/freeglut_std.h"
 #include <stdlib.h>
-#include "GL/freeglut_std.h"
+
 #include <QImage>
 #include <QtOpenGL/QtOpenGL>
 /**

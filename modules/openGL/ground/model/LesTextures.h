@@ -15,11 +15,7 @@
 
 #include "Texture.h"
 #include <vector>
-#include <iostream>
 #include <string>
-#include "GL/glut.h"
-#include <stdlib.h>
-#include "GL/freeglut_std.h"
 #include <cmath>
 class LesTextures {
 public:

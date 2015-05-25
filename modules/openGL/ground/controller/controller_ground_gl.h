@@ -1,6 +1,6 @@
 #ifndef CONTROLLER_GROUND_GL_H
 #define CONTROLLER_GROUND_GL_H
-#include"../model/model_ground_gl.h";
+#include"../model/model_ground_gl.h"
 
 class controller_ground_GL
 {

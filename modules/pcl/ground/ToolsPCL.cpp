@@ -279,7 +279,7 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr ToolsPCL::getCloudGray(std::string pathna
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGB>);
 
     // le constructeur de ifstream permet d'ouvrir un fichier en lecture
-    std::ifstream fichier( pathname );
+    std::ifstream fichier( pathname.c_str() );
 
     if ( fichier ) // test if file is open
     {

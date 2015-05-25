@@ -26,7 +26,6 @@
 #define LISTERAIL_H
 
 #include <pcl/point_types.h>
-#include <QVector>
 #include "railcluster.h"
 
 class ListeRail
@@ -89,13 +88,15 @@ private:
      */
     void split(int regindex);
         QVector <int>switchDetected;///< list of the footpulste with switch
-    QVector <RailCluster> lesRails;///< all rails
-    QVector<QVector <PointGL >>regions;///<regions detected
+    QVector<RailCluster> lesRails;///< all rails
+    QVector< QVector<PointGL> >regions;///<regions detected
 
     bool emptyRegion(QVector<int> countRegions);
     QVector<int> getRegions(PointGL currentPoint);
     void debuitage();
     void initialization(QVector<PointGL> cloud, int maxSize);
+    QVector<QVector<PointGL> > spitX(QVector<PointGL> points);
+    QVector<PointGL> cleanFailPoints(QVector<QVector<PointGL> > points);
 };
 
 #endif // LISTERAIL_H

@@ -33,8 +33,10 @@ public:
     PointGL(float x, float y,float z);
     PointGL(const PointGL& orig);
     bool operator<( PointGL const &rhs);
-     //bool operator <( const PointGL &rhs1, const PointGL &rhs);
+    //bool operator <( const PointGL &rhs1, const PointGL &rhs);
     bool operator==(PointGL const& a);
+    bool operator!=(PointGL const& a);
+    void operator-(PointGL const& a);
     virtual ~PointGL();
     /**
      * Récupération de l'abscisse du point

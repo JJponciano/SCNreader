@@ -17,10 +17,7 @@
 #include "Materiel.h"
 #include <iostream>
 #include <string>
-
 #include <stdlib.h>
-#include <GL/glut.h>
-#include <GL/freeglut_std.h>
 #include <cmath>
 #include <QEvent>
 #include <QMouseEvent>
