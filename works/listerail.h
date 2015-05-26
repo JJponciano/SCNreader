@@ -25,15 +25,14 @@
 #ifndef LISTERAIL_H
 #define LISTERAIL_H
 
-#include <pcl/point_types.h>
 #include "railcluster.h"
-
+#include <QHash>
 class ListeRail
 {
 public:
     ListeRail();
     ListeRail(int maxSize);
-    ListeRail(QVector <PointGL *> cloud, int maxSize);
+    //ListeRail(QVector <PointGL *> cloud, int maxSize);
     ListeRail(QVector <PointGL> cloud, int maxSize);
     ~ListeRail();
 
@@ -73,7 +72,7 @@ public:
 
 private:
     int maxSize;
-
+    int epsilon;// degres of precision
     /**
      * @brief run is the treatment to detect switchs
      */
@@ -108,6 +107,9 @@ private:
     void initialization(QVector<PointGL> cloud, int maxSize);
     QVector<QVector<PointGL> > spitX(QVector<PointGL> points);
     QVector<PointGL> cleanFailPoints(QVector<QVector<PointGL> > points);
+    QHash<int,int> fillFrequencyHeight(QVector<PointGL> pointsX);
+    int searchCommonHeight(QHash<int, int> freqs);
+    QVector<PointGL> addByHeight(QVector<PointGL> pointsX, float height);
 };
 
 #endif // LISTERAIL_H
