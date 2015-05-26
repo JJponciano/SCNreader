@@ -94,32 +94,37 @@ void VueParEtape::paintGL()
     if(affe)
     {
         QVector <pcl::PointXYZ *> rails=this->scnreaderFond.getLesRails().getCloud();
-
-        glBegin(GL_POINTS);
-        for(int i=0; i<rails.size(); i++)
+        if(rails.size()>0)
         {
-            glColor3f(0.0,1.0,1.0);
-            glVertex3f(rails.at(i)->x, rails.at(i)->y, (rails.at(i)->z-this->ftpDI)*0.1);
+            glBegin(GL_POINTS);
+            for(int i=0; i<rails.size(); i++)
+            {
+                glColor3f(0.0,1.0,1.0);
+                glVertex3f(rails.at(i)->x, rails.at(i)->y, (rails.at(i)->z-this->ftpDI)*0.1);
+            }
+            glEnd();
         }
-        glEnd();
     }
 
     if(affr)
     {
         pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC=this->scnreaderFond.getResultRANSAC();
-        QVector <int> switchs= scnreaderFond.getLesRailsOptimize().getSwitchDetected();
-        glBegin(GL_POINTS);
-        for(int i=0; i<resultRANSAC->points.size(); i++)
+        if(!this->scnreaderFond.getRansacVide())
         {
-            int z=resultRANSAC->points.at(i).z;
-            if(switchs.contains(z))
-                glColor3f(1.0,1.0,0.0);
-            else
-                glColor3f(1.0,0.0,1.0);
-            glVertex3f(resultRANSAC->points.at(i).x, resultRANSAC->points.at(i).y, (z-this->ftpDI)*0.1);
+            QVector <int> switchs= scnreaderFond.getLesRailsOptimize().getSwitchDetected();
+            glBegin(GL_POINTS);
+            for(int i=0; i<resultRANSAC->points.size(); i++)
+            {
+                int z=resultRANSAC->points.at(i).z;
+                if(switchs.contains(z))
+                    glColor3f(1.0,1.0,0.0);
+                else
+                    glColor3f(1.0,0.0,1.0);
+                glVertex3f(resultRANSAC->points.at(i).x, resultRANSAC->points.at(i).y, (z-this->ftpDI)*0.1);
 
+            }
+            glEnd();
         }
-        glEnd();
     }
     glPopMatrix();
     //----------------------------------------------------------------------*/

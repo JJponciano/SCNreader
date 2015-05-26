@@ -174,10 +174,13 @@ public:
         */
        void extractionCloud(int d, int f);
 
+       bool getRansacVide() const;
+       void setRansacVide(bool value);
+
 private:
-      int capacity;
-      int workWindows;
-      /**
+       int capacity;
+       int workWindows;
+       /**
        * @brief samePoint watch if two points are the same or not
        * @param ptP the point which is contained in QHash
        * @param pt the point which is contained in cloud
@@ -265,6 +268,7 @@ private:
      bool cfs;
      void enregistre(QString noms);
      void VideEtEnregistre(QString noms);
+     bool RansacVide;
 };
 
 #endif // SCNREADER_MODULE_H

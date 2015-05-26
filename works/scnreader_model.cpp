@@ -32,6 +32,7 @@ scnreader_model::scnreader_model():ToolsPCL()
     this->cfs=false;
     //constant value
     this->capacity=10000000;
+    this->RansacVide=true;
 }
 
 scnreader_model::~scnreader_model()
@@ -597,6 +598,8 @@ void scnreader_model::clear()
     this->nuage.clear();
     this->segmentation.clear();
     this->extraction.clear();
+    this->LesSwitchs.clear();
+    this->RansacVide=true;
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f, QVector<int>* tailles)
@@ -906,6 +909,7 @@ void scnreader_model::createRail()
 
 void scnreader_model::optimization()
 {
+    this->RansacVide=false;
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=this->getVectInCloud(this->lesRails.getCloud());
 
     this->resultRANSAC=this->ransac(cloud);
@@ -1003,3 +1007,13 @@ void scnreader_model::VideEtEnregistre(QString noms)
          }else throw Erreur(" The file switch.txt have not been saved, check the write permission!");
 
 }
+bool scnreader_model::getRansacVide() const
+{
+    return RansacVide;
+}
+
+void scnreader_model::setRansacVide(bool value)
+{
+    RansacVide = value;
+}
+
