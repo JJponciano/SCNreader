@@ -22,8 +22,7 @@
  * @version 0.1
  */
 #include "listerail.h"
-#include <algorithm>
-#include <QHash>
+
 ListeRail::ListeRail()
 {
     this->maxSize=500;
@@ -32,9 +31,11 @@ ListeRail::ListeRail()
 ListeRail::ListeRail(int maxSize)
 {
     this->maxSize=maxSize;
+    this->epsilon=1000;// degres of precision
 }
 ListeRail::ListeRail(QVector <PointGL > cloud,int maxSize)
 {
+    this->epsilon=1000;// degres of precision
     this->initialization(cloud,maxSize);
 }
 void ListeRail::initialization(QVector <PointGL > cloud,int maxSize){
@@ -141,7 +142,7 @@ ListeRail::~ListeRail()
 
 bool ListeRail::addRail(RailCluster rail)
 {
-std::cout<<this->lesRails.size()<<"/"<<this->maxSize<<std::endl;
+    std::cout<<this->lesRails.size()<<"/"<<this->maxSize<<std::endl;
     // add the rail
     this->lesRails.push_back(rail);
     //test if the size is too big
@@ -152,16 +153,15 @@ std::cout<<this->lesRails.size()<<"/"<<this->maxSize<<std::endl;
     }
     else{
         //test if the track is the last
-         if(this->lesRails.size()==this->maxSize-1){
+        if(this->lesRails.size()==this->maxSize-1){
             //performance of denoising
-             this->denoising();
-         }
+            this->denoising();
+        }
         return false;
     }
 }
 
 QVector < QVector<PointGL> > ListeRail::spitX(  QVector <PointGL>points){
-     int epsilon=1000;// degres of precision
     QVector < QVector<PointGL> >pointsX;
     QVector<int> xKnown;
     //for each point
@@ -187,49 +187,62 @@ QVector < QVector<PointGL> > ListeRail::spitX(  QVector <PointGL>points){
     return pointsX;
 }
 
+QHash <int,int> ListeRail::fillFrequencyHeight( QVector<PointGL> pointsX){
+
+    // <height , frequency>
+    QHash <int,int> freqs;
+    for(int j=0;j<pointsX.size();j++){
+        //get height of the point
+        int height=pointsX.at(j).getY()*this->epsilon;
+        //test if the height is know
+        if(freqs.contains(height)){
+            // increase the frequency
+            freqs.insert(height,freqs.value(height)+1);
+        }else
+            // add the frequency
+            freqs.insert(height,1);
+    }
+    return freqs;
+}
+
+int ListeRail::searchCommonHeight(QHash <int,int> freqs){
+    //search the most common height
+    QList<int>	keys=freqs.keys();
+    int commonheight=freqs.value(keys.at(0));
+    int freqMax=0;
+    for(int j=1;j<keys.size();j++){
+        //get frequency for each height
+        int currentFreq=freqs.value(keys.at(j));
+        //test if the frequency is greater than commonheight
+        if(currentFreq>freqMax){
+            freqMax=currentFreq;
+            commonheight=freqs.value(keys.at(j));
+        }
+    }
+    return commonheight;
+}
+
 QVector<PointGL> ListeRail::cleanFailPoints(QVector <QVector<PointGL> >points){
-    int epsilon=1000;// degres of precision
+
     QVector<PointGL>new_cloud;
     for(int i=0;i<points.size();i++){
         QVector<PointGL>pointsX=points.at(i);
+        // <height , frequency>
+        QHash <int,int> freqs=this->fillFrequencyHeight(pointsX);
+        //search the most common height
+        int commonheight=this->searchCommonHeight(freqs);
+        //convert commonheight in float
+        float heightFound=(float)commonheight/(float)epsilon;
+        PointGL pheight(0,heightFound,0);
+        //adds all points, without duplicates, which has the same height of the common height.
         for(int j=0;j<pointsX.size();j++){
-            // <height , frequency>
-            QHash <int,int> freqs;
-            for(int j=0;j<pointsX.size();j++){
-                //get height of the point
-                int height=pointsX.at(j).getY()*epsilon;
-                //test if the height is know
-                if(freqs.contains(height)){
-                    // increase the frequency
-                    freqs.insert(height,freqs.value(height)+1);
-                }else
-                    // add the frequency
-                    freqs.insert(height,1);
-            }
-            //search the most common height
-            QList<int>	keys=freqs.keys();
-            int commonheight=freqs.value(keys.at(0));
-            int freqMax=0;
-            for(int j=1;j<keys.size();j++){
-                //get frequency for each height
-                int currentFreq=freqs.value(keys.at(j));
-                //test if the frequency is greater than commonheight
-                if(currentFreq>freqMax){
-                    freqMax=currentFreq;
-                    commonheight=freqs.value(keys.at(j));
-                }
-            }
-            float heightFound=(float)commonheight/(float)epsilon;
-            PointGL pheight(0,heightFound,0);
-            // now add all point which has the same height of the common height.
-            for(int j=0;j<pointsX.size();j++){
-                if(this->lesRails.at(0).sameHeight(pointsX.at(j),pheight))
-                    new_cloud.push_back(pointsX.at(j));
-            }
+            if(!new_cloud.contains(pointsX.at(j))&&this->lesRails.at(0).sameHeight(pointsX.at(j),pheight))
+                new_cloud.push_back(pointsX.at(j));
         }
     }
     return new_cloud;
 }
+
 
 void ListeRail::denoising(){
     // tout les points ayant le meme x doivent avoir la meme heuteurs.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -171,11 +171,11 @@ public:
      ScnData getData(int i) const;
      void setDatas(const QVector<ScnData> &value);
 
-      /**
-       * @brief acces to QHash TODO OR NOT
-       * @return the Qhash which contains all points of exractions of a cloud's part
-       */
-       QHash <QString, QVector<pcl::PointXYZ *>*> getExtraction();
+//      /**
+//       * @brief acces to QHash TODO OR NOT
+//       * @return the Qhash which contains all points of exractions of a cloud's part
+//       */
+//       QHash <QString, QVector<pcl::PointXYZ *>*> getExtraction();
 
        /**
         * @brief scnreader_model::extractionCloud extract a part of cloud TODO OR NOT

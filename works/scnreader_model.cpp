@@ -332,193 +332,193 @@ int scnreader_model::IsFootpulse(std::string pathname){
 }
 
 
-void scnreader_model::extractionCloud(int d, int f) {
-    /*
-    if(nuage.contains(d) && nuage.contains(f))
-    {
-        //---------------------Create the cluster to do the extraction-------------------
-        //vector wich contains the count of point by footpulse
-        QVector<int> tailles;
-        //temporarly cloud to do the segmentation
-        pcl::PointCloud<pcl::PointXYZ>::Ptr CloudTemp(new pcl::PointCloud<pcl::PointXYZ>);
-        //Fill the cloud and the vector tailles
-        int i=d;
-        while(i<=f)
-        {
-            if(nuage.contains(i))
-            {
-                QVector <pcl::PointXYZ*> * v=nuage.value(i);
-                tailles.push_back(v->size());
-                for(int j=0; j<v->size(); j++)
-                {
-                    pcl::PointXYZ* p=v->at(j);
-                    CloudTemp->points.push_back(* p);
-                }
-                i++;
-            }
-            else throw Erreur("Interval de footpulses discontinu dans la segmentation");
-        }
-        CloudTemp->width = CloudTemp->points.size();
-        CloudTemp->height = 1;
-        CloudTemp->is_dense = false;
-        CloudTemp->points.resize (CloudTemp->width * CloudTemp->height);
-//------------------------------------Extraction---------------------------------------------------
-        QStringList clusterCreates;
-        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
-        // Create the filtering object: downsample the dataset using a leaf size of 1cm
-        pcl::VoxelGrid<pcl::PointXYZ> vg;
-        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>);
-        vg.setInputCloud (CloudTemp);
-        vg.setLeafSize (0.01f, 0.01f, 0.01f);
-        vg.filter (*cloud_filtered);
+//void scnreader_model::extractionCloud(int d, int f) {
+//    /*
+//    if(nuage.contains(d) && nuage.contains(f))
+//    {
+//        //---------------------Create the cluster to do the extraction-------------------
+//        //vector wich contains the count of point by footpulse
+//        QVector<int> tailles;
+//        //temporarly cloud to do the segmentation
+//        pcl::PointCloud<pcl::PointXYZ>::Ptr CloudTemp(new pcl::PointCloud<pcl::PointXYZ>);
+//        //Fill the cloud and the vector tailles
+//        int i=d;
+//        while(i<=f)
+//        {
+//            if(nuage.contains(i))
+//            {
+//                QVector <pcl::PointXYZ*> * v=nuage.value(i);
+//                tailles.push_back(v->size());
+//                for(int j=0; j<v->size(); j++)
+//                {
+//                    pcl::PointXYZ* p=v->at(j);
+//                    CloudTemp->points.push_back(* p);
+//                }
+//                i++;
+//            }
+//            else throw Erreur("Interval de footpulses discontinu dans la segmentation");
+//        }
+//        CloudTemp->width = CloudTemp->points.size();
+//        CloudTemp->height = 1;
+//        CloudTemp->is_dense = false;
+//        CloudTemp->points.resize (CloudTemp->width * CloudTemp->height);
+////------------------------------------Extraction---------------------------------------------------
+//        QStringList clusterCreates;
+//        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
+//        // Create the filtering object: downsample the dataset using a leaf size of 1cm
+//        pcl::VoxelGrid<pcl::PointXYZ> vg;
+//        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>);
+//        vg.setInputCloud (CloudTemp);
+//        vg.setLeafSize (0.01f, 0.01f, 0.01f);
+//        vg.filter (*cloud_filtered);
 
-        // Create the segmentation object for the planar model and set all the parameters
-        pcl::SACSegmentation<pcl::PointXYZ> seg;
-        pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
-        pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
-        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ> ());
-        pcl::PCDWriter writer;
-        seg.setOptimizeCoefficients (true);
-        seg.setModelType (pcl::SACMODEL_PLANE);
-        seg.setMethodType (pcl::SAC_RANSAC);
-        seg.setMaxIterations (100);
-        seg.setDistanceThreshold (0.02);
+//        // Create the segmentation object for the planar model and set all the parameters
+//        pcl::SACSegmentation<pcl::PointXYZ> seg;
+//        pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
+//        pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
+//        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ> ());
+//        pcl::PCDWriter writer;
+//        seg.setOptimizeCoefficients (true);
+//        seg.setModelType (pcl::SACMODEL_PLANE);
+//        seg.setMethodType (pcl::SAC_RANSAC);
+//        seg.setMaxIterations (100);
+//        seg.setDistanceThreshold (0.02);
 
-        int  nr_points = (int) cloud_filtered->points.size ();
-        while (cloud_filtered->points.size () > 0.3 * nr_points)
-        {
-            // Segment the largest planar component from the remaining cloud
-            seg.setInputCloud (cloud_filtered);
-            seg.segment (*inliers, *coefficients);
-            if (inliers->indices.size () == 0)
-            {
-                break;
-            }
+//        int  nr_points = (int) cloud_filtered->points.size ();
+//        while (cloud_filtered->points.size () > 0.3 * nr_points)
+//        {
+//            // Segment the largest planar component from the remaining cloud
+//            seg.setInputCloud (cloud_filtered);
+//            seg.segment (*inliers, *coefficients);
+//            if (inliers->indices.size () == 0)
+//            {
+//                break;
+//            }
 
-            // Extract the planar inliers from the input cloud
-            pcl::ExtractIndices<pcl::PointXYZ> extract;
-            extract.setInputCloud (cloud_filtered);
-            extract.setIndices (inliers);
-            extract.setNegative (false);
+//            // Extract the planar inliers from the input cloud
+//            pcl::ExtractIndices<pcl::PointXYZ> extract;
+//            extract.setInputCloud (cloud_filtered);
+//            extract.setIndices (inliers);
+//            extract.setNegative (false);
 
-            // Get the points associated with the planar surface
-            extract.filter (*cloud_plane);
+//            // Get the points associated with the planar surface
+//            extract.filter (*cloud_plane);
 
-            // Remove the planar inliers, extract the rest
-            extract.setNegative (true);
-            extract.filter (*cloud_f);
-            *cloud_filtered = *cloud_f;
-        }
+//            // Remove the planar inliers, extract the rest
+//            extract.setNegative (true);
+//            extract.filter (*cloud_f);
+//            *cloud_filtered = *cloud_f;
+//        }
 
-        // Creating the KdTree object for the search method of the extraction
-        pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
-        tree->setInputCloud (cloud_filtered);
+//        // Creating the KdTree object for the search method of the extraction
+//        pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
+//        tree->setInputCloud (cloud_filtered);
 
-        std::vector<pcl::PointIndices> cluster_indices;
-        pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
-        ec.setClusterTolerance (0.02); // 2cm
-        ec.setMinClusterSize (100);
-        ec.setMaxClusterSize (25000);
-        ec.setSearchMethod (tree);
-        ec.setInputCloud (cloud_filtered);
-        ec.extract (cluster_indices);
+//        std::vector<pcl::PointIndices> cluster_indices;
+//        pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
+//        ec.setClusterTolerance (0.02); // 2cm
+//        ec.setMinClusterSize (100);
+//        ec.setMaxClusterSize (25000);
+//        ec.setSearchMethod (tree);
+//        ec.setInputCloud (cloud_filtered);
+//        ec.extract (cluster_indices);
 
-        int j = 0;
-        for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
-        {
-            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
+//        int j = 0;
+//        for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
+//        {
+//            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
 
-            for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); ++pit)
-                cloud_cluster->points.push_back (cloud_filtered->points[*pit]); //
+//            for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); ++pit)
+//                cloud_cluster->points.push_back (cloud_filtered->points[*pit]); //
 
-            cloud_cluster->width = cloud_cluster->points.size ();
-            cloud_cluster->height = 1;
-            cloud_cluster->is_dense = true;
+//            cloud_cluster->width = cloud_cluster->points.size ();
+//            cloud_cluster->height = 1;
+//            cloud_cluster->is_dense = true;
 
-            std::stringstream ss;
-            ss << "cloud_cluster_" << j << ".pcd";
-            writer.write<pcl::PointXYZ> (ss.str(), *cloud_cluster, false); //
-            clusterCreates << ss.str().c_str();
-            j++;
+//            std::stringstream ss;
+//            ss << "cloud_cluster_" << j << ".pcd";
+//            writer.write<pcl::PointXYZ> (ss.str(), *cloud_cluster, false); //
+//            clusterCreates << ss.str().c_str();
+//            j++;
 
-             *  //create new cloud
-            QVector<pcl::PointXYZ*>* v= new QVector<pcl::PointXYZ*>();
-            // Fill in the cloud data
+//             *  //create new cloud
+//            QVector<pcl::PointXYZ*>* v= new QVector<pcl::PointXYZ*>();
+//            // Fill in the cloud data
 
-            // Generate the data
-            for (size_t i = 0; i < inliers->indices.size (); ++i)
-            {
-                //vector which contains points corresponding to a footpulse
-                QVector<pcl::PointXYZ*>* vec;
-                //indice of point which is contained in segmentation
-                int indiceC=inliers->indices[i];
-                //indice to know what vector to use
-                int ind=0;
-                int nb;
-                //sum of size of previous vectors
-                if(ind<tailles.size())
-                {
-                    nb=tailles.at(ind);
-                }
-                else
-                {
-                    std::stringstream ss;
-                    ss << "Erreur dans TAILLE pas initialise, pour l'emplacement "<<ind<< " car vecteur de taille: "<<tailles.size();
-                    std::string message=ss.str();
-                    throw Erreur(message);
-                }
-                //int nb=tailles.at(ind);
-                //we grow up the ind to find the good vector where the point find
-                while(ind<(f-d) && indiceC>=nb)
-                {
-                    ind++;
-                    if(ind<tailles.size())
-                    {
-                        nb+=tailles.at(ind);
-                    }
-                    else
-                    {
-                        std::stringstream ss;
-                        ss << "Erreur dans TAILLE pour l'emplacement "<<ind<< " car vecteur de taille: "<<tailles.size();
-                        std::string message=ss.str();
-                        throw Erreur(message);
-                    }
-                   // nb+=tailles.at(ind);
-                }
-                //we keep the vector corresponding
-                vec=nuage.value(d+ind);
-                //we add the pointer of the corresponding point
-                if(ind>0)
-                {
+//            // Generate the data
+//            for (size_t i = 0; i < inliers->indices.size (); ++i)
+//            {
+//                //vector which contains points corresponding to a footpulse
+//                QVector<pcl::PointXYZ*>* vec;
+//                //indice of point which is contained in segmentation
+//                int indiceC=inliers->indices[i];
+//                //indice to know what vector to use
+//                int ind=0;
+//                int nb;
+//                //sum of size of previous vectors
+//                if(ind<tailles.size())
+//                {
+//                    nb=tailles.at(ind);
+//                }
+//                else
+//                {
+//                    std::stringstream ss;
+//                    ss << "Erreur dans TAILLE pas initialise, pour l'emplacement "<<ind<< " car vecteur de taille: "<<tailles.size();
+//                    std::string message=ss.str();
+//                    throw Erreur(message);
+//                }
+//                //int nb=tailles.at(ind);
+//                //we grow up the ind to find the good vector where the point find
+//                while(ind<(f-d) && indiceC>=nb)
+//                {
+//                    ind++;
+//                    if(ind<tailles.size())
+//                    {
+//                        nb+=tailles.at(ind);
+//                    }
+//                    else
+//                    {
+//                        std::stringstream ss;
+//                        ss << "Erreur dans TAILLE pour l'emplacement "<<ind<< " car vecteur de taille: "<<tailles.size();
+//                        std::string message=ss.str();
+//                        throw Erreur(message);
+//                    }
+//                   // nb+=tailles.at(ind);
+//                }
+//                //we keep the vector corresponding
+//                vec=nuage.value(d+ind);
+//                //we add the pointer of the corresponding point
+//                if(ind>0)
+//                {
 
-                    int num=indiceC-nb+tailles.at(ind);
-                    std::cout<<indiceC<<","<<nb<< "," << num<<std::endl;
-                    if(num<vec->size())
-                    {
-                        v->push_back(vec->at(num));
-                    }
-                    else
-                    {
-                        std::stringstream ss;
-                        ss << "Erreur dans VEC pour l'emplacement "<<num<< " car vecteur de taille: "<<vec->size();
-                        std::string message=ss.str();
-                        throw Erreur(message);
-                    }
-                }
-                else
-                    v->push_back(vec->at(indiceC));
-c
-            }
-            //add the segmentation to the hashtable
-            std::stringstream ss;
-            ss << "S_" << d <<"_" << f;
-            segmentation.insert(QString::fromStdString (ss.str()), v);
-        }
-        }
-        //return clusterCreates;
-    }
-    else throw Erreur("Interval de footpulses incorrect pour effectuer l'extraction");*/
-}
+//                    int num=indiceC-nb+tailles.at(ind);
+//                    std::cout<<indiceC<<","<<nb<< "," << num<<std::endl;
+//                    if(num<vec->size())
+//                    {
+//                        v->push_back(vec->at(num));
+//                    }
+//                    else
+//                    {
+//                        std::stringstream ss;
+//                        ss << "Erreur dans VEC pour l'emplacement "<<num<< " car vecteur de taille: "<<vec->size();
+//                        std::string message=ss.str();
+//                        throw Erreur(message);
+//                    }
+//                }
+//                else
+//                    v->push_back(vec->at(indiceC));
+//c
+//            }
+//            //add the segmentation to the hashtable
+//            std::stringstream ss;
+//            ss << "S_" << d <<"_" << f;
+//            segmentation.insert(QString::fromStdString (ss.str()), v);
+//        }
+//        }
+//        //return clusterCreates;
+//    }
+//    else throw Erreur("Interval de footpulses incorrect pour effectuer l'extraction");*/
+//}
 
 
 
@@ -574,9 +574,9 @@ QHash <QString, QVector<pcl::PointXYZ*>*> scnreader_model::getSegmentation(){
 }
 
 
-QHash <QString, QVector<pcl::PointXYZ *>*> scnreader_model::getExtraction(){
-    return this->extraction;
-}
+//QHash <QString, QVector<pcl::PointXYZ *>*> scnreader_model::getExtraction(){
+//    return this->extraction;
+//}
 
 void scnreader_model::setFtpd(int d){
     this->ftpd=d;

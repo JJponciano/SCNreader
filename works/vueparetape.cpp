@@ -377,7 +377,7 @@ void VueParEtape::planarSegmentation(int d, int f){
 }
 
 void VueParEtape::extractionCloud(int i){
-    this->scnreaderFond.extractionCloud(i,i);
+   // this->scnreaderFond.extractionCloud(i,i);
 }
 
 //===============================================
