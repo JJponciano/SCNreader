@@ -184,6 +184,10 @@ private:
     QVector <ScnData> datas;
     int ftpd;
     int ftpf;
+    /**
+      * @brief lesRails contains tracks for each footpulse
+      *
+      */
     ListeRail lesRails;
     ListeRail lesRailsOptimize;
     pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC;
@@ -260,12 +264,23 @@ private:
       */
     QHash <QString, QVector<pcl::PointXYZ *>*> extraction;
     /**
-      * @brief lesRails contains tracks for each footpulse
-      *
-      */
+     * @brief optimization optimize the search of tracks
+     */
     void optimization();
+    /**
+     * @brief enregistre record footpulse corresponding to a switch in a file
+     * @param noms is name of file
+     */
     void enregistre(QString noms);
+    /**
+     * @brief VideEtEnregistre record and remove footpulse corresponding to a switch in a file
+     * @param noms is name of file
+     */
     void VideEtEnregistre(QString noms);
+    /**
+     * @brief cleanNoise remove points which don't belong to tracks
+     */
+    void cleanNoise();
 
 };
 

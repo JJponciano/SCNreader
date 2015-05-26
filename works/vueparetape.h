@@ -134,25 +134,12 @@ public:
 
 private:
 
-   void affichageCloud();
-   void affichageSegm();
-   void affichageSwitch();
-  scnreader_model scnreaderFond;
-  //int ftpdeDepart;
-  //int ftpCourant;
-  //QVector<int> pPrec;
-  //int pCourant;
-  //int pSuiv;
-  //int step;
-  //bool avance;
 
-  //footpulse de début et de fin du cloud entier
-    //int ftpD;
-   // int ftpF;
-  //footpulse de début et de fin de l'intervalle de travail
+    scnreader_model scnreaderFond;
+    //footpulse de début et de fin de l'intervalle de travail
     int ftpDI;
     int ftpFI;
-  //boolean permettant de gérer l'affichage
+    //boolean permettant de gérer l'affichage
     bool affs;
     bool affswitch;
     bool affe;
@@ -165,18 +152,24 @@ private:
     std::string nomFichier;
     float mirx;
     int sizeCloud;
-    QString KeepName(QString fileName);
-
     //numero of switch
     int numS;
     //position of switch
     int posSwitch;
     //all switch which are detected
     QVector < QVector <int> > SwitchDetected;
+
+
+
+    QString KeepName(QString fileName);
     int sizeAllSwitch();
     void LectureSw(QString nameF);
     bool AucunSwitch();
     bool SwitchContenu(int ftp);
+    void affichageMir();
+    void affichageCloud();
+    void affichageSegm();
+    void affichageSwitch();
 };
 
 #endif // VUEPARETAPE_H
