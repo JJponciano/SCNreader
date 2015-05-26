@@ -45,6 +45,7 @@ public:
     bool operator==(PointGL const& a);
     bool operator!=(PointGL const& a);
     void operator-(PointGL const& a);
+    bool distanceX(PointGL const point, float distance) const;
     virtual ~PointGL();
     /**
      * Récupération de l'abscisse du point
@@ -136,6 +137,7 @@ public:
      * @return true if points are similars
      */
     bool equals2D(const PointGL a) const;
+    bool distanceY(const PointGL point, float distance) const;
 private:
     float rad;
     float x;

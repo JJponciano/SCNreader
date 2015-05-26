@@ -96,6 +96,31 @@ void PointGL::operator-(const PointGL &a)
     this->y-=a.getY();
     this->z-=a.getZ();
 }
+
+bool PointGL::distanceX(const PointGL point,float distance)const
+{
+    if(distance<0.0)
+        distance=-1.0*distance;
+        //get distance between p1 and p2 - average spacing between 2 tracks
+        float x1=this->getX();
+        float x2=point.getX();
+        float pv=x1-x2;
+        if(pv<0.0)
+            pv=-1.0*pv;
+        return pv<distance;
+}
+bool PointGL::distanceY(const PointGL point,float distance)const
+{
+    if(distance<0.0)
+        distance=-1.0*distance;
+        //get distance between p1 and p2 - average spacing between 2 tracks
+        float y1=this->getY();
+        float y2=point.getY();
+        float pv=y1-y2;
+        if(pv<0.0)
+            pv=-1.0*pv;
+        return pv<distance;
+}
 // Surcharge de l'opérateur <
    bool PointGL::operator<( PointGL const &rhs)
   {

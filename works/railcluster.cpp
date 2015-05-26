@@ -492,43 +492,19 @@ void RailCluster::setFootpulse(int value)
 
 bool RailCluster::sameHeight(PointGL p1, PointGL p2) const
 {
-
-    //get distance between p1 and p2
-    float y1=p1.getY();
-    float y2=p2.getY();
-    float pv=y1-y2;
-    if(pv<0.0)
-        pv=-1.0*pv;
-    //approximation
-    bool lesbool=(pv<this->delta);
-
-    return lesbool;
+ return p1.distanceY(p2,this->delta);
 }
 bool RailCluster::sameWidth( PointGL p1,  PointGL p2)const
 {
-    //get distance between p1 and p2
-    float x1=p1.getX();
-    float x2=p2.getX();
-    float pv=x1-x2;
-    if(pv<0.0)
-        pv=-1.0*pv;
-    //approximation
-    bool lesbool=(pv<this->delta);
-    return lesbool;
+    return p1.distanceX(p2,this->delta);
 }
 bool RailCluster::widthDistance( PointGL p1,  PointGL p2)const
 {
-    //get distance between p1 and p2 - average spacing between 2 tracks
-    float x1=p1.getX();
-    float x2=p2.getX();
-    float pv=x1-x2;
-    if(pv<0.0)
-        pv=-1.0*pv;
-    //approximation
-
     float dsup= this->lm-this->delta;
-    bool lesbool=(pv<dsup);
-    return lesbool;
+   return p1.distanceX(p2,dsup);
+}
+float RailCluster::getWidthDistance(){
+    return this->lm-this->delta;
 }
 
 bool RailCluster::spacingDistance( PointGL p1,  PointGL p2)const

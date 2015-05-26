@@ -177,7 +177,12 @@ public:
 
     int getFootpulse() const;
     void setFootpulse(int value);
-
+    /**
+     * @brief getWidthDistance
+     * @return return the distance of a track
+     */
+    float getWidthDistance();
+    float getApproximately();
 private:
 float gap(QVector <PointGL> reg) const;
     int footpulse;

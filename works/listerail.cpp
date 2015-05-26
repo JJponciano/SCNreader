@@ -320,11 +320,13 @@ QVector<int> ListeRail::getRegions(PointGL currentPoint){
 
 bool ListeRail::emptyRegion(QVector<int> countRegions){
     bool mergeRegions=true;
-    //you remove all regions which the point could be added, and create a new region.
     int tooSmall=this->regions.at(countRegions.at(0)).size();
+    // remove all regions which the point could be added, and create a new region.
+
+     //search the smalest region
     for(int j=0;j<countRegions.size();j++)
     {
-        //search the smalest region
+
         if(this->regions.at(countRegions.at(j)).size()<tooSmall)
             tooSmall=this->regions.at(countRegions.at(j)).size();
         //empty region
@@ -451,7 +453,7 @@ bool ListeRail::isInRegion(const QVector<PointGL> reg, PointGL pt)const
 {
     //for each point of the region
     if(this->lesRails.size()!=0)
-        for(int i=reg.size()-50;i<reg.size();i++){
+        for(int i=0;i<reg.size();i++){
             if(i<0)i=0;
             //test if the points avec the same width with and height the point to be tested
             if(this->lesRails.at(0).widthDistance(reg.at(i),pt))
