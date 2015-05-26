@@ -152,24 +152,26 @@ std::cout<<this->lesRails.size()<<"/"<<this->maxSize<<std::endl;
     }
     else{
         //test if the track is the last
-//         if(this->lesRails.size()==this->maxSize-1){
-//            //performance of denoising
-//             this->denoising();
-//         }
+         if(this->lesRails.size()==this->maxSize-1){
+            //performance of denoising
+             this->denoising();
+         }
         return false;
     }
 }
 
 QVector < QVector<PointGL> > ListeRail::spitX(  QVector <PointGL>points){
+     int epsilon=1000;// degres of precision
     QVector < QVector<PointGL> >pointsX;
     QVector<int> xKnown;
     //for each point
     for(int i=0;i<points.size();i++){
+        int x=(int)(points.at(i).getX()*epsilon);
         //test if the point have a x coordinate known
-        if(!xKnown.contains(points.at(i).getX())){
+        if(!xKnown.contains(x)){
             // if it is not known
             //add the coordinate to the known coordinate
-            xKnown.push_back(points.at(i).getX());
+            xKnown.push_back(x);
             //create a new Vector and add the point
             QVector<PointGL>temp;
             temp.push_back(points.at(i));
@@ -177,7 +179,7 @@ QVector < QVector<PointGL> > ListeRail::spitX(  QVector <PointGL>points){
         }else{
             //if the point is known,
             //get the index vector of point which has the same coordinate
-            int index=xKnown.lastIndexOf(points.at(i).getX());
+            int index=xKnown.lastIndexOf(x);
             //add the point
             pointsX[index].push_back(points.at(i));
         }
@@ -191,7 +193,7 @@ QVector<PointGL> ListeRail::cleanFailPoints(QVector <QVector<PointGL> >points){
     for(int i=0;i<points.size();i++){
         QVector<PointGL>pointsX=points.at(i);
         for(int j=0;j<pointsX.size();j++){
-            // test the most common height
+            // <height , frequency>
             QHash <int,int> freqs;
             for(int j=0;j<pointsX.size();j++){
                 //get height of the point
@@ -206,7 +208,7 @@ QVector<PointGL> ListeRail::cleanFailPoints(QVector <QVector<PointGL> >points){
             }
             //search the most common height
             QList<int>	keys=freqs.keys();
-            float commonheight=freqs.value(keys.at(0));
+            int commonheight=freqs.value(keys.at(0));
             int freqMax=0;
             for(int j=1;j<keys.size();j++){
                 //get frequency for each height
@@ -217,7 +219,8 @@ QVector<PointGL> ListeRail::cleanFailPoints(QVector <QVector<PointGL> >points){
                     commonheight=freqs.value(keys.at(j));
                 }
             }
-            PointGL pheight(0,commonheight,0);
+            float heightFound=(float)commonheight/(float)epsilon;
+            PointGL pheight(0,heightFound,0);
             // now add all point which has the same height of the common height.
             for(int j=0;j<pointsX.size();j++){
                 if(this->lesRails.at(0).sameHeight(pointsX.at(j),pheight))
