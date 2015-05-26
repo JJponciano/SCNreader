@@ -185,6 +185,7 @@ public:
 
        bool getRansacVide() const;
        void setRansacVide(bool value);
+       void SavePartInTxt(int d, int f, QString pathname);
 private:
        int capacity;
        int workWindows;

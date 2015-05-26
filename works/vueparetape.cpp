@@ -109,10 +109,12 @@ void VueParEtape::paintGL()
     if(affr)
     {
         pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC=this->scnreaderFond.getResultRANSAC();
+
         if(!this->scnreaderFond.getRansacVide())
         {
             QVector <int> switchs= scnreaderFond.getLesRailsOptimize().getSwitchDetected();
             glBegin(GL_POINTS);
+
             for(int i=0; i<resultRANSAC->points.size(); i++)
             {
                 int z=resultRANSAC->points.at(i).z;
@@ -325,7 +327,9 @@ void VueParEtape::saveCloudsFromTXT(){
         // si l'utilisateur a sélectionné un nom
         if (!fileName.isEmpty())
         {
-            this->scnreaderFond.saveCloudsFromTXT(fileName.toStdString());
+            //this->scnreaderFond.saveCloudsFromTXT(fileName.toStdString());
+            this->scnreaderFond.SavePartInTxt(this->ftpDI, this->ftpFI, fileName);
+
         }
     }catch(std::exception const& e){
         QMessageBox::critical(0, "Error", e.what());
