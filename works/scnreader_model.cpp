@@ -23,12 +23,17 @@
 
 scnreader_model::scnreader_model():ToolsPCL()
 {
-    workWindows=500;
-    ListeRail lr(workWindows);
-    this->lesRails=lr;
 
+    this->workWindows=500;
     this->ftpd=0;
     this->ftpf=0;
+    ListeRail lr(workWindows);
+    this->lesRails=lr;
+    this->nomFile="";
+    this->cfs=false;
+    //constant value
+    this->capacity=10000000;
+    this->RansacVide=true;
 }
 
 scnreader_model::~scnreader_model()
@@ -502,7 +507,7 @@ void scnreader_model::extractionCloud(int d, int f) {
                 }
                 else
                     v->push_back(vec->at(indiceC));
-
+c
             }
             //add the segmentation to the hashtable
             std::stringstream ss;
@@ -594,7 +599,8 @@ void scnreader_model::clear()
     this->nuage.clear();
     this->segmentation.clear();
     this->extraction.clear();
-
+    this->LesSwitchs.clear();
+    this->RansacVide=true;
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f, QVector<int>* tailles)
@@ -661,7 +667,7 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<Poin
 }
 
 
- QVector<pcl::PointXYZ *> scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+QVector<pcl::PointXYZ *> scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {
     QVector<pcl::PointXYZ *> vecteur;
     //Fill the vector with the points which are in the cloud
@@ -676,7 +682,7 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<Poin
 
     return vecteur;
 }
- QVector<PointGL> scnreader_model::getCloudInVectpoint(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+QVector<PointGL> scnreader_model::getCloudInVectpoint(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {
     QVector<PointGL> vecteur;
     //Fill the vector with the points which are in the cloud
@@ -745,7 +751,7 @@ QVector<pcl::PointXYZ *>* scnreader_model::getPtWithInd(int d, int f, std::vecto
         {
 
             int num=indiceC-nb+tailles->at(ind);
-            std::cout<<indiceC<<","<<nb<< "," << num<<std::endl;
+
             if(num<vec->size())
             {
                 v->push_back(vec->at(num));
@@ -764,6 +770,35 @@ QVector<pcl::PointXYZ *>* scnreader_model::getPtWithInd(int d, int f, std::vecto
     }
     return v;
 }
+QString scnreader_model::getNomFile() const
+{
+    return nomFile;
+}
+
+void scnreader_model::setNomFile(const QString &value)
+{
+    nomFile = value;
+}
+int scnreader_model::getCapacity() const
+{
+    return capacity;
+}
+
+void scnreader_model::setCapacity(int c)
+{
+    throw Erreur("The capacity must not be modified");
+}
+
+QVector<int> scnreader_model::getLesSwitchs() const
+{
+    return LesSwitchs;
+}
+
+void scnreader_model::setLesSwitchs(const QVector<int> &value)
+{
+    LesSwitchs = value;
+}
+
 pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getResultRANSAC() const
 {
     return resultRANSAC;
@@ -816,42 +851,204 @@ bool scnreader_model::samePoint(pcl::PointXYZ *point2, pcl::PointXYZ * ptP)
 
 void scnreader_model::createRail()
 {
+    QString noms=this->nomFile;
+    noms.push_back("_switch.txt");
+    //open the file
+    QFile file(noms);
+
     if(!this->nuage.isEmpty())
     {
-        //number of footpulses we test
-        int nbrails;
-
-        if(this->ftpf-this->ftpd<500)
-            nbrails=this->ftpf-this->ftpd;
-        else
-            nbrails=500;
-
-        //create rails
-        RailCluster  r (0.18,0.08,1.5,*this->nuage.value(this->ftpd));
-        RailCluster rc=r;
-        std::cout<<"start"<<std::endl;
-        this->lesRails.addRail(r);
-        for(int i=1; i<nbrails;i++)
+        if(this->cfs || !file.exists())
         {
+            //---------------initialize footpulses which determine the beginning and the end of window-----------
+            int dw=this->ftpd+1;
+            int fw;
+            if(this->ftpf-this->ftpd<workWindows)
+                fw=this->ftpf-this->ftpd;
+            else
+                fw=this->ftpd+workWindows;
 
-            RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(this->ftpd+i)), rc);
-            rc=r2;
-            this->lesRails.addRail(r2);
+            //-------------------------------we initialize Listerail----------------------------------------------
+            //create rails with the first footpulse
+            RailCluster  r (0.18,0.08,1.5,*this->nuage.value(this->ftpd));
+            RailCluster rc=r;
+            this->lesRails.addRail(r);
+            //and we add the others until the footpulse fw, so window is ftpd - (fw-1)
+            for(int i=dw; i<fw;i++)
+            {
+                RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(i)), rc);
+                rc=r2;
+                this->lesRails.addRail(r2);
+            }
+            this->optimization();
+            //we keep detected switch in this window
+            int nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
+            for(int i=0; i<nbswitch;i++)
+            {
+                int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
+                if(!this->LesSwitchs.contains(ftp))
+                {
+                    this->LesSwitchs.push_back(ftp);
+                }
+            }
+            //we reinit lesRailsOptimize et resultRansac
+            //            this->lesRailsOptimize.clear();
+            //            this->resultRANSAC->clear();
+
+            //            //we continue to cover all the cloud with a window which we move footpulse by footpulse
+            //            while(fw<=this->ftpf)
+            //            {
+            //                //we add a new track and remove the first in track in window
+            //                RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(fw)), rc);
+            //                rc=r2;
+            //                this->lesRails.addRail(r2);
+
+            //                //we do the treatment to detect switchs in this window
+            //                this->optimization();
+            //                //we keep detected switch in this window
+            //                nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
+            //                for(int i=0; i<nbswitch;i++)
+            //                {
+            //                    int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
+            //                    //we verify that the size of vector doesn't exceed the cvector's capacity
+            //                    if(this->LesSwitchs.size()<this->capacity)
+            //                    {
+            //                        if(!this->LesSwitchs.contains(ftp))
+            //                            this->LesSwitchs.push_back(ftp);
+            //                    }
+            //                    //if it exceeds
+            //                    else
+            //                    {
+            //                        //----------------we write footpulses in a text file
+
+            //                            VideEtEnregistre(noms);
+            //                    }
+
+            //                }
+
+            //                //we reinit lesRailsOptimize et resultRansac
+            //                this->lesRailsOptimize.clear();
+            //                this->resultRANSAC->clear();
+
+            //                //we move the window
+            //                dw++;
+            //                fw++;
+            //            }
+
+            //----------------we write footpulses of switch in a text file
+            this->enregistre(noms);
         }
-          std::cout<<"end"<<std::endl;
-        this->optimization();
-
     }
     else throw Erreur("Les rails n'ont pas pu etre crees car le nuage de points est vide.");
 }
 
 void scnreader_model::optimization()
 {
+    this->RansacVide=false;
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=this->getVectInCloud(this->lesRails.getCloud());
-std::cout<<"check: "<<cloud->points.size()<<std::endl;
+    std::cout<<"check: "<<cloud->points.size()<<std::endl;
     this->resultRANSAC=this->ransac(cloud);
-     //this->resultRANSAC=this->ransac(resultRANSAC);
+    //this->resultRANSAC=this->ransac(resultRANSAC);
 
     ListeRail lr(this->getCloudInVectpoint(this->resultRANSAC),workWindows);
     this->lesRailsOptimize=lr;
 }
+
+void scnreader_model::enregistre(QString noms)
+{
+    QFile fichier(noms);
+    //    if(fichier.exists())
+    //    {
+    //        fichier.open(QIODevice::ReadOnly | QIODevice::Text);
+    //        QTextStream flux(&fichier);
+    //        QString contenu = flux.readAll();
+    //        fichier.close();
+
+    //        if(fichier.open(QIODevice::WriteOnly| QIODevice::Text )){
+    //            //if you can, initialize flu and line
+    //            QTextStream flux(&fichier);
+    //            //defines the codec of file
+    //            flux.setCodec("UTF-8");
+    //            flux << contenu << " " << endl;
+    //            //get footpulse of switch
+    //            for(int i=0;i<this->LesSwitchs.size(); i++){
+    //                int sw=this->LesSwitchs.at(i);
+    //                flux << QString::number(sw) << " " << endl;
+    //            }
+    //             fichier.close();
+    //        }
+    //        else throw Erreur(" The file finale switch.txt have not been saved, check the write permission!");
+    //    }
+    //    else
+    //    {}
+    if(fichier.open(QIODevice::Append | QIODevice::Text)){
+        //if you can, initialize flu and line
+        QTextStream flux(&fichier);
+        //defines the codec of file
+        flux.setCodec("UTF-8");
+        //get footpulse of switch
+        for(int i=0;i<this->LesSwitchs.size(); i++){
+            int sw=this->LesSwitchs.at(i);
+            flux << QString::number(sw) << " " << endl;
+        }
+        fichier.close();
+    }
+    else throw Erreur(" The file finale switch.txt have not been saved, check the write permission!");
+
+}
+
+void scnreader_model::VideEtEnregistre(QString noms)
+{
+    QFile fichier(noms);
+    /* if(fichier.exists())
+    {
+        fichier.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream flux(&fichier);
+        QString contenu = flux.readAll();
+        fichier.close();
+
+        if(fichier.open(QIODevice::WriteOnly )){
+                    //if you can, initialize flu and line
+                    QTextStream flux(&fichier);
+                    //defines the codec of file
+                    flux.setCodec("UTF-8");
+                    //get footpulse of switch
+                    flux << contenu << " " << endl;
+                    int nbToWrite=this->LesSwitchs.size()-this->workWindows;
+                    for(int i=0;i<nbToWrite; i++){
+                        int sw=this->LesSwitchs.takeFirst();
+                        flux << QString::number(sw)<< endl;
+                    }
+
+                    fichier.close();
+         }else throw Erreur(" The file switch.txt have not been saved, check the write permission!");
+    }
+    else
+    {}*/
+    //Test if you can write into the file
+    if(fichier.open(QIODevice::Append | QIODevice::Text )){
+        //if you can, initialize flu and line
+        QTextStream flux(&fichier);
+        //defines the codec of file
+        flux.setCodec("UTF-8");
+        //get footpulse of switch
+        int nbToWrite=this->LesSwitchs.size()-this->workWindows;
+        for(int i=0;i<nbToWrite; i++){
+            int sw=this->LesSwitchs.takeFirst();
+            flux << QString::number(sw)<< endl;
+        }
+
+        fichier.close();
+    }else throw Erreur(" The file switch.txt have not been saved, check the write permission!");
+
+}
+bool scnreader_model::getRansacVide() const
+{
+    return RansacVide;
+}
+
+void scnreader_model::setRansacVide(bool value)
+{
+    RansacVide = value;
+}
+

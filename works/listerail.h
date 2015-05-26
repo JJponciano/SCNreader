@@ -31,10 +31,10 @@
 class ListeRail
 {
 public:
-     ListeRail();
+    ListeRail();
     ListeRail(int maxSize);
     ListeRail(QVector <PointGL *> cloud, int maxSize);
-     ListeRail(QVector <PointGL> cloud, int maxSize);
+    ListeRail(QVector <PointGL> cloud, int maxSize);
     ~ListeRail();
 
     /**
@@ -42,7 +42,7 @@ public:
     * @param rail rail to be added
     * @return true if the oldest track is removed
     */
-   bool addRail(RailCluster rail);
+    bool addRail(RailCluster rail);
     /**
      * @brief growingRegions do growing regions with the rail
      * @param rail rail added to growing regions
@@ -50,12 +50,12 @@ public:
      */
     bool growingRegions(RailCluster rail);
 
-void clear();
+
 
     //accesseur
     QVector<PointGL> getCloud()const;
 
-  int getNumberSwitchDetected() const;
+    int getNumberSwitchDetected() const;
     QVector<int> getSwitchDetected() const;
     void setSwitchDetected(const QVector<int> &value);
 
@@ -66,9 +66,19 @@ void clear();
     int getMaxSize() const;
     void setMaxSize(int value);
 
+    /**
+     * @brief clear reinit ListeRail
+     */
+    void clear();
+
 private:
     int maxSize;
+
+    /**
+     * @brief run is the treatment to detect switchs
+     */
     void run();
+
     /**
      * @brief isInRegion test  if the point belongs to the region
      * @param reg regions to be tested
@@ -87,9 +97,10 @@ private:
      * @param regindex index of the region to be splited
      */
     void split(int regindex);
-        QVector <int>switchDetected;///< list of the footpulste with switch
+    QVector <int>switchDetected;///< list of the footpulste with switch
     QVector<RailCluster> lesRails;///< all rails
     QVector< QVector<PointGL> >regions;///<regions detected
+
 
     bool emptyRegion(QVector<int> countRegions);
     QVector<int> getRegions(PointGL currentPoint);

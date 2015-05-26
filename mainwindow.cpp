@@ -40,11 +40,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->pushExtract, SIGNAL(clicked()), this, SLOT(extract()));
     QObject::connect(ui->pushPS, SIGNAL(clicked()), this, SLOT(planarSeg()));
     QObject::connect(ui->pushC, SIGNAL(clicked()), this, SLOT(affichageOK()));
+    QObject::connect(ui->affswitch, SIGNAL(clicked()), this, SLOT(affichageSwitch()));
 
     QObject::connect(ui->ransac, SIGNAL(clicked()), this, SLOT(afficheRansac()));
 
     QObject::connect(ui->interD, SIGNAL(valueChanged(int)), this, SLOT(changeD()));
     QObject::connect(ui->interF, SIGNAL(valueChanged(int)), this, SLOT(changeF()));
+
+    QObject::connect(ui->swpcd, SIGNAL(clicked()), this, SLOT(previousSwitch()));
+    QObject::connect(ui->swsuiv, SIGNAL(clicked()), this, SLOT(nextSwitch()));
 }
 
 MainWindow::~MainWindow()
@@ -161,6 +165,12 @@ void MainWindow::loadCloudFromTXT(){
             this->ui->interF->setMaximum(ftpf);
             this->ui->interD->setValue(ftpd);
             this->ui->interF->setValue(ftpd);
+
+            int n=this->qw->getNumS();
+            if(n==-1)
+                this->ui->numsw->setText(QString("Whithout detected Switch"));
+            else
+                this->ui->numsw->setText(QString::number(n));
         }
         else throw Erreur("Le fichier ne contient pas de point");
     }catch(std::exception const& e){
@@ -177,7 +187,21 @@ void MainWindow::saveFromFile()
    this->qw->saveClouds();
 }
 void MainWindow::clear(){
-   this->qw->clear();
+    this->qw->clear();
+
+    this->ui->numsw->setText(QString(""));
+    this->ui->nomf->setText(QString(""));
+    this->ui->intervalFtp->setText(QString(""));
+    this->ui->interD->setMinimum(0);
+    this->ui->interF->setMinimum(0);
+    this->ui->interD->setValue(0);
+    this->ui->interF->setValue(0);
+
+    ui->pushC->setChecked(true);
+    ui->pushExtract->setChecked(false);
+    ui->pushPS->setChecked(false);
+    ui->ransac->setChecked(false);
+    ui->affswitch->setChecked(false);
 }
 void MainWindow::extract(){
     this->qw->setaffE(ui->pushExtract->isChecked());
@@ -186,7 +210,20 @@ void MainWindow::planarSeg(){
     this->qw->setaffS(ui->pushPS->isChecked());
 }
 void MainWindow::affichageOK(){
+    if(ui->pushC->isChecked())
+    {
+        ui->affswitch->setChecked(false);
+        this->qw->setAffswitch(false);
+    }
     this->qw->setaffC(ui->pushC->isChecked());
+}
+void MainWindow::affichageSwitch(){
+    if(ui->affswitch->isChecked())
+    {
+        ui->pushC->setChecked(false);
+        this->qw->setaffC(false);
+    }
+    this->qw->setAffswitch(ui->affswitch->isChecked());
 }
 
 void MainWindow::afficheRansac(){
@@ -199,4 +236,23 @@ void MainWindow::changeD(){
 
 void MainWindow::changeF(){
     this->qw->setFtpFI(this->ui->interF->value());
+}
+
+void MainWindow::nextSwitch(){
+    this->qw->IncreasePosSwitch();
+    int n=this->qw->getNumS();
+    if(n==-1)
+        this->ui->numsw->setText(QString("Whithout detected Switch"));
+    else
+        this->ui->numsw->setText(QString::number(n));
+}
+
+void MainWindow::previousSwitch()
+{
+    this->qw->DecreasePosSwitch();
+    int n=this->qw->getNumS();
+    if(n==-1)
+        this->ui->numsw->setText(QString("Whithout detected Switch"));
+    else
+        this->ui->numsw->setText(QString::number(n));
 }

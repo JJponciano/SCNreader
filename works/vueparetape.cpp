@@ -33,10 +33,13 @@ VueParEtape::VueParEtape(QWidget *parent): groundGLWidget(parent)
     this->py=0;
     this->pz=0;
     this->affs=false;
+    this->affswitch=false;
     this->affe=false;
     this->affr=false;
     this->affc=true;
     this->mirx=0;
+    this->numS=-1;
+    this->posSwitch=0;
 }
 
 VueParEtape::~VueParEtape()
@@ -64,75 +67,114 @@ void VueParEtape::paintGL()
 
     //------------------------------------------------------------------
     // definition size dot
-//    glPointSize(4);
-//    glPushMatrix();
-//        glBegin(GL_POINTS);
-//        glColor3f(1.0,1.0,1.0);
-//           for(int i=-100; i<100; i++)
-//          glVertex3f(mirx,i*0.01, 0);
-//        glEnd();
-//    glPopMatrix();
+    //    glPointSize(4);
+    //    glPushMatrix();
+    //        glBegin(GL_POINTS);
+    //        glColor3f(1.0,1.0,1.0);
+    //           for(int i=-100; i<100; i++)
+    //          glVertex3f(mirx,i*0.01, 0);
+    //        glEnd();
+    //    glPopMatrix();
 
     glPointSize(1);
     glPushMatrix();
 
     if(affc)
     {
-        affichageCloud();
-
+        this->affichageCloud();
     }
-
-
+    if(affswitch)
+    {
+        this->affichageSwitch();
+    }
     if(affs)
     {
-        /*  if(!this->scnreaderFond.getSegmentation().size()>0)
-        {
-            this->scnreaderFond.planar_segmentation(this->ftpDI, this->ftpFI);
-        }
-*/
         this->affichageSegm();
     }
     if(affe)
     {
         QVector <PointGL> rails=this->scnreaderFond.getLesRails().getCloud();
-        //std::cout<<(rails.size())<<std::endl;
-
-        glBegin(GL_POINTS);
-        for(int i=0; i<rails.size(); i++)
+        if(rails.size()>0)
         {
-            glColor3f(0.0,1.0,1.0);
-            glVertex3f(rails.at(i).getX(), rails.at(i).getY(), (rails.at(i).getZ()-this->ftpDI)*0.1);
+            glBegin(GL_POINTS);
+            for(int i=0; i<rails.size(); i++)
+            {
+                glColor3f(0.0,1.0,1.0);
+                glVertex3f(rails.at(i).getX(), rails.at(i).getY(), (rails.at(i).getZ()-this->ftpDI)*0.1);
+            }
+            glEnd();
         }
-        glEnd();
     }
 
     if(affr)
     {
         pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC=this->scnreaderFond.getResultRANSAC();
-        QVector <int> switchs= scnreaderFond.getLesRailsOptimize().getSwitchDetected();
-        glBegin(GL_POINTS);
-        for(int i=0; i<resultRANSAC->points.size(); i++)
+        if(!this->scnreaderFond.getRansacVide())
         {
-            int z=resultRANSAC->points.at(i).z;
-            if(switchs.contains(z))
-                glColor3f(1.0,1.0,0.0);
-            else
-                glColor3f(1.0,0.0,1.0);
-            glVertex3f(resultRANSAC->points.at(i).x, resultRANSAC->points.at(i).y, (z-this->ftpDI)*0.1);
+            QVector <int> switchs= scnreaderFond.getLesRailsOptimize().getSwitchDetected();
+            glBegin(GL_POINTS);
+            for(int i=0; i<resultRANSAC->points.size(); i++)
+            {
+                int z=resultRANSAC->points.at(i).z;
+                if(switchs.contains(z))
+                    glColor3f(1.0,1.0,0.0);
+                else
+                    glColor3f(1.0,0.0,1.0);
+                glVertex3f(resultRANSAC->points.at(i).x, resultRANSAC->points.at(i).y, (z-this->ftpDI)*0.1);
 
+            }
+            glEnd();
         }
-        glEnd();
     }
     glPopMatrix();
     //----------------------------------------------------------------------*/
 }
 
 // ------------------------------------------ Action Functions ------------------------------------------
+void VueParEtape::affichageSwitch()
+{
+    if(!AucunSwitch())
+    {
+        int deb= this->numS-50;
+        if(deb<this->scnreaderFond.getFtpd())
+            deb=this->scnreaderFond.getFtpd();
+        int fin= this->numS+50;
+        if(fin>this->scnreaderFond.getFtpf())
+            fin=this->scnreaderFond.getFtpf();
+
+        glBegin(GL_POINTS);
+        for(int j=deb; j<=fin; j++)
+        {
+            if(this->scnreaderFond.getNuage().contains(j))
+            {
+                QVector <pcl::PointXYZ*>* v=this->scnreaderFond.getNuage().value(j);
+                if(j==this->numS)
+                    glColor3f(1.0,0.0,0.0);
+                else
+                    glColor3f(1.0,1.0,1.0);
+
+                for(int i=0; i<v->size(); i++)
+                {
+                    glPointSize(1);
+                    //keep coordinates of points to draw them
+                    float x=(* (v->at(i))).x;
+                    float y=(* (v->at(i))).y;
+                    float z=((* (v->at(i))).z-this->numS)*0.1;
+                    glVertex3f(x,y,z);
+                }
+
+            }
+        }
+        glEnd();
+    }
+}
+
 void VueParEtape::affichageCloud()
 {
     glBegin(GL_POINTS);
     int j=this->ftpDI;
     bool stop=false;
+    QVector <int> switchs= scnreaderFond.getLesSwitchs();
     while( !stop && j<=this->ftpFI)
     {
         if(this->scnreaderFond.getNuage().contains(j))
@@ -142,12 +184,16 @@ void VueParEtape::affichageCloud()
             for(int i=0; i<v->size(); i++)
             {
                 glPointSize(1);
-                glColor3f(1.0,1.0,1.0);
+
                 //normalizes points with model->max of cordinates previously finded
                 float x=(* (v->at(i))).x;//scnreaderFond.getMaxX()*10;
                 float y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
                 float z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
                 //                                glVertex3f(x,int(y*1000)/100,z);
+                if(SwitchContenu((* (v->at(i))).z))
+                    glColor3f(1.0,0.0,0.0);
+                else
+                    glColor3f(1.0,1.0,1.0);
                 glVertex3f(x,y,z);
             }
 
@@ -185,6 +231,16 @@ void VueParEtape::affichageSegm()
     glEnd();
 
 }
+bool VueParEtape::getAffswitch() const
+{
+    return affswitch;
+}
+
+void VueParEtape::setAffswitch(bool value)
+{
+    affswitch = value;
+}
+
 
 void VueParEtape::loadCloudFromTXT(){
     try{
@@ -194,19 +250,25 @@ void VueParEtape::loadCloudFromTXT(){
         // if user have seleted a directory
         if (!fileName.isEmpty())
         {
-            this->scnreaderFond.loadCloudFromTXT2(fileName.toStdString());
+
             this->nomFichier=fileName.toStdString();
+            QString nom=this->KeepName(fileName);
+            this->scnreaderFond.setNomFile(nom);
+
+            this->scnreaderFond.loadCloudFromTXT2(fileName.toStdString());
+
             if(this->scnreaderFond.getNuage().size() > 0)
             {
                 this->ftpDI=this->scnreaderFond.getFtpd();
                 this->ftpFI=this->scnreaderFond.getFtpd();
                 QVector <PointGL > rails=this->scnreaderFond.getLesRails().getCloud();
-              /*  for(int i=0;i<rails.size();i++){
+                /*  for(int i=0;i<rails.size();i++){
                     if( rails[i]->x<0)
                               rails[i]->y+=1;
                 }*/
             }
             else throw Erreur("Le fichier ne contient pas de point");
+            this->LectureSw(nom);
             //this->ftpdeDepart=this->scnreaderFond.getClouds(0)->points[0].z;
             //this->ftpCourant=this->scnreaderFond.getClouds(0)->points[0].z;
         }
@@ -296,6 +358,15 @@ void VueParEtape::loadFromSCN(){
 
 void VueParEtape::clear(){
     this->scnreaderFond.clear();
+    this->SwitchDetected.clear();
+    this->affs=false;
+    this->affswitch=false;
+    this->affe=false;
+    this->affr=false;
+    this->affc=true;
+    this->mirx=0;
+    this->numS=-1;
+    this->posSwitch=0;
 }
 void VueParEtape::planarSegmentation(int d, int f){
     try{
@@ -320,42 +391,42 @@ void VueParEtape::keyPressEvent(QKeyEvent *keyEvent)
         std::cout<<this->mirx<<std::endl;
     }
     else
-    if(keyEvent->key()==Qt::Key_N){
-        this->mirx+=0.01;
-        std::cout<<this->mirx<<std::endl;
-    }
-    else
-    if(keyEvent->key()==Qt::Key_W){
-        this->pZ++;
-        this->lZ++;
-    }
-    else if(keyEvent->key()==Qt::Key_S){
-        this->pZ--;
-        this->lZ--;
-    }
-    else if(keyEvent->key()==Qt::Key_D){
-        this->pX--;
-        this->lX--;
-    }
-    else if(keyEvent->key()==Qt::Key_A){
-        this->pX++;
-        this->lX++;
-    }
-    else if(keyEvent->key()==Qt::Key_Q){
-        this->pY++;
-        this->lY++;
-    }
-    else if(keyEvent->key()==Qt::Key_E){
-        this->pY--;
-        this->lY--;
-    }
-    else if(keyEvent->key()==Qt::Key_8){
-        this->lY++;
-    }
-    else if(keyEvent->key()==Qt::Key_5){
-        this->lY--;
-    }
-    else groundGLWidget::keyPressEvent(keyEvent);
+        if(keyEvent->key()==Qt::Key_N){
+            this->mirx+=0.01;
+            std::cout<<this->mirx<<std::endl;
+        }
+        else
+            if(keyEvent->key()==Qt::Key_W){
+                this->pZ++;
+                this->lZ++;
+            }
+            else if(keyEvent->key()==Qt::Key_S){
+                this->pZ--;
+                this->lZ--;
+            }
+            else if(keyEvent->key()==Qt::Key_D){
+                this->pX--;
+                this->lX--;
+            }
+            else if(keyEvent->key()==Qt::Key_A){
+                this->pX++;
+                this->lX++;
+            }
+            else if(keyEvent->key()==Qt::Key_Q){
+                this->pY++;
+                this->lY++;
+            }
+            else if(keyEvent->key()==Qt::Key_E){
+                this->pY--;
+                this->lY--;
+            }
+            else if(keyEvent->key()==Qt::Key_8){
+                this->lY++;
+            }
+            else if(keyEvent->key()==Qt::Key_5){
+                this->lY--;
+            }
+            else groundGLWidget::keyPressEvent(keyEvent);
 }
 
 int VueParEtape::getFtpD(){
@@ -414,4 +485,148 @@ void VueParEtape::mousePressEvent(QMouseEvent *event){
 }
 void VueParEtape::mouseReleaseEvent(QMouseEvent *event){
     View_ground_GL::mouseReleaseEvent(event);
+}
+QString VueParEtape::KeepName(QString fileName)
+{
+    QStringList result =fileName.split("/");
+    QString n=result.at(result.size()-1);
+    result =n.split(".");
+    n="";
+    for(int i=0; i<result.size()-1; i++)
+        n.push_back(result.at(i));
+    return n;
+}
+int VueParEtape::getPosSwitch() const
+{
+    return posSwitch;
+}
+
+void VueParEtape::IncreasePosSwitch()
+{
+    if(this->posSwitch<sizeAllSwitch()-1)
+    {
+        posSwitch ++;
+        calculNumWithPos();
+    }
+}
+
+void VueParEtape::DecreasePosSwitch()
+{
+    if(this->posSwitch>0)
+    {
+        posSwitch --;
+        calculNumWithPos();
+    }
+}
+
+int VueParEtape::getNumS()
+{
+    if(AucunSwitch())
+        this->numS=-1;
+    return numS;
+}
+
+void VueParEtape::setNumS(int value)
+{
+    numS = value;
+}
+
+void VueParEtape::calculNumWithPos()
+{
+    if(!this->SwitchDetected.isEmpty())
+    {
+        int pos=this->posSwitch;
+        for(int i=0; i<this->SwitchDetected.size(); i++)
+        {
+            if(pos<this->SwitchDetected.at(i).size())
+                this->numS=this->SwitchDetected.at(i).at(pos);
+            else
+                pos=pos-this->SwitchDetected.at(i).size();
+        }
+    }
+}
+
+int VueParEtape::sizeAllSwitch()
+{
+    if(this->SwitchDetected.isEmpty())
+    {
+        return 0;
+    }
+    else
+    {
+        int nbs=0;
+        for(int i=0; i<this->SwitchDetected.size(); i++)
+            nbs+=this->SwitchDetected.at(i).size();
+        return nbs;
+    }
+}
+bool VueParEtape::AucunSwitch()
+{
+    if(this->SwitchDetected.isEmpty())
+    {
+        return true;
+    }
+    else
+    {
+        int nbs=0;
+        int i=0;
+        while(nbs==0 && i<this->SwitchDetected.size())
+        {
+            nbs+=this->SwitchDetected.at(i).size();
+            i++;
+        }
+        return (nbs==0);
+    }
+}
+
+bool VueParEtape::SwitchContenu(int ftp)
+{
+    if(AucunSwitch())
+    {
+        return false;
+    }
+    else
+    {
+        int i=0;
+        bool contenu=false;
+        while(i<this->SwitchDetected.size() && !contenu)
+        {
+            if(this->SwitchDetected.at(i).contains(ftp))
+                contenu=true;
+            i++;
+        }
+        return contenu;
+    }
+}
+
+void VueParEtape::LectureSw(QString nameF)
+{
+    QString noms=nameF;
+    noms.push_back("_switch.txt");
+    QFile fichier(noms);
+    if(fichier.open(QIODevice::ReadOnly | QIODevice::Text)){
+        //if you can, initialize flu and line
+        QTextStream flux(&fichier);
+        QString ligne;
+        QVector<int> vect;
+        while(!flux.atEnd())
+        {
+            ligne= flux.readLine();
+            vect.push_back(ligne.toInt());
+
+
+            if(vect.size()>=this->scnreaderFond.getCapacity()-1)
+            {
+                this->SwitchDetected.push_back(vect);
+                QVector<int> vect2;
+                vect=vect2;
+            }
+
+        }
+        this->SwitchDetected.push_back(vect);
+        fichier.close();
+        if(!this->SwitchDetected.isEmpty())
+            this->numS=this->SwitchDetected.at(0).at(0);
+    }
+    else throw Erreur(" The file of switch can not be openned, check the write permission!");
 }

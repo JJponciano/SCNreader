@@ -34,6 +34,21 @@
 #include <QString>
 #include <QStringList>
 
+/**
+ * @class VueParEtape
+ * @brief VueParEtape is a class which manages the display of the big cloud of points.
+ * This class allows to see the cloud part by part, where you choose what footpulse and how many footpulse you want to see.
+ * When you watch the tracks, you can see footpulses which corresponding to a switch in red.
+ * Or you can choose to watch switch by switch (switchs which have been detected).
+ *
+ * @details
+ *
+ * \subsection{How to use}
+ *
+ *
+*/
+
+
 class VueParEtape: public groundGLWidget
 {
 public:
@@ -106,10 +121,22 @@ public:
    void setaffC(bool b);
    void setaffR(bool b);
 
+   bool getAffswitch() const;
+   void setAffswitch(bool value);
+
+   int getNumS();
+   void setNumS(int value);
+
+   int getPosSwitch() const;
+   void IncreasePosSwitch();
+   void DecreasePosSwitch();
+   void calculNumWithPos();
+
 private:
 
    void affichageCloud();
    void affichageSegm();
+   void affichageSwitch();
   scnreader_model scnreaderFond;
   //int ftpdeDepart;
   //int ftpCourant;
@@ -127,6 +154,7 @@ private:
     int ftpFI;
   //boolean permettant de gérer l'affichage
     bool affs;
+    bool affswitch;
     bool affe;
     bool affc;
     bool affr;
@@ -136,7 +164,19 @@ private:
     bool firstP;
     std::string nomFichier;
     float mirx;
-  int sizeCloud;
+    int sizeCloud;
+    QString KeepName(QString fileName);
+
+    //numero of switch
+    int numS;
+    //position of switch
+    int posSwitch;
+    //all switch which are detected
+    QVector < QVector <int> > SwitchDetected;
+    int sizeAllSwitch();
+    void LectureSw(QString nameF);
+    bool AucunSwitch();
+    bool SwitchContenu(int ftp);
 };
 
 #endif // VUEPARETAPE_H

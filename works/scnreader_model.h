@@ -33,6 +33,43 @@
 #include <QHash>
 #include <QDataStream>
 
+/**
+ * @class scnreader_model
+ * @brief The scnreader_model is a daughter class of ToolsPCL, so it manages too pcl.
+ * This class is used to loading, reading and processing of point clouds.
+ * It can be used as its mother but it ha some special functions to do treatments which are more particulary as ToolsPCL.
+ * The aim of this class is to detect switchs which are in the cloud of points given by the file which are uploaded.
+ *
+ * @details
+ *
+ * \subsection{How to use}
+ *
+ *
+ * \subsection{Load cloud}
+ *
+ * \subsubsection{From TXT file format}
+ *  if you want load a cloud from a TXT file format:
+ * @code
+ *   std::string pathname="myfile.TXT";
+ *   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=ToolsPCL::loadCloudFromTXT2(pathname.c_str());
+ * @endcode
+ *
+ * \subsection{Processing}
+ *
+ * \subsubsection{Planar segmentation}
+ * if you want to execute a planar segmentation on the interval of work 6400-6600:
+ *  @code
+ * std::string pathname="myfile.pcd";
+ * pcl::PointCloud<pcl::PointXYZ>::Ptr cloud=ToolsPCL::loadCloud(pathname.c_str());
+ * int d=6400;
+ * int f=6600;
+ * pcl::PointCloud<pcl::PointXYZ>::Ptr plan=this->planar_segmentation(d,f);
+ * @endcode
+ *
+ * \subsection{Exemple}
+
+*/
+
 class scnreader_model: public ToolsPCL
 {
 public:
@@ -60,27 +97,12 @@ public:
      */
     void  loadFromSCN(std::string pathname);
 
-    /**
-     * @brief scnreader_model::extractionCloud extract a part of cloud
-     * @param d is the first footpulse of the cloud's part and f is the last footpulse of the cloud's part
-     */
-    void extractionCloud(int d, int f);
+
     /**
      * @brief scnreader_model::planar_segmentation segmentate a part of cloud
      * @param d is the first footpulse of the cloud's part and f is the last footpulse of the cloud's part
      */
     void planar_segmentation( int d, int f);
-
-    //accesseur en lecture et en écriture
-       int getFtpd();
-       int getFtpf();
-
-       void setFtpd(int d);
-       void setFtpf(int f);
-
-   ScnData getData(int i) const;
-   void setDatas(const QVector<ScnData> &value);
-
 
    /**
     * @brief acces to QHash
@@ -94,18 +116,10 @@ public:
      */
      QHash <QString, QVector<pcl::PointXYZ*>*> getSegmentation();
 
-     /**
-      * @brief acces to QHash
-      * @return the Qhash which contains all points of exractions of a cloud's part
-      */
-      QHash <QString, QVector<pcl::PointXYZ *>*> getExtraction();
-
       /**
-       * @brief createRail fills lesrails with the 100 first footpulses
+       * @brief createRail fills lesrails for all footpulse which were in the uploaded file
        */
       void createRail();
-
-      ListeRail getLesRails() const;
 
       /**
        * @brief getVectInCloud transform a vector of point in a cloud
@@ -126,6 +140,11 @@ public:
        * @return the vector corresponding to the cloud
        */
       QVector<pcl::PointXYZ *> getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
+
+
+      //Access in reading and writing of variables
+      ListeRail getLesRails() const;
+
       ListeRail getLesRailsOptimize() const;
       void setLesRailsOptimize(const ListeRail &value);
 
@@ -133,9 +152,43 @@ public:
       void setResultRANSAC(const pcl::PointCloud<pcl::PointXYZ>::Ptr &value);
 
       QVector<PointGL> getCloudInVectpoint(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
-private:
-       int workWindows;
+
+      QVector<int> getLesSwitchs() const;
+      void setLesSwitchs(const QVector<int> &value);
+
+      QString getNomFile() const;
+      void setNomFile(const QString &value);
+
+      int getCapacity() const;
+      void setCapacity(int c);
+
+      int getFtpd();
+      int getFtpf();
+
+      void setFtpd(int d);
+      void setFtpf(int f);
+
+     ScnData getData(int i) const;
+     void setDatas(const QVector<ScnData> &value);
+
       /**
+       * @brief acces to QHash TODO OR NOT
+       * @return the Qhash which contains all points of exractions of a cloud's part
+       */
+       QHash <QString, QVector<pcl::PointXYZ *>*> getExtraction();
+
+       /**
+        * @brief scnreader_model::extractionCloud extract a part of cloud TODO OR NOT
+        * @param d is the first footpulse of the cloud's part and f is the last footpulse of the cloud's part
+        */
+       void extractionCloud(int d, int f);
+
+       bool getRansacVide() const;
+       void setRansacVide(bool value);
+private:
+       int capacity;
+       int workWindows;
+       /**
        * @brief samePoint watch if two points are the same or not
        * @param ptP the point which is contained in QHash
        * @param pt the point which is contained in cloud
@@ -217,8 +270,13 @@ private:
      ListeRail lesRailsOptimize;
 
      pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC;
-
+     QVector <int>LesSwitchs;///< list of the footpulse corresponding to switchs
+     QString nomFile;
      void optimization();
+     bool cfs;
+     void enregistre(QString noms);
+     void VideEtEnregistre(QString noms);
+     bool RansacVide;
 };
 
 #endif // SCNREADER_MODULE_H

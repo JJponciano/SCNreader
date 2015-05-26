@@ -57,6 +57,10 @@ public slots:
     void afficheRansac();
     void changeD();
     void changeF();
+    void affichageSwitch();
+    void previousSwitch();
+    void nextSwitch();
+
 private:
     Ui::MainWindow *ui;
     VueParEtape *qw;
