@@ -14,7 +14,7 @@
 #include "Point.h"
 
 PointGL::PointGL() {
-    rad=3.14159265/180.0;
+    rad=(float)3.14159265/(float)180.0;
     this->x = 0;
     this->y = 0;
     this->z = 0;
@@ -22,7 +22,7 @@ PointGL::PointGL() {
 }
 
 PointGL::PointGL(float x, float y,float z) {
-    rad=3.14159265/180.0;
+    rad=(float)3.14159265/(float)180.0;
     this->x = x;
     this->y = y;
     this->z = z;
@@ -30,14 +30,14 @@ PointGL::PointGL(float x, float y,float z) {
 }
 
 PointGL::PointGL(const PointGL& orig) {
-    rad=3.14159265/180.0;
+    rad=(float)3.14159265/(float)180.0;
     this->x = orig.x;
     this->y = orig.y;
     this->z = orig.z;
     this->epsilon=1000;
 }
 float PointGL::truncation(int trunc, float f){
-    int ftrunc=f*trunc;
+    int ftrunc=(int)(f*trunc);
     float f2=((float)ftrunc)/((float)trunc);
             return f2;
 }

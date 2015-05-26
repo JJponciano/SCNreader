@@ -212,6 +212,7 @@ QVector<PointGL> ListeRail::cleanFailPoints(QVector <QVector<PointGL> >points){
             }
         }
     }
+    return new_cloud;
 }
 
 void ListeRail::debuitage(){
@@ -219,12 +220,9 @@ void ListeRail::debuitage(){
 
     // il faut trier les points par x
     QVector <PointGL >cloud=this->getCloud();
-
-
+    QVector < QVector<PointGL> >pointByX=this->spitX(cloud);
     //new cloud
-    QVector <PointGL>new_cloud;
-
-
+    QVector <PointGL>new_cloud=this->cleanFailPoints(pointByX);
 
     this->initialization(new_cloud,this->maxSize);
 }
