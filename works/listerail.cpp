@@ -253,7 +253,7 @@ void ListeRail::denoising(){
     QVector < QVector<PointGL> >pointByX=this->spitX(cloud);
     //new cloud
     QVector <PointGL>new_cloud=this->cleanFailPoints(pointByX);
-    std::cout<<" number of points after the denoising: "<<new_cloud.size()<<std::endl;
+    std::cout<<"      After the denoising: "<<new_cloud.size()<<std::endl;
 
     this->initialization(new_cloud,this->maxSize);
 }

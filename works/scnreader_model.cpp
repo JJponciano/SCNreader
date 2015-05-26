@@ -596,11 +596,16 @@ int scnreader_model::getFtpf(){
 
 void scnreader_model::clear()
 {
+    this->lesRails.clear();
+    this->resultRANSAC;
     this->nuage.clear();
     this->segmentation.clear();
     this->extraction.clear();
     this->LesSwitchs.clear();
     this->RansacVide=true;
+    this->lesRailsOptimize.clear();
+    this->clouds.clear();
+    this->datas.clear();
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f, QVector<int>* tailles)
