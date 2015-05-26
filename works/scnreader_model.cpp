@@ -597,7 +597,6 @@ void scnreader_model::clear()
     this->nuage.clear();
     this->segmentation.clear();
     this->extraction.clear();
-
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f, QVector<int>* tailles)
