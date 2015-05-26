@@ -38,6 +38,9 @@ ListeRail::ListeRail(QVector <PointGL > cloud,int maxSize)
     this->initialization(cloud,maxSize);
 }
 void ListeRail::initialization(QVector <PointGL > cloud,int maxSize){
+    this->lesRails.clear();
+    this->regions.clear();
+    this->switchDetected.clear();
     this->maxSize=maxSize;
     // if there are points in cloud
     if(cloud.size()>0)
@@ -82,6 +85,7 @@ void ListeRail::initialization(QVector <PointGL > cloud,int maxSize){
     this->run();
 }
 
+/*
 ListeRail::ListeRail(QVector <PointGL *> cloud,int maxSize)
 {
     this->maxSize=maxSize;
@@ -126,15 +130,18 @@ ListeRail::ListeRail(QVector <PointGL *> cloud,int maxSize)
         }
     }
     this->run();
-}
+}*/
 
 ListeRail::~ListeRail()
 {
+    this->lesRails.clear();
+    this->regions.clear();
+    this->switchDetected.clear();
 }
 
 bool ListeRail::addRail(RailCluster rail)
 {
-
+std::cout<<this->lesRails.size()<<"/"<<this->maxSize<<std::endl;
     // add the rail
     this->lesRails.push_back(rail);
     //test if the size is too big
@@ -143,8 +150,14 @@ bool ListeRail::addRail(RailCluster rail)
         this->lesRails.remove(0);
         return true;
     }
-    else
+    else{
+        //test if the track is the last
+//         if(this->lesRails.size()==this->maxSize-1){
+//            //performance of denoising
+//             this->denoising();
+//         }
         return false;
+    }
 }
 
 QVector < QVector<PointGL> > ListeRail::spitX(  QVector <PointGL>points){
@@ -215,14 +228,16 @@ QVector<PointGL> ListeRail::cleanFailPoints(QVector <QVector<PointGL> >points){
     return new_cloud;
 }
 
-void ListeRail::debuitage(){
+void ListeRail::denoising(){
     // tout les points ayant le meme x doivent avoir la meme heuteurs.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
     // il faut trier les points par x
     QVector <PointGL >cloud=this->getCloud();
+    std::cout<<"number of points starting: "<<cloud.size()<<std::endl;
+
     QVector < QVector<PointGL> >pointByX=this->spitX(cloud);
     //new cloud
     QVector <PointGL>new_cloud=this->cleanFailPoints(pointByX);
+    std::cout<<" number of points after the denoising: "<<new_cloud.size()<<std::endl;
 
     this->initialization(new_cloud,this->maxSize);
 }

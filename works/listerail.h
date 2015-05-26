@@ -93,7 +93,7 @@ private:
 
     bool emptyRegion(QVector<int> countRegions);
     QVector<int> getRegions(PointGL currentPoint);
-    void debuitage();
+    void denoising();
     void initialization(QVector<PointGL> cloud, int maxSize);
     QVector<QVector<PointGL> > spitX(QVector<PointGL> points);
     QVector<PointGL> cleanFailPoints(QVector<QVector<PointGL> > points);
