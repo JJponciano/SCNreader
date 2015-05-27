@@ -140,7 +140,6 @@ bool ListeRail::growingRegions(RailCluster rail)
     for(int i=0;i<rail.getPoints().size();i++){
         PointGL currentPoint=rail.getPoints().at(i);
         // add the point in a region and test if the addition did not require a merger
-       if(i<20)
         if(!this->regions.addPoint(currentPoint)){
             //if the addition needed a merger, a switch is detected
             switchDetected=true;

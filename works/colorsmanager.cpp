@@ -25,7 +25,7 @@
 
 ColorsManager::ColorsManager()
 {
-
+    std::srand(time(NULL));
 }
 
 ColorsManager::~ColorsManager()
@@ -39,7 +39,6 @@ QVector<float> ColorsManager::getColor(int key)
     if(colors.contains(key)){
         return colors.value(key);
     }else{
-        std::srand(time(NULL));
        float r=((float) std::rand() / (RAND_MAX));
        float g=((float) std::rand() / (RAND_MAX));
        float b=((float) std::rand() / (RAND_MAX));

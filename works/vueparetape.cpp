@@ -180,11 +180,9 @@ void VueParEtape::affichageReg()
     glBegin(GL_POINTS);
 
     QVector< QVector<PointGL> >regions=this->scnreaderFond.getRegions();
-    std::cout<<regions.size()<<std::endl;
+
     for(int i=0; i<regions.size(); i++)
     {
-       // srand(time(NULL)); // initialisation de rand
-
         glColor3f(colors.getColor(i).at(0),colors.getColor(i).at(1),colors.getColor(i).at(2));
 
         for(int j=0; j<regions.at(i).size(); j++){

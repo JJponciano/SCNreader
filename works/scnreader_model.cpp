@@ -853,6 +853,10 @@ void scnreader_model::createRail()
     {
         if(this->cfs || !file.exists())
         {
+            //---------------JJ
+            ftpf=this->ftpd+500;
+            //-----------------
+
             //---------------initialize footpulses which determine the beginning and the end of window-----------
             int dw=this->ftpd+1;
             int fw;
@@ -860,6 +864,8 @@ void scnreader_model::createRail()
                 fw=this->ftpf;
             else
                 fw=this->ftpd+workWindows;
+
+
             std::cout << dw << " - " << fw<<std::endl;
             //-------------------------------we initialize Listerail----------------------------------------------
             //create rails with the first footpulse
