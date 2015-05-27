@@ -125,9 +125,10 @@ void RegionsManager::remove(int ID){
     if(this->regions.contains(r)){
         // return the region
         int index=this->regions.lastIndexOf(r);
-       this->regions.remove(index);
+      // this->regions.remove(index);
+         this->regions[index].setIsdead(true);
     }
-     // this->regions[this->regions.lastIndexOf(r)].setIsdead(true);
+
     else throw Erreur(" The region is not known");
 }
 

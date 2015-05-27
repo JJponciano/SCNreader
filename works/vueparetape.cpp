@@ -180,7 +180,7 @@ void VueParEtape::affichageReg()
     glBegin(GL_POINTS);
 
     QVector< QVector<PointGL> >regions=this->scnreaderFond.getRegions();
-
+    std::cout<<regions.size()<<std::endl;
     for(int i=0; i<regions.size(); i++)
     {
        // srand(time(NULL)); // initialisation de rand

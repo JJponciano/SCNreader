@@ -49,10 +49,10 @@ void Region::add(PointGL point)
     // add the rail
     this->points.push_back(point);
     //test if the size is too big
-    if(this->points.size()>=this->maxSize)
-    {
-        this->points.remove(0);
-    }
+//    if(this->points.size()>=this->maxSize)
+//    {
+//        this->points.remove(0);
+//    }
 }
 bool Region::growing(PointGL point){
     if(this->isdead)return false;
@@ -105,7 +105,8 @@ bool Region::isIn(PointGL pt,float distanceMax)const
 {
     if(this->isdead)return false;
     //for each point of the region
-    for(int i=0;i<points.size();i++){
+    for(int i=points.size()-this->maxSize;i<points.size();i++){
+        if(i<0)i=0;
         //test if the points avec the same width with and height the point to be tested
         if(pt.distanceX(this->points.at(i),distanceMax))
             return true;
@@ -117,7 +118,8 @@ bool Region::isIn(PointGL pt)const
 {
     if(this->isdead)return false;
     //for each point of the region
-    for(int i=0;i<points.size();i++){
+    for(int i=points.size()-this->maxSize;i<points.size();i++){
+        if(i<0)i=0;
         //test if the points avec the same width with and height the point to be tested
         if(pt.distanceX(this->points.at(i),this->neighborsDistance))
             return true;
@@ -132,7 +134,8 @@ bool Region::check(float widthMax)const
     //search the extremum of the x coordinates in the region
     float xmin=this->points.at(0).getX();
     float xmax=this->points.at(0).getX();
-    for(int i=0;i<points.size();i++){
+    for(int i=points.size()-this->maxSize;i<points.size();i++){
+        if(i<0)i=0;
         if(this->points.at(i).getX()<xmin)
             xmin=this->points.at(i).getX();
         else    if(this->points.at(i).getX()>xmax)
