@@ -114,17 +114,10 @@
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="3" column="0">
-            <widget class="QCheckBox" name="pushPS">
+           <item row="5" column="0">
+            <widget class="QCheckBox" name="ransac">
              <property name="text">
-              <string>Sa segmentation</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QCheckBox" name="pushExtract">
-             <property name="text">
-              <string>Les rails</string>
+              <string>RANSAC</string>
              </property>
             </widget>
            </item>
@@ -135,10 +128,24 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
-            <widget class="QCheckBox" name="ransac">
+           <item row="4" column="0">
+            <widget class="QCheckBox" name="pushExtract">
              <property name="text">
-              <string>RANSAC</string>
+              <string>Les rails</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QCheckBox" name="pushPS">
+             <property name="text">
+              <string>Sa segmentation</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QCheckBox" name="regions">
+             <property name="text">
+              <string>Regions</string>
              </property>
             </widget>
            </item>

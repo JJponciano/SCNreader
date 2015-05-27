@@ -80,14 +80,18 @@ public:
      */
     bool checkRegion(float widthmax);
     void clear();
+    QVector<Region> getRegions() const;
+    void setRegions(const QVector<Region> &value);
+
 private:
     int generatingID();
     QVector<Region>regions;
     int nbregions;
-     int maxSize;
+    int maxSize;
 int minSize;
 float neighborsDistance;
 void addInNewRegion(PointGL point);
+void add(int ID, PointGL point);
 };
 
 #endif // REGIONSMANAGER_H

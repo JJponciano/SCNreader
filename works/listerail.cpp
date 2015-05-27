@@ -97,8 +97,8 @@ void ListeRail::initialization(QVector <PointGL > cloud){
 }
 void ListeRail::initRegions(){
     float regionMaxSize= (float)(this->maxSize)*0.2f;
-    float minsize= (float)(this->maxSize)*0.005f;
-    RegionsManager rm(minsize, this->lesRails.at(0).getWidthDistance(),regionMaxSize);
+    float minsize= (float)(this->maxSize)*0.05f;
+    RegionsManager rm(minsize,this->lesRails.at(0).getWidthDistance(),regionMaxSize);
     this->regions=rm;
 }
 
@@ -107,7 +107,6 @@ bool ListeRail::addRail(RailCluster rail)
 
     // add the rail
     this->lesRails.push_back(rail);
-    std::cout<<this->lesRails.size()<<"/"<<this->maxSize<<std::endl;
     //test if the size is too big
     if(this->lesRails.size()>this->maxSize)
     {
@@ -123,6 +122,39 @@ bool ListeRail::addRail(RailCluster rail)
         return false;
     }
 }
+
+void ListeRail::run()
+{
+    for(int i=0;i<this->lesRails.size();i++)
+        // test if the rail contain a switch
+        if(growingRegions(this->lesRails.at(i))){
+            // add the footpulse to the liste of the switch
+            this->switchDetected.push_back(this->lesRails.at(i).getFootpulse());
+        }
+}
+
+bool ListeRail::growingRegions(RailCluster rail)
+{
+    bool switchDetected=false;
+    //for each point of the rail
+    for(int i=0;i<rail.getPoints().size();i++){
+        PointGL currentPoint=rail.getPoints().at(i);
+        // add the point in a region and test if the addition did not require a merger
+        if(!this->regions.addPoint(currentPoint)){
+            //if the addition needed a merger, a switch is detected
+            switchDetected=true;
+        }
+    }
+    // max width to check all regions.
+    float widthMax=this->lesRails.at(0).getLm();
+    // if a region is not ok
+    if(!this->regions.checkRegion(widthMax)) {
+        //a switch is detected
+        switchDetected=true;
+    }
+    return switchDetected;
+}
+
 
 QVector < QVector<PointGL> > ListeRail::spitX(  QVector <PointGL>points){
     QVector < QVector<PointGL> >pointsX;
@@ -222,37 +254,6 @@ void ListeRail::denoising(){
 }
 
 
-void ListeRail::run()
-{
-    for(int i=0;i<this->lesRails.size();i++)
-        // test if the rail contain a switch
-        if(growingRegions(this->lesRails.at(i))){
-            // add the footpulse to the liste of the switch
-            this->switchDetected.push_back(this->lesRails.at(i).getFootpulse());
-        }
-}
-
-bool ListeRail::growingRegions(RailCluster rail)
-{
-    bool switchDetected=false;
-    //for each point of the rail
-    for(int i=0;i<rail.getPoints().size();i++){
-        PointGL currentPoint=rail.getPoints().at(i);
-        // add the point in a region and test if the addition did not require a merger
-        if(!this->regions.addPoint(currentPoint)){
-            //if the addition needed a merger, a switch is detected
-            switchDetected=true;
-        }
-    }
-    // max width to check all regions.
-    float widthMax=this->lesRails.at(0).getEm();
-    // if a region is not ok
-    if(!this->regions.checkRegion(widthMax)) {
-        //a switch is detected
-        switchDetected=true;
-    }
-    return switchDetected;
-}
 //QVector<int> ListeRail::getRegions(PointGL currentPoint){
 //    // ==== Count the number of regions which currentPoint is in===
 //    QVector<int> countRegions;
@@ -415,4 +416,14 @@ void ListeRail::clear()
     this->switchDetected.clear();
     this->regions.clear();
 }
+RegionsManager ListeRail::getRegions() const
+{
+    return regions;
+}
+
+void ListeRail::setRegions(const RegionsManager &value)
+{
+    regions = value;
+}
+
 

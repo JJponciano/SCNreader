@@ -36,6 +36,7 @@ VueParEtape::VueParEtape(QWidget *parent): groundGLWidget(parent)
     this->affswitch=false;
     this->affe=false;
     this->affr=false;
+    this->affReg=false;
     this->affc=true;
     this->mirx=0;
     this->numS=-1;
@@ -90,6 +91,10 @@ void VueParEtape::paintGL()
     if(affs)
     {
         this->affichageSegm();
+    }
+    if(this->affReg)
+    {
+        this->affichageReg();
     }
     if(affe)
     {
@@ -170,7 +175,31 @@ void VueParEtape::affichageSwitch()
         glEnd();
     }
 }
+void VueParEtape::affichageReg()
+{
+    glBegin(GL_POINTS);
 
+    QVector< QVector<PointGL> >regions=this->scnreaderFond.getRegions();
+
+    for(int i=0; i<regions.size(); i++)
+    {
+       // srand(time(NULL)); // initialisation de rand
+        float color1 =((float) std::rand() / (RAND_MAX));
+        float color2 = ((float) std::rand() / (RAND_MAX));
+        float color3 = ((float) std::rand() / (RAND_MAX));
+        glColor3f(color1,color2,color3);
+
+        for(int j=0; j<regions.at(i).size(); j++){
+            glPointSize(1);
+            //normalizes points with model->max of cordinates previously finded
+            float x=(regions.at(i).at(j)).getX();
+            float y=(regions.at(i).at(j)).getY();
+            float z=((regions.at(i).at(j)).getZ()-this->ftpDI)*0.1;
+            glVertex3f(x,y,z);
+        }
+    }
+    glEnd();
+}
 void VueParEtape::affichageCloud()
 {
     glBegin(GL_POINTS);
@@ -459,6 +488,9 @@ std::string VueParEtape::getNomF(){
 
 void VueParEtape::setaffC(bool b){
     this->affc=b;
+}
+void VueParEtape::setaffReg(bool b){
+    this->affReg=b;
 }
 
 void VueParEtape::setaffS(bool b){

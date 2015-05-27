@@ -177,14 +177,18 @@ public:
        bool getRansacVide() const;
        void setRansacVide(bool value);
        void SavePartInTxt(int d, int f, QString pathname);
+       QVector<QVector<PointGL> > getRegions() const;
+       void setRegions(const QVector<QVector<PointGL> > &value);
+
 private:
-    int capacity;
-    int workWindows;
-    QVector <ScnData> datas;
-    int ftpd;
-    int ftpf;
-    ListeRail lesRails;
+       int capacity;
+       int workWindows;
+       QVector <ScnData> datas;
+       int ftpd;
+       int ftpf;
+       ListeRail lesRails;
     ListeRail lesRailsOptimize;
+   QVector< QVector<PointGL> >regions;
     pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC;
     QVector <int>LesSwitchs;///< list of the footpulse corresponding to switchs
     QString nomFile;

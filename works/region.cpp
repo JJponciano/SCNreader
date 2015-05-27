@@ -25,6 +25,7 @@
 
 Region::Region()
 {
+     this->isdead=false;
     this->maxSize=500;
     this->ID=0;
     this->neighborsDistance=0.4f;
@@ -32,6 +33,7 @@ Region::Region()
 }
 Region::Region(int ID, int maxSize, float neighborsDistance)
 {
+    this->isdead=false;
     this->maxSize=maxSize;
     this->ID=ID;
     this->neighborsDistance=neighborsDistance;
@@ -43,6 +45,7 @@ void Region::clear(){
 
 void Region::add(PointGL point)
 {
+    if(this->isdead)throw Erreur("adding in a dead region");
     // add the rail
     this->points.push_back(point);
     //test if the size is too big
@@ -52,6 +55,7 @@ void Region::add(PointGL point)
     }
 }
 bool Region::growing(PointGL point){
+    if(this->isdead)return false;
     //if the region have not a point
     if(this->size()==0){
         // the point is added
@@ -77,6 +81,16 @@ void Region::setPoints(const QVector<PointGL> &value)
 {
     points = value;
 }
+float Region::getIsdead() const
+{
+    return isdead;
+}
+
+void Region::setIsdead(float value)
+{
+    isdead = value;
+}
+
 
 
 int Region::getID() const
@@ -89,6 +103,7 @@ int Region::size()const{
 
 bool Region::isIn(PointGL pt,float distanceMax)const
 {
+    if(this->isdead)return false;
     //for each point of the region
     for(int i=0;i<points.size();i++){
         //test if the points avec the same width with and height the point to be tested
@@ -100,6 +115,7 @@ bool Region::isIn(PointGL pt,float distanceMax)const
 }
 bool Region::isIn(PointGL pt)const
 {
+    if(this->isdead)return false;
     //for each point of the region
     for(int i=0;i<points.size();i++){
         //test if the points avec the same width with and height the point to be tested
@@ -116,7 +132,7 @@ bool Region::check(float widthMax)const
     //search the extremum of the x coordinates in the region
     float xmin=this->points.at(0).getX();
     float xmax=this->points.at(0).getX();
-    for(int i=1;i<this->points.size();i++){
+    for(int i=0;i<points.size();i++){
         if(this->points.at(i).getX()<xmin)
             xmin=this->points.at(i).getX();
         else    if(this->points.at(i).getX()>xmax)

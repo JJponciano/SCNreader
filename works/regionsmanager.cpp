@@ -53,9 +53,7 @@ void RegionsManager::addInNewRegion(PointGL point){
 
 bool RegionsManager::addPoint(PointGL point)
 {
-    int i=0;
     bool ok=true;
-
     // get all region that the point could be added
     QVector<int> idRegions=this->intoRegions(point);
 
@@ -66,15 +64,12 @@ bool RegionsManager::addPoint(PointGL point)
         // if the point belong to only one region
         if(idRegions.size()==1){
             //it is simply added
-            this->regions[i].add(point);
+            this->add(idRegions.at(0),point);
         }else{
-            ok=false;
             // the point belong to more than one regions
             // remove region having merged and test if this merge wasn't too small
-            if(this->removeRegions(idRegions)){
-                // if is too small, the merge is not importante
-                ok=true;
-            }
+            // if is too small, the merge is not importante
+            ok=(this->removeRegions(idRegions));
             //add it in a new region
             this->addInNewRegion(point);
         }
@@ -96,6 +91,19 @@ bool RegionsManager::checkRegion(float widthmax){
         }
     return ok;
 }
+void RegionsManager::add(int ID,PointGL point){
+    Region r(ID,this->maxSize,this->neighborsDistance);
+    //test if the region is known
+    if(this->regions.contains(r)){
+        // add the point into the region
+        int index=this->regions.lastIndexOf(r);
+        if(index<0||index>=this->regions.size())
+            throw Erreur("Invalid Index");
+        else
+            this->regions[index].add(point);
+    }
+    else throw Erreur(" The region is not known");
+}
 
 Region RegionsManager::getRegion(int ID){
     Region r(ID,this->maxSize,this->neighborsDistance);
@@ -114,9 +122,12 @@ void RegionsManager::clear(){
 void RegionsManager::remove(int ID){
     Region r(ID,this->maxSize,this->neighborsDistance);
     //test if the region is known
-    if(this->regions.contains(r))
+    if(this->regions.contains(r)){
         // return the region
-        this->regions.remove(this->regions.lastIndexOf(r));
+        int index=this->regions.lastIndexOf(r);
+       this->regions.remove(index);
+    }
+     // this->regions[this->regions.lastIndexOf(r)].setIsdead(true);
     else throw Erreur(" The region is not known");
 }
 
@@ -147,6 +158,16 @@ int RegionsManager::generatingID(){
     this->nbregions++;
     return nbregions;
 }
+QVector<Region> RegionsManager::getRegions() const
+{
+    return regions;
+}
+
+void RegionsManager::setRegions(const QVector<Region> &value)
+{
+    regions = value;
+}
+
 bool RegionsManager::split(int regionID)
 {
     //split the region

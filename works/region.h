@@ -82,7 +82,11 @@ public:
      QVector<PointGL> getPoints() const;
      void setPoints(const QVector<PointGL> &value);
 
+     float getIsdead() const;
+     void setIsdead(float value);
+
 private:
+     float isdead;
      float neighborsDistance;
      int ID;
      QVector <PointGL>points;

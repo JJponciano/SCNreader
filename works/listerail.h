@@ -71,6 +71,9 @@ public:
      */
     void clear();
 
+    RegionsManager getRegions() const;
+    void setRegions(const RegionsManager &value);
+
 private:
     int maxSize;
     int epsilon;// degres of precision
@@ -82,29 +85,29 @@ private:
      */
     void run();
 
-    /**
-     * @brief isInRegion test  if the point belongs to the region
-     * @param reg regions to be tested
-     * @param pt pt to be tested if is in reg.
-     * @return true if the point belongs to the region
-     */
-    bool isInRegion(const QVector<PointGL> reg, PointGL  pt) const;
-    /**
-     * @brief growingOk test if the region is not too big after this adding.
-     * @param reg region to be tested
-     * @return true if the regions is not too big
-     */
-    bool growingOk(const QVector<PointGL> reg) const;
-    /**
-     * @brief split split a region in two regions
-     * @param regindex index of the region to be splited
-     */
-    void split(int regindex);
+//    /**
+//     * @brief isInRegion test  if the point belongs to the region
+//     * @param reg regions to be tested
+//     * @param pt pt to be tested if is in reg.
+//     * @return true if the point belongs to the region
+//     */
+//    bool isInRegion(const QVector<PointGL> reg, PointGL  pt) const;
+//    /**
+//     * @brief growingOk test if the region is not too big after this adding.
+//     * @param reg region to be tested
+//     * @return true if the regions is not too big
+//     */
+//    bool growingOk(const QVector<PointGL> reg) const;
+//    /**
+//     * @brief split split a region in two regions
+//     * @param regindex index of the region to be splited
+//     */
+//    void split(int regindex);
 
 
 
-    bool emptyRegion(QVector<int> countRegions);
-    QVector<int> getRegions(PointGL currentPoint);
+//    bool emptyRegion(QVector<int> countRegions);
+//    QVector<int> getRegions(PointGL currentPoint);
     void denoising();
     void initialization(QVector<PointGL> cloud);
     QVector<QVector<PointGL> > spitX(QVector<PointGL> points);

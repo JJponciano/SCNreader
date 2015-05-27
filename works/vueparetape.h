@@ -33,7 +33,7 @@
 #include <QList>
 #include <QString>
 #include <QStringList>
-
+#include <time.h>
 /**
  * @class VueParEtape
  * @brief VueParEtape is a class which manages the display of the big cloud of points.
@@ -116,7 +116,7 @@ public:
    void setaffE(bool b);
    void setaffC(bool b);
    void setaffR(bool b);
-
+  void setaffReg(bool b);
    bool getAffswitch() const;
    void setAffswitch(bool value);
 
@@ -127,6 +127,7 @@ public:
    void IncreasePosSwitch();
    void DecreasePosSwitch();
    void calculNumWithPos();
+
 
 private:
 
@@ -153,6 +154,7 @@ private:
     bool affswitch;
     bool affe;
     bool affc;
+    bool affReg;
     bool affr;
     float px;
     float py;
@@ -173,6 +175,7 @@ private:
     void LectureSw(QString nameF);
     bool AucunSwitch();
     bool SwitchContenu(int ftp);
+    void affichageReg();
 };
 
 #endif // VUEPARETAPE_H
