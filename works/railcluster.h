@@ -161,6 +161,7 @@ public:
      * @return true if the distance between 2 points is below to the average spacing between two tracks
      */
     bool spacingDistance( PointGL p1,  PointGL p2) const;
+
     //accesseur en lecture et en ecriture
     void setEm(float e);
     void setHm(float h);

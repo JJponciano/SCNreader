@@ -877,63 +877,64 @@ void scnreader_model::createRail()
                 rc=r2;
                 this->lesRails.addRail(r2);
             }
-            this->optimization();
-            //we keep detected switch in this window
-            int nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
-            for(int i=0; i<nbswitch;i++)
-            {
-                int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
-                if(!this->LesSwitchs.contains(ftp))
-                {
-                    this->LesSwitchs.push_back(ftp);
-                }
-            }
-            //we reinit lesRailsOptimize et resultRansac
-                                    this->lesRailsOptimize.clear();
-                                    this->resultRANSAC->clear();
+            cleanNoise(fw);
+//            this->optimization();
+//            //we keep detected switch in this window
+//            int nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
+//            for(int i=0; i<nbswitch;i++)
+//            {
+//                int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
+//                if(!this->LesSwitchs.contains(ftp))
+//                {
+//                    this->LesSwitchs.push_back(ftp);
+//                }
+//            }
+//            //we reinit lesRailsOptimize et resultRansac
+//                                    this->lesRailsOptimize.clear();
+//                                    this->resultRANSAC->clear();
 
-                                    //we continue to cover all the cloud with a window which we move footpulse by footpulse
-                                    while(fw<=this->ftpf)
-                                    {
-                                        //we add a new track and remove the first in track in window
-                                        RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(fw)), rc);
-                                        rc=r2;
-                                        this->lesRails.addRail(r2);
+//                                    //we continue to cover all the cloud with a window which we move footpulse by footpulse
+//                                    while(fw<=this->ftpf)
+//                                    {
+//                                        //we add a new track and remove the first in track in window
+//                                        RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(fw)), rc);
+//                                        rc=r2;
+//                                        this->lesRails.addRail(r2);
 
-                                        //we do the treatment to detect switchs in this window
-                                        this->optimization();
-                                        //we keep detected switch in this window
-                                        nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
-                                        for(int i=0; i<nbswitch;i++)
-                                        {
-                                            int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
-                                            //we verify that the size of vector doesn't exceed the cvector's capacity
-                                            if(this->LesSwitchs.size()<this->capacity)
-                                            {
-                                                if(!this->LesSwitchs.contains(ftp))
-                                                    this->LesSwitchs.push_back(ftp);
-                                            }
-                                            //if it exceeds
-                                            else
-                                            {
-                                                //----------------we write footpulses in a text file
+//                                        //we do the treatment to detect switchs in this window
+//                                        this->optimization();
+//                                        //we keep detected switch in this window
+//                                        nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
+//                                        for(int i=0; i<nbswitch;i++)
+//                                        {
+//                                            int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
+//                                            //we verify that the size of vector doesn't exceed the cvector's capacity
+//                                            if(this->LesSwitchs.size()<this->capacity)
+//                                            {
+//                                                if(!this->LesSwitchs.contains(ftp))
+//                                                    this->LesSwitchs.push_back(ftp);
+//                                            }
+//                                            //if it exceeds
+//                                            else
+//                                            {
+//                                                //----------------we write footpulses in a text file
 
-                                                    VideEtEnregistre(noms);
-                                            }
+//                                                    VideEtEnregistre(noms);
+//                                            }
 
-                                        }
+//                                        }
 
-                                        //we reinit lesRailsOptimize et resultRansac
-                                        //this->lesRailsOptimize.clear();
-                                        //this->resultRANSAC->clear();
+//                                        //we reinit lesRailsOptimize et resultRansac
+//                                        //this->lesRailsOptimize.clear();
+//                                        //this->resultRANSAC->clear();
 
-                                        //we move the window
-                                        dw++;
-                                        fw++;
-                                    }
+//                                        //we move the window
+//                                        dw++;
+//                                        fw++;
+//                                    }
 
-            //----------------we write footpulses of switch in a text file
-            this->enregistre(noms);
+//            //----------------we write footpulses of switch in a text file
+//            this->enregistre(noms);
         }
     }
     else throw Erreur("Les rails n'ont pas pu etre crees car le nuage de points est vide.");
@@ -1032,4 +1033,77 @@ void scnreader_model::SavePartInTxt(int d, int f, QString pathname)
 
         file.close();
     }else throw Erreur(MesErreur.toStdString());
+}
+
+//For each part of cloud:
+void scnreader_model::cleanNoise(int f){
+    //we fix the width of 1 pixel
+    float dense=0.04;
+    //we keep the cloud which we must clean
+    QVector<PointGL> lespoints=this->lesRails.getCloud();
+    //we keep distance between xmin and xmax
+    float* val=distanceMinMax(lespoints);
+    float dist=val[1]-val[0];
+    float xmin=val[0];
+    int zmin=val[2];
+    //calculate width of image
+    int width=(int)(dist/dense);
+    //initialize the image
+    ImageProcessing im(width+1, (f-this->ftpd));
+    //For each point of this part:
+    for(int i=0; i<lespoints.size(); i++)
+    {
+        //we calculate the coordinate corresponding to it
+        int c=(int) ((lespoints.at(i).getX()-xmin)/dense);
+        int l=(int) lespoints.at(i).getZ()-zmin;
+        std::cout<<"l: "<<l<<" et c: "<<c<< std::endl;
+        //we increase this position
+        im.increase(l,c);
+    }
+    //we do a calibration of gray level between 0 and 255
+    im.calibration();
+
+    //we do a thresholding with threshold=125 => binarization
+    im.thresholding(0);
+    im.enregistre(this->nomFile);
+    //For each point of this part:
+    for(int i=0; i<lespoints.size(); i++)
+    {
+        //we calculate the coordinate corresponding to it
+        int c=(int) ((lespoints.at(i).getX()-xmin)/dense);
+        int l=(int) lespoints.at(i).getZ()-zmin;
+        //if the value of position equals 0, we remove this point
+        if(im.getValue(l,c)==0)
+        {
+            lespoints.removeAt(i);
+            //update after remove
+            i--;
+        }
+    }
+    this->lesRails.initialization(lespoints,this->workWindows);
+}
+
+float * scnreader_model::distanceMinMax(QVector<PointGL> lspts)
+{
+    //initialization if xmin and xmax
+    float xmin=lspts.at(0).getX();
+    float xmax=lspts.at(0).getX();
+    float zmin=lspts.at(0).getZ();
+    //we cover the vector to search xmin and max
+    for(int i=1; i<lspts.size(); i++)
+    {
+        if(xmin>lspts.at(i).getX())
+            xmin=lspts.at(i).getX();
+        if(xmax<lspts.at(i).getX())
+            xmax=lspts.at(i).getX();
+        if(zmin>lspts.at(i).getZ())
+            zmin=lspts.at(i).getZ();
+    }
+    //we calculate the distance between them
+    float * t;
+    t= new float[3];
+    t[0]=xmin;
+    t[1]=xmax;
+    t[2]=zmin;
+    return t;
 }

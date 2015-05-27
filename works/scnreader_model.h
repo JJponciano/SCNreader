@@ -28,6 +28,7 @@
 #include "scndata.h"
 #include "railcluster.h"
 #include "listerail.h"
+#include "imageprocessing.h"
 #include <QVector>
 #include <QHash>
 #include <QDataStream>
@@ -74,7 +75,9 @@ class scnreader_model: public ToolsPCL
 public:
     scnreader_model();
     ~scnreader_model();
-
+    /**
+     * @brief clear clean all pointers to avoid memory leaks
+     */
     void clear();
     /**
      * @brief scnreader_model::loadCloudFromTXT create and add data from file
@@ -280,8 +283,13 @@ private:
     /**
      * @brief cleanNoise remove points which don't belong to tracks
      */
-    void cleanNoise();
-
+    void cleanNoise(int f);
+    /**
+     * @brief distanceMinMax search xmin and xmax
+     * @param lspts is the part where we search the distance
+     * @return a table with xmin in first place and xmax in second place
+     */
+    float *distanceMinMax(QVector<PointGL> lspts);
 };
 
 #endif // SCNREADER_MODULE_H

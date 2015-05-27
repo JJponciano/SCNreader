@@ -24,7 +24,8 @@
 class ImageProcessing
 {
 public:
-    ImageProcessing(int width, int height);
+    ImageProcessing();
+    ImageProcessing(int w, int h);
     ~ImageProcessing();
     /**
      * @brief increase increase of one level a pixel
@@ -32,17 +33,41 @@ public:
      * @param c col of pixel
      */
     void increase(int r, int c);
-
+    /**
+     * @brief calibration allocates the value between 0 and 255
+     */
+    void calibration();
+    /**
+     * @brief thresholding does a binarization of image
+     * @param s is the threshold to binarization
+     */
+    void thresholding(int s);
+    /**
+     * @brief getValue gives the value corresponding to a position
+     * @param i is the position of row
+     * @param j is the position of col
+     * @return the value corresponding to the position i,j
+     */
+    int getValue(int i, int j);
+    /**
+     * @brief enregistre enregistre la matrice dans un fichier image type jpg
+     * @param nom is the name of file
+     */
+    void enregistre(QString nom);
 
     //--------Access in reading and writing for private variables-------
     cv::Mat getImage() const;
-    void setImage(const cv::Mat &value);
+    void setImage(cv::Mat &value);
     //------------------------------------------------------------------
+
+
+
 
 private:
     //-------------------Private Attributes--------------
     cv::Mat image;
-
+    int width;
+    int height;
 
     //-------------------Private Functions--------------
     /**
@@ -99,6 +124,11 @@ private:
      * @brief enregistre enregistre la matrice dans un fichier image type jpg
      */
     void enregistre();
+    /**
+     * @brief MinMax search values min and max in matrix
+     * @return a table with the min in first place and max in second place
+     */
+    int *MinMax();
 };
 
 #endif // IMAGEPROCESSING_H

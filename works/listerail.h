@@ -69,6 +69,7 @@ public:
      * @brief clear reinit ListeRail
      */
     void clear();
+    void initialization(QVector<PointGL> cloud, int maxSize);
 
 private:
     int maxSize;
@@ -104,7 +105,7 @@ private:
     bool emptyRegion(QVector<int> countRegions);
     QVector<int> getRegions(PointGL currentPoint);
     void denoising();
-    void initialization(QVector<PointGL> cloud, int maxSize);
+
     QVector<QVector<PointGL> > spitX(QVector<PointGL> points);
     QVector<PointGL> cleanFailPoints(QVector<QVector<PointGL> > points);
     QHash<int,int> fillFrequencyHeight(QVector<PointGL> pointsX);

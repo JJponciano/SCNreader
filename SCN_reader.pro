@@ -19,7 +19,7 @@ OTHER_FILES += \
 
 # ---------- CONFIG
 CONFIG += opengl
-#CONFIG += opencv
+CONFIG += opencv
 CONFIG += pcl
 # ---------- end CONFIG
 

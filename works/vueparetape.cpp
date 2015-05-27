@@ -608,29 +608,32 @@ void VueParEtape::LectureSw(QString nameF)
     QString noms=nameF;
     noms.push_back("_switch.txt");
     QFile fichier(noms);
-    if(fichier.open(QIODevice::ReadOnly | QIODevice::Text)){
-        //if you can, initialize flu and line
-        QTextStream flux(&fichier);
-        QString ligne;
-        QVector<int> vect;
-        while(!flux.atEnd())
-        {
-            ligne= flux.readLine();
-            vect.push_back(ligne.toInt());
-
-
-            if(vect.size()>=this->scnreaderFond.getCapacity()-1)
+    if(fichier.exists())
+    {
+        if(fichier.open(QIODevice::ReadOnly | QIODevice::Text)){
+            //if you can, initialize flu and line
+            QTextStream flux(&fichier);
+            QString ligne;
+            QVector<int> vect;
+            while(!flux.atEnd())
             {
-                this->SwitchDetected.push_back(vect);
-                QVector<int> vect2;
-                vect=vect2;
-            }
+                ligne= flux.readLine();
+                vect.push_back(ligne.toInt());
 
+
+                if(vect.size()>=this->scnreaderFond.getCapacity()-1)
+                {
+                    this->SwitchDetected.push_back(vect);
+                    QVector<int> vect2;
+                    vect=vect2;
+                }
+
+            }
+            this->SwitchDetected.push_back(vect);
+            fichier.close();
+            if(!this->SwitchDetected.isEmpty())
+                this->numS=this->SwitchDetected.at(0).at(0);
         }
-        this->SwitchDetected.push_back(vect);
-        fichier.close();
-        if(!this->SwitchDetected.isEmpty())
-            this->numS=this->SwitchDetected.at(0).at(0);
+        else throw Erreur(" The file of switch can not be openned, check the write permission!");
     }
-    else throw Erreur(" The file of switch can not be openned, check the write permission!");
 }
