@@ -96,8 +96,8 @@ void ListeRail::initialization(QVector <PointGL > cloud){
     }
 }
 void ListeRail::initRegions(){
-    float regionMaxSize= this->maxSize*0.2f;
-    float minsize= this->maxSize*0.05f;
+    float regionMaxSize= (float)(this->maxSize)*0.2f;
+    float minsize= (float)(this->maxSize)*0.005f;
     RegionsManager rm(minsize, this->lesRails.at(0).getWidthDistance(),regionMaxSize);
     this->regions=rm;
 }
