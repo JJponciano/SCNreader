@@ -104,18 +104,19 @@ void ListeRail::initRegions(){
 
 bool ListeRail::addRail(RailCluster rail)
 {
-    std::cout<<this->lesRails.size()<<"/"<<this->maxSize<<std::endl;
+
     // add the rail
     this->lesRails.push_back(rail);
+    std::cout<<this->lesRails.size()<<"/"<<this->maxSize<<std::endl;
     //test if the size is too big
-    if(this->lesRails.size()>=this->maxSize)
+    if(this->lesRails.size()>this->maxSize)
     {
         this->lesRails.remove(0);
         return true;
     }
     else{
         //test if the track is the last
-        if(this->lesRails.size()==this->maxSize-1){
+        if(this->lesRails.size()==this->maxSize){
             //performance of denoising
             this->denoising();
         }
