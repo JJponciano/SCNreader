@@ -181,8 +181,7 @@ public:
      * @brief getWidthDistance
      * @return return the distance of a track
      */
-    float getWidthDistance();
-    float getApproximately();
+    float getWidthDistance() const;
 private:
 float gap(QVector <PointGL> reg) const;
     int footpulse;

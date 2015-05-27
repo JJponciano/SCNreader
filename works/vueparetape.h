@@ -67,11 +67,7 @@ public:
      * @brief clear remove all clouds
      */
     void clear();
-    /**
-     * @brief extractionCloud create new clouds representing different parts of the cloud located at the ith position in the clouds vector
-     * @param i index of the cloud position in this Qvector clouds
-     */
-    void extractionCloud(int i);
+
     /**
      * @brief planarSegmentation  create a new cloud representing the most larger plan of the cloud located at the ith position in the clouds vector
      * @param int d, footpulde to begin, int f, footpulse to finish

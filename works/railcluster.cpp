@@ -503,7 +503,7 @@ bool RailCluster::widthDistance( PointGL p1,  PointGL p2)const
     float dsup= this->lm-this->delta;
    return p1.distanceX(p2,dsup);
 }
-float RailCluster::getWidthDistance(){
+float RailCluster::getWidthDistance()const{
     return this->lm-this->delta;
 }
 

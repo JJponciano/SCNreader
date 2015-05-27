@@ -158,7 +158,6 @@ public:
     void setNomFile(const QString &value);
 
     int getCapacity() const;
-    void setCapacity(int c);
 
     int getFtpd();
     int getFtpf();

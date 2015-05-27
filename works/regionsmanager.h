@@ -31,40 +31,63 @@ public:
     RegionsManager();
     /**
      * @brief RegionsManager
-     * @param distanceMax maximum distance between two points in a same region
      * @param minsize minimum size of a region for detect a merge
      * @param neighborsDistance distance between neighbors
      * @param maxSize maximum number of points that a region may contain
      */
-    RegionsManager(float distanceMax, int minsize,float neighborsDistance, int maxSize);
+    RegionsManager(int minsize, float neighborsDistance, int maxSize);
     ~RegionsManager();
+    /**
+     * @brief addPoint add a point into a correct region
+     * @param point to be added
+     * @return true the addition did not require a merger
+     */
+    bool addPoint(PointGL point);
+    /**
+     * @brief getRegion return a region
+     * @param ID identifier of the region to be returned
+     * @return return the region having indentifier ID
+     */
     Region getRegion(int ID);
+    /**
+     * @brief remove remove a region
+     * @param ID identifier of the region to be removed
+     */
     void remove(int ID);
     /**
      * @brief removeRegions it removes regions and it tests if a region is not too small for die
      * @param RegionsID identifier of the regions to be removed
      * @return true if no region was too small
+     * @warning Maybe this work is not quite accurate
      */
     bool removeRegions(QVector<int> RegionsID);
     /**
      * @brief split split a region in two regions
      * @param regionID identifier of the region to be splited
+     * @return true if a region was too small
      */
-    void split(int regionID);
+    bool split(int regionID);
     /**
      * @brief intoRegions test  if the point belongs to the region
      * @param pt point to be tested.
      * @return identifiers of each region containing the point
      */
-    QVector<int> intoRegions(PointGL currentPoint);
+    QVector<int> intoRegions(PointGL point) const;
+    /**
+     * @brief checkRegion check all region
+     * @param widthmax max width of the region
+     * @return true if all region have a width less than widthmax
+     */
+    bool checkRegion(float widthmax);
+    void clear();
 private:
     int generatingID();
     QVector<Region>regions;
     int nbregions;
      int maxSize;
-float distanceMax;
 int minSize;
 float neighborsDistance;
+void addInNewRegion(PointGL point);
 };
 
 #endif // REGIONSMANAGER_H

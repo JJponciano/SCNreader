@@ -56,13 +56,23 @@ public:
       * @return true if the point is in regions
       */
      bool isIn(PointGL pt, float distanceMax) const;
-     int size();
+     /**
+      * @brief isIn test if a point is in the region with use the neightbors distance
+      * @param pt point to be tested
+      * @return  true if the point is in the region
+      */
+     bool isIn(PointGL pt) const;
+     /**
+      * @brief size number of point into the region
+      * @return  number of point into the region
+      */
+     int size() const;
      /**
       * @brief growingOk test if the region is not too big
       * @param widthMax  max width of the region
       * @return true if the regions is not too big
       */
-     bool growingOk(float widthMax) const;
+     bool check(float widthMax) const;
      /**
       * @brief growing add point using the distance criterion between neighbors
       * @param point point to be added

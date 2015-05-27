@@ -26,6 +26,7 @@
 #define LISTERAIL_H
 
 #include "railcluster.h"
+#include "regionsmanager.h"
 #include <QHash>
 class ListeRail
 {
@@ -73,6 +74,9 @@ public:
 private:
     int maxSize;
     int epsilon;// degres of precision
+    QVector <int>switchDetected;///< list of the footpulste with switch
+    QVector<RailCluster> lesRails;///< all rails
+   RegionsManager regions;///<regions detected
     /**
      * @brief run is the treatment to detect switchs
      */
@@ -96,20 +100,19 @@ private:
      * @param regindex index of the region to be splited
      */
     void split(int regindex);
-    QVector <int>switchDetected;///< list of the footpulste with switch
-    QVector<RailCluster> lesRails;///< all rails
-    QVector< QVector<PointGL> >regions;///<regions detected
+
 
 
     bool emptyRegion(QVector<int> countRegions);
     QVector<int> getRegions(PointGL currentPoint);
     void denoising();
-    void initialization(QVector<PointGL> cloud, int maxSize);
+    void initialization(QVector<PointGL> cloud);
     QVector<QVector<PointGL> > spitX(QVector<PointGL> points);
     QVector<PointGL> cleanFailPoints(QVector<QVector<PointGL> > points);
     QHash<int,int> fillFrequencyHeight(QVector<PointGL> pointsX);
     int searchCommonHeight(QHash<int, int> freqs);
     QVector<PointGL> addByHeight(QVector<PointGL> pointsX, float height);
+    void initRegions();
 };
 
 #endif // LISTERAIL_H

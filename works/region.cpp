@@ -52,25 +52,20 @@ void Region::add(PointGL point)
     }
 }
 bool Region::growing(PointGL point){
+    //if the region have not a point
     if(this->size()==0){
+        // the point is added
         this->add(point);
         return true;
     }else{
-        //for each point of the first region
-        bool added=false;
-        int i=0;
-        // test is the point could be added to the first region and add it if is possible
-        while(i<this->size()&&!added){
-            PointGL currentPoint=this->points.at(i);
-            //test if the points avec the same width with and height the point to be tested
-            if(point.distanceX(currentPoint,this->neighborsDistance)&&point.distanceY(currentPoint,this->neighborsDistance)){
-                // add the point and stop the loop
-                this->add(point);
-                added=true;
-            }else
-                i++;
-        }
-        return added;
+        // test is the point could be added to the region and add it if is possible
+        if(this->isIn(point)){
+            // add the point
+            this->add(point);
+            return true;
+        }else
+            //the point is not added
+            return false;
     }
 }
 QVector<PointGL> Region::getPoints() const
@@ -88,7 +83,7 @@ int Region::getID() const
 {
     return ID;
 }
-int Region::size(){
+int Region::size()const{
     return this->points.size();
 }
 
@@ -103,8 +98,19 @@ bool Region::isIn(PointGL pt,float distanceMax)const
     return false;
 
 }
+bool Region::isIn(PointGL pt)const
+{
+    //for each point of the region
+    for(int i=0;i<points.size();i++){
+        //test if the points avec the same width with and height the point to be tested
+        if(pt.distanceX(this->points.at(i),this->neighborsDistance))
+            return true;
+    }
+    return false;
 
-bool Region::growingOk(float widthMax)const
+}
+
+bool Region::check(float widthMax)const
 {
     //search the extremum of the x coordinates in the region
     //search the extremum of the x coordinates in the region
@@ -119,10 +125,6 @@ bool Region::growingOk(float widthMax)const
     //compare the distance between the extremums with the maximum authorized.
     return (xmax-xmin)<widthMax;
 }
-
-
-
-
 
 Region::~Region()
 {

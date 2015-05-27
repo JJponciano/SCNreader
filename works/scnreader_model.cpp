@@ -781,10 +781,6 @@ int scnreader_model::getCapacity() const
     return capacity;
 }
 
-void scnreader_model::setCapacity(int c)
-{
-    throw Erreur("The capacity must not be modified");
-}
 
 QVector<int> scnreader_model::getLesSwitchs() const
 {
