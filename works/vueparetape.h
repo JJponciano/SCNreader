@@ -28,12 +28,13 @@
 #include <QWidget>
 #include "../modules/openGL/ground/groundglwidget.h"
 #include "scnreader_model.h"
+#include "colorsmanager.h"
 #include <cstdlib>
 #include <QMouseEvent>
 #include <QList>
 #include <QString>
 #include <QStringList>
-#include <time.h>
+
 /**
  * @class VueParEtape
  * @brief VueParEtape is a class which manages the display of the big cloud of points.
@@ -134,6 +135,7 @@ private:
    void affichageCloud();
    void affichageSegm();
    void affichageSwitch();
+  ColorsManager colors;
   scnreader_model scnreaderFond;
   //int ftpdeDepart;
   //int ftpCourant;

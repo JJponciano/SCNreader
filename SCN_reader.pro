@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     works/listerail.cpp \
     modules/openGL/tools_models/Point.cpp \
     works/region.cpp \
-    works/regionsmanager.cpp
+    works/regionsmanager.cpp \
+    works/colorsmanager.cpp
 
 # if you use openGL
 opengl {
@@ -74,7 +75,8 @@ HEADERS  += mainwindow.h \
     works/listerail.h \
     modules/openGL/tools_models/Point.h \
     works/region.h \
-    works/regionsmanager.h
+    works/regionsmanager.h \
+    works/colorsmanager.h
 
 # if you use openGL
 opengl {

@@ -184,10 +184,8 @@ void VueParEtape::affichageReg()
     for(int i=0; i<regions.size(); i++)
     {
        // srand(time(NULL)); // initialisation de rand
-        float color1 =((float) std::rand() / (RAND_MAX));
-        float color2 = ((float) std::rand() / (RAND_MAX));
-        float color3 = ((float) std::rand() / (RAND_MAX));
-        glColor3f(color1,color2,color3);
+
+        glColor3f(colors.getColor(i).at(0),colors.getColor(i).at(1),colors.getColor(i).at(2));
 
         for(int j=0; j<regions.at(i).size(); j++){
             glPointSize(1);
