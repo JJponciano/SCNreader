@@ -30,8 +30,8 @@ SOURCES += main.cpp\
     modules/exceptions/erreur.cpp \
     works/scnreader_view.cpp \
     works/scnreader_model.cpp \
-    works/scndata.cpp \
-    works/datapackage.cpp \
+    works/scn_reader/sources/scndata.cpp \
+    works/scn_reader/sources/datapackage.cpp \
     works/vueparetape.cpp \
     works/railcluster.cpp \
     works/listerail.cpp \
@@ -68,8 +68,8 @@ HEADERS  += mainwindow.h \
     modules/exceptions/erreur.h \
     works/scnreader_view.h \
     works/scnreader_model.h \
-    works/scndata.h \
-    works/datapackage.h \
+    works/scn_reader/sources/scndata.h \
+    works/scn_reader/sources/datapackage.h \
     works/vueparetape.h \
     works/railcluster.h \
     works/listerail.h \
