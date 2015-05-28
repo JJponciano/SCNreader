@@ -64,13 +64,13 @@ void PointGL::setEpsilon(int value)
 bool PointGL::operator==(const PointGL &a)
 {
     //rounded to the thousandth
-    int roundX=this->x*epsilon ;
-    int roundY=this->y*epsilon ;
-    int roundZ=this->z*epsilon ;
+    int roundX=int(this->x*epsilon );
+    int roundY=(int)(this->y*epsilon );
+    int roundZ=(int)(this->z*epsilon) ;
 
-    int aX=a.getX()*epsilon ;
-    int aY=a.getY()*epsilon ;
-    int aZ=a.getZ()*epsilon ;
+    int aX=(int)(a.getX()*epsilon );
+    int aY=(int)(a.getY()*epsilon );
+    int aZ=(int)(a.getZ()*epsilon );
 
     return roundX== aX&&roundY== aY &&roundZ== aZ;
 
@@ -79,13 +79,13 @@ bool PointGL::operator==(const PointGL &a)
 bool PointGL::operator!=(const PointGL &a)
 {
     //rounded to the thousandth
-    int roundX=this->x*epsilon ;
-    int roundY=this->y*epsilon ;
-    int roundZ=this->z*epsilon ;
+    int roundX=int(this->x*epsilon) ;
+    int roundY=int(this->y*epsilon) ;
+    int roundZ=int(this->z*epsilon) ;
 
-    int aX=a.getX()*epsilon ;
-    int aY=a.getY()*epsilon ;
-    int aZ=a.getZ()*epsilon ;
+    int aX=int(a.getX()*epsilon) ;
+    int aY=int(a.getY()*epsilon) ;
+    int aZ=int(a.getZ()*epsilon) ;
 
     return roundX!= aX||roundY!= aY ||roundZ!= aZ;
 }
@@ -126,8 +126,8 @@ bool PointGL::distanceY(const PointGL point,double distance)const
   {
        bool inf;
        //test if the points have same X
-       int roundX=this->x*epsilon ;
-        int aX=rhs.getX()*epsilon ;
+       int roundX=int(this->x*epsilon) ;
+        int aX=int(rhs.getX()*epsilon );
         bool equals=roundX== aX;
       if(equals){
           //compare z
@@ -154,12 +154,12 @@ bool PointGL::distanceY(const PointGL point,double distance)const
 //   }
 bool PointGL::equals2D(const PointGL a)const{
     //rounded to the thousandth
-    int roundX=this->x*epsilon ;
-    int roundY=this->y*epsilon ;
+    int roundX=int(this->x*epsilon );
+    int roundY=int(this->y*epsilon );
 
 
-    int aX=a.getX()*epsilon ;
-    int aY=a.getY()*epsilon ;
+    int aX=int(a.getX()*epsilon );
+    int aY=int(a.getY()*epsilon );
 
     return roundX== aX&&roundY== aY;
 }
