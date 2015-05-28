@@ -124,9 +124,9 @@ void scnreader_model::loadCloudFromTXT2(std::string pathname){
         //said that the window is modal
         progress.setWindowModality(Qt::WindowModal);
 
-        pcl::PointXYZ * p;
+        PointGL * p;
         int ftpcourant=-1;
-        QVector<pcl::PointXYZ *>* v;
+        QVector<PointGL *>* v;
 
         while(!flux.atEnd())
         {  //Increment the counter
@@ -151,24 +151,24 @@ void scnreader_model::loadCloudFromTXT2(std::string pathname){
                     QString z=result.at(2);
                     if(footpulse==0)
                     {
-                        p=new pcl::PointXYZ(z.toFloat(),y.toFloat(),x.toFloat());
+                        p=new PointGL(z.toFloat(),y.toFloat(),x.toFloat());
                     }
                     else if(footpulse==1)
                     {
-                        p=new pcl::PointXYZ(x.toFloat(),z.toFloat(),y.toFloat());
+                        p=new PointGL(x.toFloat(),z.toFloat(),y.toFloat());
                     }
                     else
                     {
-                        p=new pcl::PointXYZ(x.toFloat(),y.toFloat(),z.toFloat());
+                        p=new PointGL(x.toFloat(),y.toFloat(),z.toFloat());
                     }
 
                     //if the footpulse is not initialized or if he is different of the previous
-                    if(ftpcourant==-1 || ftpcourant!=(int) p->z)
+                    if(ftpcourant==-1 || ftpcourant!=(int) p->getZ())
                     {
                         //we update footpulse
-                        ftpcourant=(int) p->z;
+                        ftpcourant=(int) p->getZ();
                         //we create a new vector
-                        v= new QVector<pcl::PointXYZ *>();
+                        v= new QVector<PointGL *>();
                         //which we add to the hashtable
                         nuage.insert(ftpcourant, v);
                         //then we add the new point
@@ -178,10 +178,10 @@ void scnreader_model::loadCloudFromTXT2(std::string pathname){
                         v->push_back(p);//else we add the new point
 
                     if(premier){
-                        this->ftpd=p->z;
+                        this->ftpd=p->getZ();
                         premier=false;
                     }
-                    this->ftpf=p->z;
+                    this->ftpf=p->getZ();
                 }
 
 
@@ -546,7 +546,7 @@ void scnreader_model::planar_segmentation( int d, int f){
         }else{
 
             //create new cloud
-            QVector<pcl::PointXYZ*>* v= getPtWithInd(d, f,inliers->indices, tailles);
+            QVector<PointGL*>* v= getPtWithInd(d, f,inliers->indices, tailles);
 
             //add the segmentation to the hashtable
             std::stringstream ss;
@@ -557,11 +557,11 @@ void scnreader_model::planar_segmentation( int d, int f){
     else throw Erreur("Interval de footpulses incorrect pour effectuer la segmentation");
 }
 
-QHash <int, QVector<pcl::PointXYZ *> *> scnreader_model::getNuage(){
+QHash <int, QVector<PointGL *> *> scnreader_model::getNuage(){
     return this->nuage;
 }
 
-QHash <QString, QVector<pcl::PointXYZ*>*> scnreader_model::getSegmentation(){
+QHash <QString, QVector<PointGL*>*> scnreader_model::getSegmentation(){
     return this->segmentation;
 }
 
@@ -609,12 +609,12 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f
     {
         if(nuage.contains(i))
         {
-            QVector <pcl::PointXYZ*> * v=nuage.value(i);
+            QVector <PointGL*> * v=nuage.value(i);
             tailles->push_back(v->size());
             for(int j=0; j<v->size(); j++)
             {
-                pcl::PointXYZ* p=v->at(j);
-                CloudTemp->points.push_back(* p);
+                pcl::PointXYZ p(v->at(j)->getX(),v->at(j)->getY(),v->at(j)->getZ());
+                CloudTemp->points.push_back(p);
             }
             i++;
         }
@@ -627,13 +627,16 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f
     return CloudTemp;
 }
 
-pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<pcl::PointXYZ *> vecteur)
+pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<PointGL *> vecteur)
 {
     pcl::PointCloud<pcl::PointXYZ>::Ptr CloudTemp(new pcl::PointCloud<pcl::PointXYZ>);
     //Fill the cloud with the points which are in the vector
     for(int i=0; i< vecteur.size(); i++)
     {
-        pcl::PointXYZ p=*( vecteur.at(i));
+        float x=vecteur.at(i)->getX();
+        float y=vecteur.at(i)->getY();
+        float z=vecteur.at(i)->getZ();
+        pcl::PointXYZ p(x,y,z);
         CloudTemp->points.push_back(p);
     }
     //update of cloud
@@ -664,16 +667,16 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<Poin
 }
 
 
-QVector<pcl::PointXYZ *> scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+QVector<PointGL *> scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {
-    QVector<pcl::PointXYZ *> vecteur;
+    QVector<PointGL *> vecteur;
     //Fill the vector with the points which are in the cloud
     for(int i=0; i< cloud->points.size(); i++)
     {
         float x=cloud->points.at(i).x;
         float y=cloud->points.at(i).y;
         float z=cloud->points.at(i).z;
-        pcl::PointXYZ *p=new pcl::PointXYZ(x,y,z);
+        PointGL *p=new PointGL(x,y,z);
         vecteur.push_back(p);
     }
 
@@ -695,17 +698,17 @@ QVector<PointGL> scnreader_model::getCloudInVectpoint(pcl::PointCloud<pcl::Point
     return vecteur;
 }
 
-QVector<pcl::PointXYZ *>* scnreader_model::getPtWithInd(int d, int f, std::vector<int> indices, QVector<int>* tailles)
+QVector<PointGL *>* scnreader_model::getPtWithInd(int d, int f, std::vector<int> indices, QVector<int>* tailles)
 {
     //create new cloud
-    QVector<pcl::PointXYZ*>* v= new QVector<pcl::PointXYZ*>();
+    QVector<PointGL*>* v= new QVector<PointGL*>();
     // Fill in the cloud data
 
     // Generate the data
     for (size_t i = 0; i < indices.size (); ++i)
     {
         //vector which contains points corresponding to a footpulse
-        QVector<pcl::PointXYZ*>* vec;
+        QVector<PointGL*>* vec;
         //indice of point which is contained in segmentation
         int indiceC=indices[i];
         //indice to know what vector to use
@@ -823,7 +826,7 @@ ListeRail scnreader_model::getLesRails() const
 
 
 
-QVector<pcl::PointXYZ *> * scnreader_model::getCloudInVect2(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp)
+QVector<PointGL *> *scnreader_model::getCloudInVect2(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp)
 {
     /*QVector<pcl::PointXYZ *> * v;
     //TODO
@@ -831,17 +834,17 @@ QVector<pcl::PointXYZ *> * scnreader_model::getCloudInVect2(pcl::PointCloud<pcl:
     throw Erreur("NOT YET IMPLEMENT, SORRY!");
 }
 
-bool scnreader_model::samePoint(pcl::PointXYZ *point2, pcl::PointXYZ * ptP)
+bool scnreader_model::samePoint(PointGL *point2, PointGL *ptP)
 {
     //we take the coordinates of ptP
-    float x1=ptP->x;
-    float y1=ptP->y;
-    float z1=ptP->z;
+    float x1=ptP->getX();
+    float y1=ptP->getY();
+    float z1=ptP->getZ();
 
     //we take the coordinates of pt
-    float x2=point2->x;
-    float y2=point2->y;
-    float z2=point2->z;
+    float x2=point2->getX();
+    float y2=point2->getY();
+    float z2=point2->getZ();
 
     return (x1==x2) && (y1==y2) && (z1==z2);
 }
@@ -1022,11 +1025,11 @@ void scnreader_model::SavePartInTxt(int d, int f, QString pathname)
         for(int i=d;i<=f; i++){
             if(this->nuage.contains(i))
             {
-                QVector<pcl::PointXYZ *> * vec=this->nuage.value(i);
+                QVector<PointGL *> * vec=this->nuage.value(i);
                 for(int j=0;j<vec->size(); j++){
-                    flux << QString::number(vec->at(j)->x) << "\t"
-                         << QString::number(vec->at(j)->y) << "\t"
-                         << QString::number(vec->at(j)->z) << "\t" << endl;
+                    flux << QString::number(vec->at(j)->getX()) << "\t"
+                         << QString::number(vec->at(j)->getY()) << "\t"
+                         << QString::number(vec->at(j)->getZ()) << "\t" << endl;
                 }
             }
         }

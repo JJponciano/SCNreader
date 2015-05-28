@@ -33,6 +33,7 @@
 #include <QHash>
 #include <QDataStream>
 
+
 /**
  * @class scnreader_model
  * @brief The scnreader_model is a daughter class of ToolsPCL, so it manages too pcl.
@@ -109,13 +110,13 @@ public:
     * @brief acces to QHash
     * @return the Qhash which contains all points footpulse by footpulse
     */
-    QHash <int, QVector<pcl::PointXYZ *> *> getNuage();
+    QHash <int, QVector<PointGL *> *> getNuage();
 
     /**
      * @brief acces to QHash
      * @return the Qhash which contains all points of segmentations of a cloud's part
      */
-    QHash <QString, QVector<pcl::PointXYZ*>*> getSegmentation();
+    QHash <QString, QVector<PointGL*>*> getSegmentation();
 
     /**
        * @brief createRail fills lesrails for all footpulse which were in the uploaded file
@@ -127,7 +128,7 @@ public:
        * @param vecteur is the vector which we will transform
        * @return the cloud corresponding to the vector
        */
-    pcl::PointCloud<pcl::PointXYZ>::Ptr getVectInCloud(QVector<pcl::PointXYZ *> vecteur);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr getVectInCloud(QVector<PointGL *> vecteur);
     /**
        * @brief getVectInCloud transform a vector of point in a cloud
        * @param vecteur is the vector which we will transform
@@ -140,7 +141,7 @@ public:
        * @param cloud is the cloud which we will transform
        * @return the vector corresponding to the cloud
        */
-    QVector<pcl::PointXYZ *> getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
+    QVector<PointGL *> getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 
 
     //Access in reading and writing of variables
@@ -204,7 +205,7 @@ private:
        * @param pt the point which is contained in cloud
        * @return if they are the same
        */
-    bool samePoint( pcl::PointXYZ* point2, pcl::PointXYZ *ptP);
+    bool samePoint( PointGL* point2, PointGL *ptP);
     /**
      * @brief readData read a data byte by byte
      * @param bytePosition posision of the data
@@ -240,7 +241,7 @@ private:
      * @param cloudTemp is the cloud which we will transform
      * @return the vector of points corresponding
      */
-    QVector<pcl::PointXYZ *> * getCloudInVect2(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp);
+    QVector<PointGL *> * getCloudInVect2(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp);
 
     /**
      * @brief scnreader_model::getPtWithInd take the points correponding to indices which are given
@@ -249,23 +250,23 @@ private:
      * @param ind is the vector of indices
      * @return the vector of points corresponding to indices
      */
-    QVector<pcl::PointXYZ*>* getPtWithInd(int d, int f, std::vector<int> indices, QVector<int>* tailles);
+    QVector<PointGL*>* getPtWithInd(int d, int f, std::vector<int> indices, QVector<int>* tailles);
 
     /**
      * @brief the Qhash which contains all points footpulse by footpulse
      *
      */
-    QHash <int, QVector<pcl::PointXYZ *> *> nuage;
+    QHash <int, QVector<PointGL *> *> nuage;
     /**
      * @brief the Qhash which contains all points of segmentations of a cloud's part
      *
      */
-    QHash <QString, QVector<pcl::PointXYZ*>*> segmentation;
+    QHash <QString, QVector<PointGL*>*> segmentation;
     /**
       * @brief the Qhash which contains all points of extractions of a cloud's part
       *
       */
-    QHash <QString, QVector<pcl::PointXYZ *>*> extraction;
+    QHash <QString, QVector<PointGL *>*> extraction;
     /**
      * @brief optimization optimize the search of tracks
      */

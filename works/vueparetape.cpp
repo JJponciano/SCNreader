@@ -149,7 +149,7 @@ void VueParEtape::affichageSwitch()
         {
             if(this->scnreaderFond.getNuage().contains(j))
             {
-                QVector <pcl::PointXYZ*>* v=this->scnreaderFond.getNuage().value(j);
+                QVector <PointGL*>* v=this->scnreaderFond.getNuage().value(j);
                 if(j==this->numS)
                     glColor3f(1.0,0.0,0.0);
                 else
@@ -159,9 +159,9 @@ void VueParEtape::affichageSwitch()
                 {
                     glPointSize(1);
                     //keep coordinates of points to draw them
-                    float x=(* (v->at(i))).x;
-                    float y=(* (v->at(i))).y;
-                    float z=((* (v->at(i))).z-this->numS)*0.1;
+                    float x=(* (v->at(i))).getX();
+                    float y=(* (v->at(i))).getY();
+                    float z=((* (v->at(i))).getZ()-this->numS)*0.1;
                     glVertex3f(x,y,z);
                 }
 
@@ -182,17 +182,17 @@ void VueParEtape::affichageCloud()
         if(this->scnreaderFond.getNuage().contains(j))
         {
 
-            QVector <pcl::PointXYZ*>* v=this->scnreaderFond.getNuage().value(j);
+            QVector <PointGL*>* v=this->scnreaderFond.getNuage().value(j);
             for(int i=0; i<v->size(); i++)
             {
                 glPointSize(1);
 
                 //normalizes points with model->max of cordinates previously finded
-                float x=(* (v->at(i))).x;//scnreaderFond.getMaxX()*10;
-                float y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
-                float z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
+                float x=(* (v->at(i))).getX();//scnreaderFond.getMaxX()*10;
+                float y=(* (v->at(i))).getY();//scnreaderFond.getMaxY()*10;
+                float z=((* (v->at(i))).getZ()-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
                 //                                glVertex3f(x,int(y*1000)/100,z);
-                if(SwitchContenu((* (v->at(i))).z))
+                if(SwitchContenu((* (v->at(i))).getZ()))
                     glColor3f(1.0,0.0,0.0);
                 else
                     glColor3f(1.0,1.0,1.0);
@@ -213,7 +213,7 @@ void VueParEtape::affichageSegm()
     ss << "S_" << this->ftpDI <<"_" << this->ftpFI;
     QString chaine=QString::fromStdString (ss.str());
 
-    QHash<QString, QVector<pcl::PointXYZ*>*> h=this->scnreaderFond.getSegmentation();
+    QHash<QString, QVector<PointGL*>*> h=this->scnreaderFond.getSegmentation();
 
     if(!h.contains(chaine))
     {
@@ -223,12 +223,12 @@ void VueParEtape::affichageSegm()
             QMessageBox::critical(0, "Error", e.what());
         }
     }
-    QVector <pcl::PointXYZ*>* vect=this->scnreaderFond.getSegmentation().value(QString::fromStdString (ss.str()));
+    QVector <PointGL*>* vect=this->scnreaderFond.getSegmentation().value(QString::fromStdString (ss.str()));
     glBegin(GL_POINTS);
     for(int j=0;j<vect->size();j++)
     {
         glColor3f(0.0,0.0,1.0);
-        glVertex3f((* (vect->at(j))).x,(*(vect->at(j))).y,((* (vect->at(j))).z-this->ftpDI)*0.1);
+        glVertex3f((* (vect->at(j))).getX(),(*(vect->at(j))).getY(),((* (vect->at(j))).getZ()-this->ftpDI)*0.1);
     }
     glEnd();
 
