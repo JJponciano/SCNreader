@@ -298,3 +298,18 @@ void ScnData::setAlldatas(const QByteArray &value)
     alldatas = value;
 }
 
+//a supprimer par la suite
+QVector<float> ScnData::getX(){
+    QVector<float> fx;
+    return fx;
+}
+
+QVector<float> ScnData::getY(){
+    QVector<float> fx;
+    return fx;
+}
+
+QVector<float> ScnData::getZ(){
+    QVector<float> fx;
+    return fx;
+}

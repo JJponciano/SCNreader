@@ -130,6 +130,9 @@ public:
     int getIndexreader() const;
     void setIndexreader(int value);
 
+    QVector<float> getX();
+    QVector<float> getY();
+    QVector<float> getZ();
 
 private:
     void assigningDatas();

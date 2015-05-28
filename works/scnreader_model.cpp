@@ -76,23 +76,47 @@ QString scnreader_model::readData(int bytePosition, int length,std::string pathn
     return temp;
 }
 
-ScnData scnreader_model::getData(int i) const{
-    return datas.at(i);
-}
-
-void scnreader_model::setDatas(const QVector<ScnData> &value)
-{
-    datas = value;}
-
-
 void scnreader_model::loadFromSCN(std::string pathname){
     //create scn data
     ScnData data;
     //load data from file
     data.loadFromSCN(pathname);
-    //add this data created
-    this->datas.push_back(data);
+    //keep coordinates of points
+    QVector<float> lesX=data.getX();
+    QVector<float> lesY=data.getY();
+    QVector<float> lesZ=data.getZ();
 
+    //add them in Hashtable
+    PointGL * p;
+    int ftpcourant=-1;
+    QVector<PointGL *>* v;
+    bool premier=true;
+
+    for(int i=0; i<lesX.size(); i++)
+    {
+        p=new PointGL(lesX.at(i),lesY.at(i),lesZ.at(i));
+
+        //if the footpulse is not initialized or if he is different of the previous
+        if(ftpcourant==-1 || ftpcourant!=(int) p->getZ())
+        {
+            //we update footpulse
+            ftpcourant=(int) p->getZ();
+            //we create a new vector
+            v= new QVector<PointGL *>();
+            //which we add to the hashtable
+            nuage.insert(ftpcourant, v);
+            //then we add the new point
+            v->push_back(p);
+        }
+        else
+            v->push_back(p);//else we add the new point
+
+        if(premier){
+            this->ftpd=p->getZ();
+            premier=false;
+        }
+        this->ftpf=p->getZ();
+    }
 }
 
 
@@ -597,7 +621,6 @@ void scnreader_model::clear()
     this->RansacVide=true;
     this->lesRailsOptimize.clear();
     this->clouds.clear();
-    this->datas.clear();
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f, QVector<int>* tailles)

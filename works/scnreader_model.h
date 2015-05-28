@@ -170,9 +170,6 @@ public:
     void setFtpd(int d);
     void setFtpf(int f);
 
-    ScnData getData(int i) const;
-    void setDatas(const QVector<ScnData> &value);
-
     //      /**
     //       * @brief acces to QHash TODO OR NOT
     //       * @return the Qhash which contains all points of exractions of a cloud's part
@@ -185,7 +182,6 @@ public:
 private:
     int capacity;
     int workWindows;
-    QVector <ScnData> datas;
     int ftpd;
     int ftpf;
     /**
