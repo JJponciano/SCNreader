@@ -114,7 +114,7 @@ private:
     QVector<PointGL> cleanFailPoints(QVector<QVector<PointGL> > points);
     QHash<int,int> fillFrequencyHeight(QVector<PointGL> pointsX);
     int searchCommonHeight(QHash<int, int> freqs);
-    QVector<PointGL> addByHeight(QVector<PointGL> pointsX, float height);
+    QVector<PointGL> addByHeight(QVector<PointGL> pointsX, double height);
     void initRegions();
 };
 

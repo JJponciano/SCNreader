@@ -22,15 +22,15 @@
 #include "Point.h"
 
 PointGL::PointGL() {
-    rad=(float)3.14159265/(float)180.0;
+    rad=(double)3.14159265/(double)180.0;
     this->x = 0;
     this->y = 0;
     this->z = 0;
     this->epsilon=1000;
 }
 
-PointGL::PointGL(float x, float y,float z) {
-    rad=(float)3.14159265/(float)180.0;
+PointGL::PointGL(double x, double y,double z) {
+    rad=(double)3.14159265/(double)180.0;
     this->x = x;
     this->y = y;
     this->z = z;
@@ -38,15 +38,15 @@ PointGL::PointGL(float x, float y,float z) {
 }
 
 PointGL::PointGL(const PointGL& orig) {
-    rad=(float)3.14159265/(float)180.0;
+    rad=(double)3.14159265/(double)180.0;
     this->x = orig.x;
     this->y = orig.y;
     this->z = orig.z;
     this->epsilon=1000;
 }
-float PointGL::truncation(int trunc, float f){
+double PointGL::truncation(int trunc, double f){
     int ftrunc=(int)(f*trunc);
-    float f2=((float)ftrunc)/((float)trunc);
+    double f2=((double)ftrunc)/((double)trunc);
             return f2;
 }
 int PointGL::getEpsilon() const
@@ -97,26 +97,26 @@ void PointGL::operator-(const PointGL &a)
     this->z-=a.getZ();
 }
 
-bool PointGL::distanceX(const PointGL point,float distance)const
+bool PointGL::distanceX(const PointGL point,double distance)const
 {
     if(distance<0.0)
         distance=-1.0*distance;
         //get distance between p1 and p2 - average spacing between 2 tracks
-        float x1=this->getX();
-        float x2=point.getX();
-        float pv=x1-x2;
+        double x1=this->getX();
+        double x2=point.getX();
+        double pv=x1-x2;
         if(pv<0.0)
             pv=-1.0*pv;
         return pv<distance;
 }
-bool PointGL::distanceY(const PointGL point,float distance)const
+bool PointGL::distanceY(const PointGL point,double distance)const
 {
     if(distance<0.0)
         distance=-1.0*distance;
         //get distance between p1 and p2 - average spacing between 2 tracks
-        float y1=this->getY();
-        float y2=point.getY();
-        float pv=y1-y2;
+        double y1=this->getY();
+        double y2=point.getY();
+        double pv=y1-y2;
         if(pv<0.0)
             pv=-1.0*pv;
         return pv<distance;
@@ -166,76 +166,76 @@ bool PointGL::equals2D(const PointGL a)const{
 
 PointGL::~PointGL() {
 }
-void PointGL::setNormalMoyenne(std::vector<float> n){
+void PointGL::setNormalMoyenne(std::vector<double> n){
     this->normalMoyenne.clear();
-    float z=n[2];
-    float y=n[1];
-    float x=n[0];
+    double z=n[2];
+    double y=n[1];
+    double x=n[0];
     this->normalMoyenne.push_back(x);
     this->normalMoyenne.push_back(y);
     this->normalMoyenne.push_back(z);
 }
-void PointGL::setNormalMoyenne(float x, float y, float z){
+void PointGL::setNormalMoyenne(double x, double y, double z){
      this->normalMoyenne.clear();
     this->normalMoyenne.push_back(x);
     this->normalMoyenne.push_back(y);
     this->normalMoyenne.push_back(z);
 }
-float PointGL::getX() const {
+double PointGL::getX() const {
     return this->x;
 }
-std::vector<float> PointGL::getNormal() const{
+std::vector<double> PointGL::getNormal() const{
     return this->normalMoyenne;
 }
-float PointGL::getY() const {
+double PointGL::getY() const {
     return this->y;
 }
 
-float PointGL::getZ() const {
+double PointGL::getZ() const {
     return this->z;
 }
 
-void PointGL::setX(float a) {
+void PointGL::setX(double a) {
     this->x=a;
 }
 
-void PointGL::setY(float a) {
+void PointGL::setY(double a) {
     this->y=a;
 }
 
-void PointGL::setZ(float a) {
+void PointGL::setZ(double a) {
     this->z=a;
 }
 
-void PointGL::rotation(float a, int x, int y, int z){
+void PointGL::rotation(double a, int x, int y, int z){
      if(x==1){
-        float ay=this->getY();
-        float az=this->getZ();
+        double ay=this->getY();
+        double az=this->getZ();
     this->setY(ay*cos(a*rad)-sin(a*rad)*az);
     this->setZ(ay*sin(a*rad)+az*cos(a*rad));
     }
     
     if(y==1){
-        float ax=this->getX();
-        float az=this->getZ();
+        double ax=this->getX();
+        double az=this->getZ();
     this->setX(ax*cos(a*rad)+az*sin(a*rad));
     this->setZ(-ax*sin(a*rad)+az*cos(a*rad));
     }
     
     if(z==1){
-        float ax=this->getX();
-        float ay=this->getY();
+        double ax=this->getX();
+        double ay=this->getY();
     this->setX(ax*cos(a*rad)-ay*sin(a*rad));
     this->setY(ax*sin(a*rad)+ay*cos(a*rad));
 }
 }
-void PointGL::translation(float tx, float ty, float tz){
+void PointGL::translation(double tx, double ty, double tz){
     this->x=this->x+tx;
     this->y=this->y+ty;
     this->z=this->z+tz;
 }
 
-void PointGL::scale(float sx, float sy, float sz){
+void PointGL::scale(double sx, double sy, double sz){
     this->x=this->x*sx;
     this->y=this->y*sy;
     this->z=this->z*sz;

@@ -35,7 +35,7 @@ public:
      * @param neighborsDistance distance between neighbors
      * @param maxSize maximum number of points that a region may contain
      */
-    RegionsManager(int minsize, float neighborsDistance, int maxSize);
+    RegionsManager(int minsize, double neighborsDistance, int maxSize);
     ~RegionsManager();
     /**
      * @brief addPoint add a point into a correct region
@@ -78,7 +78,7 @@ public:
      * @param widthmax max width of the region
      * @return true if all region have a width less than widthmax
      */
-    bool checkRegion(float widthmax);
+    bool checkRegion(double widthmax);
     void clear();
     QVector<Region> getRegions() const;
     void setRegions(const QVector<Region> &value);
@@ -89,7 +89,7 @@ private:
     int nbregions;
     int maxSize;
 int minSize;
-float neighborsDistance;
+double neighborsDistance;
 void addInNewRegion(PointGL point);
 void add(int ID, PointGL point);
 };

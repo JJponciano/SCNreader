@@ -29,7 +29,7 @@ RailCluster::RailCluster()
     this->lm = 0.08;
     this->em = 1.5;
 }
-RailCluster::RailCluster(float height, float width, float spacing, const QVector<pcl::PointXYZ *> footpulse)
+RailCluster::RailCluster(double height, double width, double spacing, const QVector<pcl::PointXYZ *> footpulse)
 {
     this->hm = height;
     this->lm = width;
@@ -50,7 +50,7 @@ RailCluster::RailCluster(float height, float width, float spacing, const QVector
     okfoot.clear();
 }
 
-RailCluster::RailCluster(float height, float width, float spacing,  const QVector<pcl::PointXYZ *> footpulse,  const RailCluster rail)
+RailCluster::RailCluster(double height, double width, double spacing,  const QVector<pcl::PointXYZ *> footpulse,  const RailCluster rail)
 {
     this->hm = height;
     this->lm = width;
@@ -80,7 +80,7 @@ RailCluster::RailCluster(float height, float width, float spacing,  const QVecto
     //remove temporary vector
     okfoot.clear();
 }
-RailCluster::RailCluster(float height, float width, float spacing, const QVector<PointGL *> footpulse)
+RailCluster::RailCluster(double height, double width, double spacing, const QVector<PointGL *> footpulse)
 {
     this->hm = height;
     this->lm = width;
@@ -97,7 +97,7 @@ RailCluster::RailCluster(float height, float width, float spacing, const QVector
     this->match(okfoot);
 }
 
-RailCluster::RailCluster(float height, float width, float spacing,  const QVector<PointGL *> footpulse,  const RailCluster rail)
+RailCluster::RailCluster(double height, double width, double spacing,  const QVector<PointGL *> footpulse,  const RailCluster rail)
 {
     this->hm = height;
     this->lm = width;
@@ -328,11 +328,11 @@ void RailCluster::remove(PointGL  pt){
         this->points.remove(i);
     }
 }
-float RailCluster::gap(QVector <PointGL> reg)const
+double RailCluster::gap(QVector <PointGL> reg)const
 {
     //search the extremum of the x coordinates in the region
-    float xmin=reg.at(0).getX();
-    float xmax=reg.at(0).getX();
+    double xmin=reg.at(0).getX();
+    double xmax=reg.at(0).getX();
     for(int i=1;i<reg.size();i++){
         if(reg.at(i).getX()<xmin)
             xmin=reg.at(i).getX();
@@ -346,8 +346,8 @@ float RailCluster::gap(QVector <PointGL> reg)const
 PointGL RailCluster::averagePoint(QVector <PointGL> reg)const
 {
     PointGL p;
-    float xm=0;
-    float ym=0;
+    double xm=0;
+    double ym=0;
     //calcule the average point
     for(int i=0;i<reg.size();i++){
         ym+=reg.at(i).getY();
@@ -438,27 +438,27 @@ bool RailCluster::growing(RailCluster rail, QVector<PointGL> pts)
       return pointadded;
 }
 
-void RailCluster::setEm(float e){
+void RailCluster::setEm(double e){
     this->em=e;
 }
 
-void RailCluster::setHm(float h){
+void RailCluster::setHm(double h){
     this->hm=h;
 }
 
-void RailCluster::setLm(float l){
+void RailCluster::setLm(double l){
     this->lm=l;
 }
 
-float RailCluster::getEm()const{
+double RailCluster::getEm()const{
     return this->em;
 }
 
-float RailCluster::getHm()const{
+double RailCluster::getHm()const{
     return this->hm;
 }
 
-float RailCluster::getLm()const{
+double RailCluster::getLm()const{
     return this->lm;
 }
 QVector<PointGL > RailCluster::getPoints() const
@@ -500,25 +500,25 @@ bool RailCluster::sameWidth( PointGL p1,  PointGL p2)const
 }
 bool RailCluster::widthDistance( PointGL p1,  PointGL p2)const
 {
-    float dsup= this->lm-this->delta;
+    double dsup= this->lm-this->delta;
    return p1.distanceX(p2,dsup);
 }
-float RailCluster::getWidthDistance()const{
+double RailCluster::getWidthDistance()const{
     return this->lm-this->delta;
 }
 
 bool RailCluster::spacingDistance( PointGL p1,  PointGL p2)const
 {
     //get distance between p1 and p2 - average spacing between 2 tracks
-    float x1=p1.getX();
-    float x2=p2.getX();
-    float pv=x1-x2;
+    double x1=p1.getX();
+    double x2=p2.getX();
+    double pv=x1-x2;
     if(pv<0.0)
         pv=-1.0*pv;
     //approximation
 
-    float dsup= this->em+this->delta;
-    float dinf=this->em-this->delta;
+    double dsup= this->em+this->delta;
+    double dinf=this->em-this->delta;
     bool lesbool=(pv<=dsup&&pv>=dinf);
     return lesbool;
 }

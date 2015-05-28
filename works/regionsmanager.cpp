@@ -23,7 +23,7 @@
  */
 #include "regionsmanager.h"
 
-RegionsManager::RegionsManager(int minsize, float neighborsDistance, int maxSize)
+RegionsManager::RegionsManager(int minsize, double neighborsDistance, int maxSize)
 {
     this->minSize=minsize;
     this->neighborsDistance=neighborsDistance;
@@ -75,7 +75,7 @@ bool RegionsManager::addPoint(PointGL point)
         }
     return ok;
 }
-bool RegionsManager::checkRegion(float widthmax){
+bool RegionsManager::checkRegion(double widthmax){
     //it guess that's ok
     bool ok=true;
     //for each region

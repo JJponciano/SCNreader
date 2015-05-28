@@ -36,7 +36,7 @@ public:
       * @param maxSize maximum number of points that the region may contain
       * @param neighborsDistance distance between neighbors
       */
-     Region(int ID,int maxSize,float neighborsDistance);
+     Region(int ID,int maxSize,double neighborsDistance);
      ~Region();
       bool operator==(Region const& r);
      /**
@@ -55,7 +55,7 @@ public:
       * @param distanceMax defined the maximum distance between two point for they belong to the region
       * @return true if the point is in regions
       */
-     bool isIn(PointGL pt, float distanceMax) const;
+     bool isIn(PointGL pt, double distanceMax) const;
      /**
       * @brief isIn test if a point is in the region with use the neightbors distance
       * @param pt point to be tested
@@ -72,7 +72,7 @@ public:
       * @param widthMax  max width of the region
       * @return true if the regions is not too big
       */
-     bool check(float widthMax) const;
+     bool check(double widthMax) const;
      /**
       * @brief growing add point using the distance criterion between neighbors
       * @param point point to be added
@@ -82,12 +82,12 @@ public:
      QVector<PointGL> getPoints() const;
      void setPoints(const QVector<PointGL> &value);
 
-     float getIsdead() const;
-     void setIsdead(float value);
+     double getIsdead() const;
+     void setIsdead(double value);
 
 private:
-     float isdead;
-     float neighborsDistance;
+     double isdead;
+     double neighborsDistance;
      int ID;
      QVector <PointGL>points;
      int maxSize;

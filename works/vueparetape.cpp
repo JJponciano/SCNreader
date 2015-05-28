@@ -164,9 +164,9 @@ void VueParEtape::affichageSwitch()
                 {
                     glPointSize(1);
                     //keep coordinates of points to draw them
-                    float x=(* (v->at(i))).x;
-                    float y=(* (v->at(i))).y;
-                    float z=((* (v->at(i))).z-this->numS)*0.1;
+                    double x=(* (v->at(i))).x;
+                    double y=(* (v->at(i))).y;
+                    double z=((* (v->at(i))).z-this->numS)*0.1;
                     glVertex3f(x,y,z);
                 }
 
@@ -188,9 +188,9 @@ void VueParEtape::affichageReg()
         for(int j=0; j<regions.at(i).size(); j++){
             glPointSize(1);
             //normalizes points with model->max of cordinates previously finded
-            float x=(regions.at(i).at(j)).getX();
-            float y=(regions.at(i).at(j)).getY();
-            float z=((regions.at(i).at(j)).getZ()-this->ftpDI)*0.1;
+            double x=(regions.at(i).at(j)).getX();
+            double y=(regions.at(i).at(j)).getY();
+            double z=((regions.at(i).at(j)).getZ()-this->ftpDI)*0.1;
             glVertex3f(x,y,z);
         }
     }
@@ -213,9 +213,9 @@ void VueParEtape::affichageCloud()
                 glPointSize(1);
 
                 //normalizes points with model->max of cordinates previously finded
-                float x=(* (v->at(i))).x;//scnreaderFond.getMaxX()*10;
-                float y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
-                float z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
+                double x=(* (v->at(i))).x;//scnreaderFond.getMaxX()*10;
+                double y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
+                double z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
                 //                                glVertex3f(x,int(y*1000)/100,z);
                 if(SwitchContenu((* (v->at(i))).z))
                     glColor3f(1.0,0.0,0.0);

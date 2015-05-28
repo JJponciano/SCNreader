@@ -31,9 +31,9 @@ class ColorsManager
 public:
     ColorsManager();
     ~ColorsManager();
-     QVector< float> getColor(int key);
+     QVector< double> getColor(int key);
 private:
-    QHash<int,QVector< float> > colors;
+    QHash<int,QVector< double> > colors;
 
 
 };

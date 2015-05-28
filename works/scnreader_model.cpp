@@ -127,7 +127,7 @@ void scnreader_model::loadCloudFromTXT2(std::string pathname){
             ligne= flux.readLine();
             // split the line with space as a separator character
             QStringList result =ligne.split("\t");
-            //convert coordonated Qstring to float coordinates to add in vector
+            //convert coordonated Qstring to double coordinates to add in vector
             //test if the first line define the number of lines into the file
             if( result.size()==1){
                 nline=result.at(0).toInt();
@@ -141,15 +141,15 @@ void scnreader_model::loadCloudFromTXT2(std::string pathname){
                     QString z=result.at(2);
                     if(footpulse==0)
                     {
-                        p=new pcl::PointXYZ(z.toFloat(),y.toFloat(),x.toFloat());
+                        p=new pcl::PointXYZ(z.toDouble(),y.toDouble(),x.toDouble());
                     }
                     else if(footpulse==1)
                     {
-                        p=new pcl::PointXYZ(x.toFloat(),z.toFloat(),y.toFloat());
+                        p=new pcl::PointXYZ(x.toDouble(),z.toDouble(),y.toDouble());
                     }
                     else
                     {
-                        p=new pcl::PointXYZ(x.toFloat(),y.toFloat(),z.toFloat());
+                        p=new pcl::PointXYZ(x.toDouble(),y.toDouble(),z.toDouble());
                     }
 
                     //if the footpulse is not initialized or if he is different of the previous
@@ -207,9 +207,9 @@ int scnreader_model::IsFootpulse(std::string pathname){
     bool fy=(cx>=2 && cz>=2);
     bool fz=(cy>=2 && cx>=2);
     //previous value
-    float tx,ty,tz;
+    double tx,ty,tz;
     //current value
-    float vx,vy,vz;
+    double vx,vy,vz;
     //file
     QFile fichier( QString(pathname.c_str()) );
 
@@ -236,18 +236,18 @@ int scnreader_model::IsFootpulse(std::string pathname){
             QString y=result1.at(1);
             QString z=result1.at(2);
             //initialize value
-            tx=x.toFloat();
-            ty=y.toFloat();
-            tz=z.toFloat();
+            tx=x.toDouble();
+            ty=y.toDouble();
+            tz=z.toDouble();
         }else if(result1.size()<3)throw Erreur(" Error reading file!");
         else{
             QString x=result1.at(0);
             QString y=result1.at(1);
             QString z=result1.at(2);
             //previous value
-            tx=x.toFloat();
-            ty=y.toFloat();
-            tz=z.toFloat();
+            tx=x.toDouble();
+            ty=y.toDouble();
+            tz=z.toDouble();
         }
 
         //__________Cover of file's part_______________
@@ -259,7 +259,7 @@ int scnreader_model::IsFootpulse(std::string pathname){
             ligne= flux.readLine();
             // split the line with space as a separator character
             QStringList result =ligne.split("\t");
-            //convert coordonated Qstring to float coordinates to compare
+            //convert coordonated Qstring to double coordinates to compare
 
             //test if the first line define the number of lines into the file
             if(result.size()<3)throw Erreur(" Error reading file!");
@@ -267,10 +267,10 @@ int scnreader_model::IsFootpulse(std::string pathname){
                 QString x=result.at(0);
                 QString y=result.at(1);
                 QString z=result.at(2);
-                //convert coordonated Qstring to float coordinates to compare
-                vx=x.toFloat();
-                vy=y.toFloat();
-                vz=z.toFloat();
+                //convert coordonated Qstring to double coordinates to compare
+                vx=x.toDouble();
+                vy=y.toDouble();
+                vz=z.toDouble();
 
                 //compare the current and the previous value
                 if(cx<2)
@@ -660,9 +660,9 @@ QVector<pcl::PointXYZ *> scnreader_model::getCloudInVect(pcl::PointCloud<pcl::Po
     //Fill the vector with the points which are in the cloud
     for(int i=0; i< cloud->points.size(); i++)
     {
-        float x=cloud->points.at(i).x;
-        float y=cloud->points.at(i).y;
-        float z=cloud->points.at(i).z;
+        double x=cloud->points.at(i).x;
+        double y=cloud->points.at(i).y;
+        double z=cloud->points.at(i).z;
         pcl::PointXYZ *p=new pcl::PointXYZ(x,y,z);
         vecteur.push_back(p);
     }
@@ -675,9 +675,9 @@ QVector<PointGL> scnreader_model::getCloudInVectpoint(pcl::PointCloud<pcl::Point
     //Fill the vector with the points which are in the cloud
     for(int i=0; i< cloud->points.size(); i++)
     {
-        float x=cloud->points.at(i).x;
-        float y=cloud->points.at(i).y;
-        float z=cloud->points.at(i).z;
+        double x=cloud->points.at(i).x;
+        double y=cloud->points.at(i).y;
+        double z=cloud->points.at(i).z;
         PointGL p(x,y,z);
         vecteur.push_back(p);
     }
@@ -820,14 +820,14 @@ QVector<pcl::PointXYZ *> * scnreader_model::getCloudInVect2(pcl::PointCloud<pcl:
 bool scnreader_model::samePoint(pcl::PointXYZ *point2, pcl::PointXYZ * ptP)
 {
     //we take the coordinates of ptP
-    float x1=ptP->x;
-    float y1=ptP->y;
-    float z1=ptP->z;
+    double x1=ptP->x;
+    double y1=ptP->y;
+    double z1=ptP->z;
 
     //we take the coordinates of pt
-    float x2=point2->x;
-    float y2=point2->y;
-    float z2=point2->z;
+    double x2=point2->x;
+    double y2=point2->y;
+    double z2=point2->z;
 
     return (x1==x2) && (y1==y2) && (z1==z2);
 }

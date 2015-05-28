@@ -19,7 +19,7 @@
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>
  * @author Jean-Jacques PONCIANO and Claire PRUDHOMME
  * Contact: ponciano.jeanjacques@gmail.com
- * @version 0.1
+ * @version 1.0
  */
 #ifndef DATAPACKAGE_H
 #define DATAPACKAGE_H

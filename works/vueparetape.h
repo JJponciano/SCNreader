@@ -158,12 +158,12 @@ private:
     bool affc;
     bool affReg;
     bool affr;
-    float px;
-    float py;
-    float pz;
+    double px;
+    double py;
+    double pz;
     bool firstP;
     std::string nomFichier;
-    float mirx;
+    double mirx;
     int sizeCloud;
     QString KeepName(QString fileName);
 

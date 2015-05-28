@@ -3,7 +3,7 @@
 * All rights reserved.
 * This file is part of scn reader.
 *
-* scn reader is free software: you can redistribute it and/or modify
+* scn_reader is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -17,7 +17,7 @@
 * along with Foobar.  If not, see <http://www.gnu.org/licenses/>
 * @author Jean-Jacques PONCIANO and Claire PRUDHOMME
 * Contact: ponciano.jeanjacques@gmail.com
-* @version 0.1
+* @version 1.0
 */
 #include "datapackage.h"
 Datapackage::Datapackage(QByteArray datas, int start)

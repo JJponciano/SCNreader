@@ -96,8 +96,8 @@ void ListeRail::initialization(QVector <PointGL > cloud){
     }
 }
 void ListeRail::initRegions(){
-    float regionMaxSize= (float)(this->maxSize)*0.2f;
-    float minsize= (float)(this->maxSize)*0.05f;
+    double regionMaxSize= (double)(this->maxSize)*0.2f;
+    double minsize= (double)(this->maxSize)*0.05f;
     RegionsManager rm(minsize,this->lesRails.at(0).getWidthDistance(),regionMaxSize);
     this->regions=rm;
 }
@@ -146,7 +146,7 @@ bool ListeRail::growingRegions(RailCluster rail)
         }
     }
     // max width to check all regions.
-    float widthMax=this->lesRails.at(0).getLm();
+    double widthMax=this->lesRails.at(0).getLm();
     // if a region is not ok
 //    if(!this->regions.checkRegion(widthMax)) {
 //        //a switch is detected
@@ -226,8 +226,8 @@ QVector<PointGL> ListeRail::cleanFailPoints(QVector <QVector<PointGL> >points){
         QHash <int,int> freqs=this->fillFrequencyHeight(pointsX);
         //search the most common height
         int commonheight=this->searchCommonHeight(freqs);
-        //convert commonheight in float
-        float heightFound=(float)commonheight/(float)epsilon;
+        //convert commonheight in double
+        double heightFound=(double)commonheight/(double)epsilon;
         PointGL pheight(0,heightFound,0);
         //adds all points, without duplicates, which has the same height of the common height.
         for(int j=0;j<pointsX.size();j++){
@@ -383,11 +383,11 @@ QVector <PointGL > ListeRail::getCloud()const{
 
 //bool ListeRail::growingOk(const QVector <PointGL> reg)const
 //{
-//    float widthMax=this->lesRails.at(0).getEm();
+//    double widthMax=this->lesRails.at(0).getEm();
 //    //search the extremum of the x coordinates in the region
 //    //search the extremum of the x coordinates in the region
-//    float xmin=reg.at(0).getX();
-//    float xmax=reg.at(0).getX();
+//    double xmin=reg.at(0).getX();
+//    double xmax=reg.at(0).getX();
 //    for(int i=1;i<reg.size();i++){
 //        if(reg.at(i).getX()<xmin)xmin=reg.at(i).getX();
 //        else    if(reg.at(i).getX()>xmax)xmax=reg.at(i).getX();

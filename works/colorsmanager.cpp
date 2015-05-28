@@ -33,16 +33,16 @@ ColorsManager::~ColorsManager()
 
 }
 
-QVector<float> ColorsManager::getColor(int key)
+QVector<double> ColorsManager::getColor(int key)
 {
     // if key is known
     if(colors.contains(key)){
         return colors.value(key);
     }else{
-       float r=((float) std::rand() / (RAND_MAX));
-       float g=((float) std::rand() / (RAND_MAX));
-       float b=((float) std::rand() / (RAND_MAX));
-       QVector<float> c;
+       double r=((double) std::rand() / (RAND_MAX));
+       double g=((double) std::rand() / (RAND_MAX));
+       double b=((double) std::rand() / (RAND_MAX));
+       QVector<double> c;
        c.push_back(r);
        c.push_back(g);
        c.push_back(b);

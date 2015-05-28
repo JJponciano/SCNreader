@@ -31,7 +31,7 @@ Region::Region()
     this->neighborsDistance=0.4f;
 
 }
-Region::Region(int ID, int maxSize, float neighborsDistance)
+Region::Region(int ID, int maxSize, double neighborsDistance)
 {
     this->isdead=false;
     this->maxSize=maxSize;
@@ -81,12 +81,12 @@ void Region::setPoints(const QVector<PointGL> &value)
 {
     points = value;
 }
-float Region::getIsdead() const
+double Region::getIsdead() const
 {
     return isdead;
 }
 
-void Region::setIsdead(float value)
+void Region::setIsdead(double value)
 {
     isdead = value;
 }
@@ -101,7 +101,7 @@ int Region::size()const{
     return this->points.size();
 }
 
-bool Region::isIn(PointGL pt,float distanceMax)const
+bool Region::isIn(PointGL pt,double distanceMax)const
 {
     if(this->isdead)return false;
     //for each point of the region
@@ -128,12 +128,12 @@ bool Region::isIn(PointGL pt)const
 
 }
 
-bool Region::check(float widthMax)const
+bool Region::check(double widthMax)const
 {
     //search the extremum of the x coordinates in the region
     //search the extremum of the x coordinates in the region
-    float xmin=this->points.at(0).getX();
-    float xmax=this->points.at(0).getX();
+    double xmin=this->points.at(0).getX();
+    double xmax=this->points.at(0).getX();
     for(int i=points.size()-this->maxSize;i<points.size();i++){
         if(i<0)i=0;
         if(this->points.at(i).getX()<xmin)
