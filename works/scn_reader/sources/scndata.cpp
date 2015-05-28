@@ -99,7 +99,6 @@ QVector<double> ScnData::getZ() const
 {
     return z;
 }
-
 QVector<Datapackage*> ScnData::getPackages() const
 {
     return packages;
