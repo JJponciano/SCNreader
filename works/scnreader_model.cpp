@@ -1123,7 +1123,7 @@ void scnreader_model::cleanNoise(int f){
     im.calibration();
 
     //we do a thresholding with threshold=125 => binarization
-    im.thresholding(0);
+    im.thresholding(50);
     im.enregistre(this->nomFile);
     //For each point of this part:
     for(int i=0; i<lespoints.size(); i++)

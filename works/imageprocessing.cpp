@@ -133,7 +133,7 @@ void ImageProcessing::thresholding(int s)
     {
         for(int j=0; j<this->width; j++)
         {
-            if(this->image.at<int>(i,j)<=125)
+            if(this->image.at<int>(i,j)<=s)
                 this->image.at<int>(i,j)=0;
             else
                 this->image.at<int>(i,j)=255;
