@@ -23,9 +23,9 @@
 #ifndef SCNREADER_MODEL_H
 #define SCNREADER_MODEL_H
 
-
+#include "../modules/pcl/ground/ToolsPCL.h"
 #include "../modules/exceptions/erreur.h"
-#include "scndata.h"
+#include "scn_reader/sources/scndata.h"
 #include "railcluster.h"
 #include "listerail.h"
 #include <QVector>

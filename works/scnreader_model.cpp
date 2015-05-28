@@ -76,22 +76,12 @@ QString scnreader_model::readData(int bytePosition, int length,std::string pathn
     return temp;
 }
 
-ScnData scnreader_model::getData(int i) const{
-    return datas.at(i);
-}
-
-void scnreader_model::setDatas(const QVector<ScnData> &value)
-{
-    datas = value;}
-
 
 void scnreader_model::loadFromSCN(std::string pathname){
     //create scn data
     ScnData data;
     //load data from file
     data.loadFromSCN(pathname);
-    //add this data created
-    this->datas.push_back(data);
 
 }
 
