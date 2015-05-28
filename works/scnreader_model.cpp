@@ -96,8 +96,8 @@ void scnreader_model::loadFromSCN(std::string pathname){
     {
         p=new PointGL(lesX.at(i),lesY.at(i),lesZ.at(i));
 
-        //if the footpulse is not initialized or if he is different of the previous
-        if(ftpcourant==-1 || ftpcourant!=(int) p->getZ())
+        //if the footpulse is not initialized
+        if(ftpcourant==-1)
         {
             //we update footpulse
             ftpcourant=(int) p->getZ();
@@ -109,14 +109,31 @@ void scnreader_model::loadFromSCN(std::string pathname){
             v->push_back(p);
         }
         else
-            v->push_back(p);//else we add the new point
-
-        if(premier){
-            this->ftpd=p->getZ();
-            premier=false;
+        {
+            //we update footpulse
+            ftpcourant=(int) p->getZ();
+            //if a vector with this footpulse exists
+            if(nuage.contains(ftpcourant))
+            {
+                //we the vector which corresponding to point's footpulse
+                v= nuage.value(ftpcourant);
+                //then we add the new point
+                v->push_back(p);
+            }
+            else
+            {
+                    //we create a new vector
+                    v= new QVector<PointGL *>();
+                    //which we add to the hashtable
+                    nuage.insert(ftpcourant, v);
+                    //then we add the new point
+                    v->push_back(p);
+            }
         }
-        this->ftpf=p->getZ();
     }
+    int * t=ftpMinMax();
+    this->ftpd=t[0];
+    this->ftpf=t[1];
 }
 
 
@@ -186,8 +203,7 @@ void scnreader_model::loadCloudFromTXT2(std::string pathname){
                         p=new PointGL(x.toFloat(),y.toFloat(),z.toFloat());
                     }
 
-                    //if the footpulse is not initialized or if he is different of the previous
-                    if(ftpcourant==-1 || ftpcourant!=(int) p->getZ())
+                    if(ftpcourant==-1)
                     {
                         //we update footpulse
                         ftpcourant=(int) p->getZ();
@@ -199,20 +215,37 @@ void scnreader_model::loadCloudFromTXT2(std::string pathname){
                         v->push_back(p);
                     }
                     else
-                        v->push_back(p);//else we add the new point
-
-                    if(premier){
-                        this->ftpd=p->getZ();
-                        premier=false;
+                    {
+                        //we update footpulse
+                        ftpcourant=(int) p->getZ();
+                        //if a vector with this footpulse exists
+                        if(nuage.contains(ftpcourant))
+                        {
+                            //we the vector which corresponding to point's footpulse
+                            v= nuage.value(ftpcourant);
+                            //then we add the new point
+                            v->push_back(p);
+                        }
+                        else
+                        {
+                                //we create a new vector
+                                v= new QVector<PointGL *>();
+                                //which we add to the hashtable
+                                nuage.insert(ftpcourant, v);
+                                //then we add the new point
+                                v->push_back(p);
+                        }
                     }
-                    this->ftpf=p->getZ();
                 }
-
 
             //if user want to stop loading, the reading is finished
             if (progress.wasCanceled())
                 break;
         }
+
+        int * t=ftpMinMax();
+        this->ftpd=t[0];
+        this->ftpf=t[1];
         //close automatically the progress dialog
         progress.setValue(nline);
 
@@ -1132,4 +1165,32 @@ float * scnreader_model::distanceMinMax(QVector<PointGL> lspts)
     t[1]=xmax;
     t[2]=zmin;
     return t;
+}
+
+int * scnreader_model::ftpMinMax()
+{
+    if(!nuage.isEmpty())
+    {
+        //keep values of key in nuage
+        QList<int> cle=nuage.keys();
+        //initialization of min and max
+        float min=cle.at(0);
+        float max=cle.at(0);
+
+        //we cover the vector to search xmin and max
+        for(int i=1; i<cle.size(); i++)
+        {
+            if(min>cle.at(i))
+                min=cle.at(i);
+            if(max<cle.at(i))
+                max=cle.at(i);
+        }
+        //we calculate the distance between them
+        int * t;
+        t= new int[2];
+        t[0]=min;
+        t[1]=max;
+        return t;
+    }
+    else Erreur("Le nuage de point est vide, nous ne pouvons determiner les footpulses de debut et de fin!");
 }

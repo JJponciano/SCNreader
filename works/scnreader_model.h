@@ -195,6 +195,12 @@ private:
     QString nomFile;
     bool RansacVide;
     bool cfs;
+
+    /**
+     * @brief ftpMinMax search footpulses min and max
+     * @return int the first position of a table the min and in the second, the max
+     */
+    int * ftpMinMax();
     /**
        * @brief samePoint watch if two points are the same or not
        * @param ptP the point which is contained in QHash
