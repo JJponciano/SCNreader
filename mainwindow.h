@@ -61,6 +61,7 @@ public slots:
     void previousSwitch();
     void nextSwitch();
 
+    void affichageRegions();
 private:
     Ui::MainWindow *ui;
     VueParEtape *qw;

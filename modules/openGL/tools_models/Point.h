@@ -38,69 +38,70 @@ public:
      * @param y ordonnée
      * @param z profondeur
      */
-    PointGL(float x, float y,float z);
+    PointGL(double x, double y,double z);
     PointGL(const PointGL& orig);
     bool operator<( PointGL const &rhs);
     //bool operator <( const PointGL &rhs1, const PointGL &rhs);
     bool operator==(PointGL const& a);
     bool operator!=(PointGL const& a);
     void operator-(PointGL const& a);
+    bool distanceX(PointGL const point, double distance) const;
     virtual ~PointGL();
     /**
      * Récupération de l'abscisse du point
      * @return  abscisse du point
      */
-    float getX()const;
+    double getX()const;
     /**
      * Récupération de l'ordonnée du point
      * @return  ordonnée du point
      */
-    float getY()const;
+    double getY()const;
     /**
      * Récupération de la profondeur du point
      * @return  profondeur du point
      */
-    float getZ()const;
+    double getZ()const;
     /**
      * Modification de l'abscisse du point
      * @param a nouvel abscisse
      */
-    void setX(float a);
+    void setX(double a);
     /**
      * Modification de l'ordonné du point
      * @param a nouvel ordonné
      */
-    void setY(float a);
+    void setY(double a);
     /**
      * Modification de la prodondeur du point
      * @param a nouvelle prodondeur
      */
-    void setZ(float a);
+    void setZ(double a);
     
     /**
      * Modifie la valeur de la normal moyenne  en ce point
      * @param n normale moyenne à affecter
      */
-    void setNormalMoyenne(std::vector<float>n);
+    void setNormalMoyenne(std::vector<double>n);
     /**
      * Modifie la valeur de la normal moyenne  en ce point
      * @param x
      * @param y
      * @param z
      */
-    void setNormalMoyenne(float x, float y, float z);
+    void setNormalMoyenne(double x, double y, double z);
     /**
      * Récupération du vecteur normal à la face
      * @return le vecteur normal
      */
-    std::vector<float> getNormal()const;
+    std::vector<double> getNormal()const;
     /**
      * Opération de translation
      * @param x
      * @param y
      * @param z
      */
-    void translation(float x,float y,float z);
+    void translation(double x,double y,double z);
     /**
      * Opération de rotation
      * @param angle angle de rotation
@@ -108,22 +109,22 @@ public:
      * @param y axe de rotation
      * @param z axe de rotation
      */
-    void rotation(float a, int x,int y,int z);
+    void rotation(double a, int x,int y,int z);
     /**
      * Opération de mise à l'échelle
      * @param x
      * @param y
      * @param z
      */
-    void scale(float x,float y,float z);
+    void scale(double x,double y,double z);
 
     /**
      * @brief truncation rounded to trunc th
      * @param trun significant figure guard, power of 10
-     * @param f float to be truncated
-     * @return the float truncated
+     * @param f double to be truncated
+     * @return the double truncated
      */
-    float truncation(int trunc,float f);
+    double truncation(int trunc,double f);
     int getEpsilon() const;
     /**
      * @brief setEpsilon setter
@@ -136,13 +137,14 @@ public:
      * @return true if points are similars
      */
     bool equals2D(const PointGL a) const;
+    bool distanceY(const PointGL point, double distance) const;
 private:
-    float rad;
-    float x;
-    float y;
-    float z;
-    int epsilon;///< use for tested if float are equals. Significant figure guard, power of 10
-    std::vector<float>normalMoyenne;
+    double rad;
+    double x;
+    double y;
+    double z;
+    int epsilon;///< use for tested if double are equals. Significant figure guard, power of 10
+    std::vector<double>normalMoyenne;
 };
 
 #endif	/* POINT_H */

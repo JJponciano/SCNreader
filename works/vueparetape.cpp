@@ -36,6 +36,7 @@ VueParEtape::VueParEtape(QWidget *parent): groundGLWidget(parent)
     this->affswitch=false;
     this->affe=false;
     this->affr=false;
+    this->affReg=false;
     this->affc=true;
     this->mirx=0;
     this->numS=-1;
@@ -65,16 +66,7 @@ void VueParEtape::paintGL()
     //call the superclass function
     groundGLWidget::paintGL();
 
-    //------------------------------------------------------------------
-    // definition size dot
-    //    glPointSize(4);
-    //    glPushMatrix();
-    //        glBegin(GL_POINTS);
-    //        glColor3f(1.0,1.0,1.0);
-    //           for(int i=-100; i<100; i++)
-    //          glVertex3f(mirx,i*0.01, 0);
-    //        glEnd();
-    //    glPopMatrix();
+
 
     glPointSize(1);
     glPushMatrix();
@@ -90,6 +82,10 @@ void VueParEtape::paintGL()
     if(affs)
     {
         this->affichageSegm();
+    }
+    if(this->affReg)
+    {
+        this->affichageReg();
     }
     if(affe)
     {
@@ -159,9 +155,9 @@ void VueParEtape::affichageSwitch()
                 {
                     glPointSize(1);
                     //keep coordinates of points to draw them
-                    float x=(* (v->at(i))).getX();
-                    float y=(* (v->at(i))).getY();
-                    float z=((* (v->at(i))).getZ()-this->numS)*0.1;
+                    double x=(* (v->at(i))).getX();
+                    double y=(* (v->at(i))).getY();
+                    double z=((* (v->at(i))).getZ()-this->numS)*0.1;
                     glVertex3f(x,y,z);
                 }
 
@@ -170,7 +166,27 @@ void VueParEtape::affichageSwitch()
         glEnd();
     }
 }
+void VueParEtape::affichageReg()
+{
+    glBegin(GL_POINTS);
 
+    QVector< QVector<PointGL> >regions=this->scnreaderFond.getRegions();
+
+    for(int i=0; i<regions.size(); i++)
+    {
+        glColor3f(colors.getColor(i).at(0),colors.getColor(i).at(1),colors.getColor(i).at(2));
+
+        for(int j=0; j<regions.at(i).size(); j++){
+            glPointSize(1);
+            //normalizes points with model->max of cordinates previously finded
+            double x=(regions.at(i).at(j)).getX();
+            double y=(regions.at(i).at(j)).getY();
+            double z=((regions.at(i).at(j)).getZ()-this->ftpDI)*0.1;
+            glVertex3f(x,y,z);
+        }
+    }
+    glEnd();
+}
 void VueParEtape::affichageCloud()
 {
     glBegin(GL_POINTS);
@@ -188,9 +204,10 @@ void VueParEtape::affichageCloud()
                 glPointSize(1);
 
                 //normalizes points with model->max of cordinates previously finded
-                float x=(* (v->at(i))).getX();//scnreaderFond.getMaxX()*10;
-                float y=(* (v->at(i))).getY();//scnreaderFond.getMaxY()*10;
-                float z=((* (v->at(i))).getZ()-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
+                double x=(* (v->at(i))).getX();//scnreaderFond.getMaxX()*10;
+                double y=(* (v->at(i))).getY();//scnreaderFond.getMaxY()*10;
+                double z=((* (v->at(i))).getZ()-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
+
                 //                                glVertex3f(x,int(y*1000)/100,z);
                 if(SwitchContenu((* (v->at(i))).getZ()))
                     glColor3f(1.0,0.0,0.0);
@@ -382,10 +399,6 @@ void VueParEtape::planarSegmentation(int d, int f){
     }
 }
 
-void VueParEtape::extractionCloud(int i){
-   // this->scnreaderFond.extractionCloud(i,i);
-}
-
 //===============================================
 //              Clavier et souris
 //===============================================
@@ -465,6 +478,9 @@ std::string VueParEtape::getNomF(){
 
 void VueParEtape::setaffC(bool b){
     this->affc=b;
+}
+void VueParEtape::setaffReg(bool b){
+    this->affReg=b;
 }
 
 void VueParEtape::setaffS(bool b){

@@ -28,6 +28,7 @@
 #include <QWidget>
 #include "../modules/openGL/ground/groundglwidget.h"
 #include "scnreader_model.h"
+#include "colorsmanager.h"
 #include <cstdlib>
 #include <QMouseEvent>
 #include <QList>
@@ -67,11 +68,7 @@ public:
      * @brief clear remove all clouds
      */
     void clear();
-    /**
-     * @brief extractionCloud create new clouds representing different parts of the cloud located at the ith position in the clouds vector
-     * @param i index of the cloud position in this Qvector clouds
-     */
-    void extractionCloud(int i);
+
     /**
      * @brief planarSegmentation  create a new cloud representing the most larger plan of the cloud located at the ith position in the clouds vector
      * @param int d, footpulde to begin, int f, footpulse to finish
@@ -97,44 +94,45 @@ public:
     /**
      * @brief saveClouds  Opens a window allowing the user to select destination to save all clouds in "pcd" format file and save it
      */
-   void saveClouds();
+    void saveClouds();
 
 
-   void loadFromSCN();
+    void loadFromSCN();
 
 
-   //accesseur en lecture et en écriture
-   int getFtpD();
-   int getFtpF();
-   int getFtpDI();
-   int getFtpFI();
+    //accesseur en lecture et en écriture
+    int getFtpD();
+    int getFtpF();
+    int getFtpDI();
+    int getFtpFI();
 
-   std::string getNomF();
+    std::string getNomF();
 
-   int getTaille();
-   //void setFtpD(int d);
-   //void setFtpF(int f);
-   void setFtpDI(int di);
-   void setFtpFI(int fi);
-   void setaffS(bool b);
-   void setaffE(bool b);
-   void setaffC(bool b);
-   void setaffR(bool b);
+    int getTaille();
+    //void setFtpD(int d);
+    //void setFtpF(int f);
+    void setFtpDI(int di);
+    void setFtpFI(int fi);
+    void setaffS(bool b);
+    void setaffE(bool b);
+    void setaffC(bool b);
+    void setaffR(bool b);
+    void setaffReg(bool b);
+    bool getAffswitch() const;
+    void setAffswitch(bool value);
 
-   bool getAffswitch() const;
-   void setAffswitch(bool value);
+    int getNumS();
+    void setNumS(int value);
 
-   int getNumS();
-   void setNumS(int value);
+    int getPosSwitch() const;
+    void IncreasePosSwitch();
+    void DecreasePosSwitch();
+    void calculNumWithPos();
 
-   int getPosSwitch() const;
-   void IncreasePosSwitch();
-   void DecreasePosSwitch();
-   void calculNumWithPos();
 
 private:
 
-
+    ColorsManager colors;
     scnreader_model scnreaderFond;
     //footpulse de début et de fin de l'intervalle de travail
     int ftpDI;
@@ -144,13 +142,14 @@ private:
     bool affswitch;
     bool affe;
     bool affc;
+    bool affReg;
     bool affr;
-    float px;
-    float py;
-    float pz;
+    double px;
+    double py;
+    double pz;
     bool firstP;
     std::string nomFichier;
-    float mirx;
+    double mirx;
     int sizeCloud;
     //numero of switch
     int numS;
@@ -166,6 +165,7 @@ private:
     void LectureSw(QString nameF);
     bool AucunSwitch();
     bool SwitchContenu(int ftp);
+    void affichageReg();
     void affichageMir();
     void affichageCloud();
     void affichageSegm();

@@ -23,9 +23,9 @@
 #ifndef SCNREADER_MODEL_H
 #define SCNREADER_MODEL_H
 
-
+#include "../modules/pcl/ground/ToolsPCL.h"
 #include "../modules/exceptions/erreur.h"
-#include "scndata.h"
+#include "scn_reader/sources/scndata.h"
 #include "railcluster.h"
 #include "listerail.h"
 #include "imageprocessing.h"
@@ -162,7 +162,6 @@ public:
     void setNomFile(const QString &value);
 
     int getCapacity() const;
-    void setCapacity(int c);
 
     int getFtpd();
     int getFtpf();
@@ -179,6 +178,9 @@ public:
        bool getRansacVide() const;
        void setRansacVide(bool value);
        void SavePartInTxt(int d, int f, QString pathname);
+       QVector<QVector<PointGL> > getRegions() const;
+       void setRegions(const QVector<QVector<PointGL> > &value);
+
 private:
     int capacity;
     int workWindows;
@@ -190,6 +192,7 @@ private:
       */
     ListeRail lesRails;
     ListeRail lesRailsOptimize;
+   QVector< QVector<PointGL> >regions;
     pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC;
     QVector <int>LesSwitchs;///< list of the footpulse corresponding to switchs
     QString nomFile;
@@ -292,7 +295,7 @@ private:
      * @param lspts is the part where we search the distance
      * @return a table with xmin in first place and xmax in second place
      */
-    float *distanceMinMax(QVector<PointGL> lspts);
+    double *distanceMinMax(QVector<PointGL> lspts);
 };
 
 #endif // SCNREADER_MODULE_H

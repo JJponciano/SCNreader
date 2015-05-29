@@ -47,7 +47,7 @@ public:
       * @param spacing Average spacing between two railways rail
       * @param footpulse foopulse at analyse
       */
-     RailCluster(float height, float width, float spacing,const QVector <PointGL *>footpulse);
+     RailCluster(double height, double width, double spacing,const QVector <PointGL *>footpulse);
      /**
       * @brief RailCluster constructor
       * Initialization of parameters and get all point of railways rail
@@ -57,7 +57,7 @@ public:
       * @param footpulse foopulse at analyse
       * @param rail railcluster used for growing regions and keep the continuity of the rails
       */
-     RailCluster(float height, float width, float spacing, const QVector <PointGL *>footpulse,const RailCluster rail);
+     RailCluster(double height, double width, double spacing, const QVector <PointGL *>footpulse,const RailCluster rail);
      /**
        * @brief RailCluster constructor
        * Initialization of parameters
@@ -66,7 +66,7 @@ public:
        * @param spacing Average spacing between two railways rail
        * @param footpulse foopulse at analyse
        */
-      RailCluster(float height, float width, float spacing,const QVector <pcl::PointXYZ *>footpulse);
+      RailCluster(double height, double width, double spacing,const QVector <pcl::PointXYZ *>footpulse);
       /**
        * @brief RailCluster constructor
        * Initialization of parameters and get all point of railways rail
@@ -76,7 +76,7 @@ public:
        * @param footpulse foopulse at analyse
        * @param rail railcluster used for growing regions and keep the continuity of the rails
        */
-      RailCluster(float height, float width, float spacing, const QVector <pcl::PointXYZ *>footpulse,const RailCluster rail);
+      RailCluster(double height, double width, double spacing, const QVector <pcl::PointXYZ *>footpulse,const RailCluster rail);
 
 
      /**
@@ -163,12 +163,12 @@ public:
     bool spacingDistance( PointGL p1,  PointGL p2) const;
 
     //accesseur en lecture et en ecriture
-    void setEm(float e);
-    void setHm(float h);
-    void setLm(float l);
-    float getEm() const;
-    float getHm()const;
-    float getLm()const;
+    void setEm(double e);
+    void setHm(double h);
+    void setLm(double l);
+    double getEm() const;
+    double getHm()const;
+    double getLm()const;
 
     QVector<PointGL> getPoints() const;
     void setPoints(const QVector<PointGL> value);
@@ -178,14 +178,18 @@ public:
 
     int getFootpulse() const;
     void setFootpulse(int value);
-
+    /**
+     * @brief getWidthDistance
+     * @return return the distance of a track
+     */
+    double getWidthDistance() const;
 private:
-float gap(QVector <PointGL> reg) const;
+double gap(QVector <PointGL> reg) const;
     int footpulse;
-    float delta;///> approximation
-    float em; ///< Average spacing between two railways rail
-    float hm; ///< Average height of railway rail
-    float lm; ///< Average width of railway rail
+    double delta;///> approximation
+    double em; ///< Average spacing between two railways rail
+    double hm; ///< Average height of railway rail
+    double lm; ///< Average width of railway rail
     QVector <PointGL > points;///< points of railway rail
     QVector <PointGL > blacklist;///< points tested and removed
     PointGL averagePoint(QVector<PointGL > reg) const;
