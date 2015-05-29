@@ -80,6 +80,17 @@ RailCluster::RailCluster(double height, double width, double spacing,  const QVe
     //remove temporary vector
     okfoot.clear();
 }
+int RailCluster::compare (RailCluster const *a, RailCluster const *b)
+{
+
+   /* evaluer et retourner l'etat de l'evaluation (tri croissant) */
+   return a->getFootpulse() - b->getFootpulse();
+}
+bool RailCluster::operator<(const RailCluster &r)
+{
+    return r.getFootpulse()<this->getFootpulse();
+}
+
 RailCluster::RailCluster(double height, double width, double spacing, const QVector<PointGL *> footpulse)
 {
     this->hm = height;

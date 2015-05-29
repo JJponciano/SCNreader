@@ -91,6 +91,10 @@ void ListeRail::initialization(QVector <PointGL > cloud){
                 this->lesRails.push_back(rc);
             }
         }
+
+        //---sort by footpulse
+        std::sort(this->lesRails.begin(), this->lesRails.end());
+        //----
         this->initRegions();
         this->run();
     }

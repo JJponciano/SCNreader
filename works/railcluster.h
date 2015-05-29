@@ -183,6 +183,8 @@ public:
      * @return return the distance of a track
      */
     double getWidthDistance() const;
+    int compare(const RailCluster *a, const RailCluster *b);
+    bool operator <(const RailCluster &r);
 private:
 double gap(QVector <PointGL> reg) const;
     int footpulse;
