@@ -159,10 +159,11 @@ bool RailCluster::addPoint(PointGL p)
             PointGL newpoint(p);
             //add the point
             this->points.push_back(newpoint);
+            //---sort by z then by x then by y
+            std::sort(this->points.begin(),this->points.end());
             return true;
         }
-    //---sort by z then by x then by y
-    std::sort(this->points.begin(),this->points.end());
+
     return false;
 }
 
