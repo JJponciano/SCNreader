@@ -24,7 +24,7 @@
 #ifndef REGIONSMANAGER_H
 #define REGIONSMANAGER_H
 
-#include "region.h"
+#include "regiongrowing.h"
 class RegionsManager
 {
 public:
