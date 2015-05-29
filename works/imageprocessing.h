@@ -20,6 +20,7 @@
 #include <string>
 #include <iostream>
 #include <QDirIterator>
+#include "colorsmanager.h"
 
 class ImageProcessing
 {
@@ -54,20 +55,23 @@ public:
      * @param nom is the name of file
      */
     void enregistre(QString nom);
+    /**
+     * @brief growingRegion separate different tracks
+     */
+    void growingRegion();
 
     //--------Access in reading and writing for private variables-------
     cv::Mat getImage() const;
     void setImage(cv::Mat &value);
     //------------------------------------------------------------------
 
-
-
-
+    void Harris();
 private:
     //-------------------Private Attributes--------------
     cv::Mat image;
     int width;
     int height;
+    ColorsManager cm;
 
     //-------------------Private Functions--------------
     /**
@@ -129,6 +133,20 @@ private:
      * @return a table with the min in first place and max in second place
      */
     int *MinMax();
+    /**
+     * @brief fusionne
+     * @param l
+     * @param c
+     * @param nouvelleV
+     * @param ancienneV
+     */
+    cv::Mat fusionne(cv::Mat im,int l, int c, int nouvelleV, int ancienneV);
+    /**
+     * @brief recoloration
+     * @param im
+     * @param nbr
+     */
+    void recoloration(cv::Mat im, int nbr);
 };
 
 #endif // IMAGEPROCESSING_H

@@ -95,7 +95,6 @@ void ImageProcessing::enregistre(QString nom)
 void ImageProcessing::increase(int r, int c)
 {
     int val=this->image.at<int>(r,c);
-    std::cout<<"val: "<<val<< std::endl;
     this->image.at<int>(r,c)=val+1;
 }
 
@@ -105,8 +104,6 @@ void ImageProcessing::calibration()
     int *val=MinMax();
     int min=val[0];
     int max=val[1];
-    std::cout<<"min: "<< min <<std::endl;
-    std::cout<<"max: "<< max <<std::endl;
     //we apply stretching
     for(int i=0; i<this->height; i++)
     {
@@ -157,7 +154,6 @@ int* ImageProcessing::MinMax()
         for(int j=0; j<this->width; j++)
         {
             int nb=this->image.at<int>(i,j);
-            std::cout<<"nb: "<<nb<< std::endl;
             if(nb>max)
                 max=nb;
             if(nb< min)
@@ -169,6 +165,199 @@ int* ImageProcessing::MinMax()
     return val;
 }
 
+void ImageProcessing::growingRegion()
+{
+    //initialize of matrix
+    cv::Mat im= cv::Mat::zeros(this->height,this->width,CV_32S);
+
+    //initialize of counter
+    int nbr=0;
+    //we cover the image
+    for(int l=0; l<this->height; l++)
+    {
+        //--------------------First row
+        if(l==0)
+        {
+            //we initialize the first line
+            for(int c=0; c<this->width; c++)
+            {
+                //--------------------First cols
+                if(this->image.at<int>(l,c)==255 && c==0)
+                {
+                    //increase the number of region
+                    nbr++;
+                    //we attribute the value of new region
+                    im.at<int>(l,c)=nbr;
+                }
+                //--------------------Other cols
+                //if it is a track and it is not the first col
+                if(this->image.at<int>(l,c)==255 && c>0)
+                {
+                    //if the previous pixel is not a track
+                    if(im.at<int>(l,c-1)==0)
+                    {
+                        //increase the number of region
+                        nbr++;
+                        //we attribute the value of new region
+                        im.at<int>(l,c)=nbr;
+                    }
+                    else
+                    {
+                        //else we attribute the region value of the previous pixel
+                        im.at<int>(l,c)=im.at<int>(l,c-1);
+                    }
+                }
+            }
+        }
+        //--------------------Other rows
+        else
+        {
+            for(int c=0; c<this->width; c++)
+            {
+                //--------------------First cols
+                if(this->image.at<int>(l,c)==255 && c==0)
+                {
+                    if(im.at<int>(l-1,c)!=0)
+                    {
+                        im.at<int>(l,c)=im.at<int>(l-1,c);
+                    }
+                    if(c<this->height-1)
+                    {
+                        if(im.at<int>(l,c)!=0)
+                        {
+                            if(im.at<int>(l-1,c+1)!=0 && im.at<int>(l-1,c+1)!=im.at<int>(l-1,c))
+                            {
+                                im=fusionne(im,l,c,im.at<int>(l-1,c),im.at<int>(l-1,c+1));
+                            }
+                        }
+                        else
+                        {
+                            if(im.at<int>(l-1,c+1)==0)
+                            {
+                                //increase the number of region
+                                nbr++;
+                                //we attribute the value of new region
+                                im.at<int>(l,c)=nbr;
+                            }
+                            else
+                            {
+                                im.at<int>(l,c)=im.at<int>(l-1,c+1);
+                            }
+                        }
+                    }
+                }
+                //--------------------Other cols
+                if(this->image.at<int>(l,c)==255 && c>0)
+                {
+                    //on regarde les voisins deja traites
+
+                    //col-1
+                    if(im.at<int>(l,c-1)!=0)
+                    {
+                        im.at<int>(l,c)=im.at<int>(l-1,c);
+                    }
+                    //row-1 et col-1
+                    if(im.at<int>(l-1,c-1)!=0)
+                    {
+                        if(im.at<int>(l,c)!=0)
+                        {
+                            im=fusionne(im,l,c,im.at<int>(l,c),im.at<int>(l-1,c-1));
+                        }
+                        else{
+                            im.at<int>(l,c)=im.at<int>(l-1,c-1);
+                        }
+                    }
+                    //row-1 et col
+                    if(im.at<int>(l-1,c)!=0)
+                    {
+                        if(im.at<int>(l,c)!=0)
+                        {
+                            im=fusionne(im,l,c,im.at<int>(l,c),im.at<int>(l-1,c));
+                        }
+                        else{
+                            im.at<int>(l,c)=im.at<int>(l-1,c);
+                        }
+                    }
+                    //row-1 et col+1
+                    if(im.at<int>(l-1,c+1)!=0)
+                    {
+                        if(im.at<int>(l,c)!=0)
+                        {
+                            im=fusionne(im,l,c,im.at<int>(l,c),im.at<int>(l-1,c+1));
+                        }
+                        else{
+                            im.at<int>(l,c)=im.at<int>(l-1,c+1);
+                        }
+                    }
+
+                    //si aucun ne fait parti d'une region on en cree une nouvelle
+                    if(im.at<int>(l,c)==0)
+                    {
+                        //increase the number of region
+                        nbr++;
+                        //we attribute the value of new region
+                        im.at<int>(l,c)=nbr;
+                    }
+                }
+            }
+        }
+    }
+
+
+    //mise en evidence des differentes regions
+    recoloration(im, nbr);
+}
+
+cv::Mat ImageProcessing::fusionne(cv::Mat im, int l, int c, int nouvelleV, int ancienneV)
+{
+    for(int i=0; i<=l; i++)
+    {
+        for(int j=0; j<c; j++)
+        {
+            if(im.at<int>(i,j)==ancienneV)
+            {
+                im.at<int>(i,j)=nouvelleV;
+            }
+        }
+    }
+    return im;
+}
+
+void ImageProcessing::recoloration(cv::Mat im, int nbr){
+    int step= 180/nbr;
+    for(int i=0; i<this->height; i++)
+    {
+        for(int j=0; j<this->width; j++)
+        {
+            if(this->image.at<int>(i,j)!=0)
+            {
+                this->image.at<int>(i,j)=50+((im.at<int>(i,j)-1)*step);
+            }
+        }
+    }
+//    cv::Mat imCoul=cv::Mat::zeros(this->height,this->width,CV_8UC3);
+//    for(int i=0; i<this->height; i++)
+//    {
+//        for(int j=0; j<this->width; j++)
+//        {
+//            if(this->image.at<int>(i,j)!=0)
+//            {
+//                QVector<double> coul=cm.getColor(im.at<int>(i,j));
+//                imCoul.at<int>(i,j,0)=coul.at(0)*255;
+//                imCoul.at<int>(i,j,1)=coul.at(1)*255;
+//                imCoul.at<int>(i,j,2)=coul.at(2)*255;
+//            }
+//        }
+//    }
+//    imwrite( "testCouleur", imCoul);
+}
+
+void ImageProcessing::Harris()
+{
+    cv::Mat im;
+    cv::cornerHarris(this->image,im,3,3,0.04);
+    imwrite( "testHarris", im);
+}
 //VERSION INT [][]
 //ImageProcessing::ImageProcessing(const int w, const int h)
 //{

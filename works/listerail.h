@@ -74,9 +74,10 @@ public:
 
     RegionsManager getRegions() const;
     void setRegions(const RegionsManager &value);
+    void initialization(QVector<PointGL> cloud);
 
 private:
-    void initialization(QVector<PointGL> cloud);
+
     int maxSize;
     int epsilon;// degres of precision
     QVector <int>switchDetected;///< list of the footpulste with switch
