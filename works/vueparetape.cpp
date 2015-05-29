@@ -344,6 +344,8 @@ void VueParEtape::loadFromSCN(){
         // if user have seleted a directory
         if (!fileName.isEmpty())
         {
+            QString nom=this->KeepName(fileName);
+            this->scnreaderFond.setNomFile(nom);
             std::cout<<"start"<<std::endl;
             this->scnreaderFond.loadFromSCN(fileName.toStdString());
             std::cout<<"end"<<std::endl;
