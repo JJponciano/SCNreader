@@ -26,19 +26,20 @@
 #include <QVector>
 #include "../modules/exceptions/erreur.h"
 #include "../modules/openGL/tools_models/Point.h"
-class Region
+class RegionGrowing
 {
 public:
-    Region();
+    RegionGrowing();
     /**
       * @brief Region
       * @param ID identifier of the region
       * @param maxSize maximum number of points that the region may contain
       * @param neighborsDistance distance between neighbors
       */
-     Region(int ID,int maxSize,double neighborsDistance);
-     ~Region();
-      bool operator==(Region const& r);
+     RegionGrowing(int ID,int maxSize,double neighborsDistance);
+       RegionGrowing(const RegionGrowing &orig);
+     ~RegionGrowing();
+      bool operator==(RegionGrowing const& r);
      /**
       * @brief clear remove all points
       */
@@ -84,6 +85,13 @@ public:
 
      double getIsdead() const;
      void setIsdead(double value);
+
+
+     double getNeighborsDistance() const;
+     void setNeighborsDistance(double value);
+
+     int getMaxSize() const;
+     void setMaxSize(int value);
 
 private:
      double isdead;

@@ -48,7 +48,7 @@ public:
      * @param ID identifier of the region to be returned
      * @return return the region having indentifier ID
      */
-    Region getRegion(int ID);
+    RegionGrowing getRegion(int ID);
     /**
      * @brief remove remove a region
      * @param ID identifier of the region to be removed
@@ -80,12 +80,12 @@ public:
      */
     bool checkRegion(double widthmax);
     void clear();
-    QVector<Region> getRegions() const;
-    void setRegions(const QVector<Region> &value);
+    QVector<RegionGrowing> getRegions() const;
+    void setRegions(const QVector<RegionGrowing> &value);
 
 private:
     int generatingID();
-    QVector<Region>regions;
+    QVector<RegionGrowing>regions;
     int nbregions;
     int maxSize;
 int minSize;

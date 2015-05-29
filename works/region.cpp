@@ -23,7 +23,7 @@
  */
 #include "region.h"
 
-Region::Region()
+RegionGrowing::RegionGrowing()
 {
     this->isdead=false;
     this->maxSize=500;
@@ -31,7 +31,7 @@ Region::Region()
     this->neighborsDistance=0.4f;
 
 }
-Region::Region(const Region &orig){
+RegionGrowing::RegionGrowing(const RegionGrowing &orig){
     this->ID=orig.getID();
     this->isdead=orig.getIsdead();
     for(int i=0;i<orig.getPoints().size();i++)
@@ -40,7 +40,7 @@ Region::Region(const Region &orig){
     this->maxSize=orig.getMaxSize();
 }
 
-Region::Region(int ID, int maxSize, double neighborsDistance)
+RegionGrowing::RegionGrowing(int ID, int maxSize, double neighborsDistance)
 {
     this->isdead=false;
     this->maxSize=maxSize;
@@ -48,11 +48,11 @@ Region::Region(int ID, int maxSize, double neighborsDistance)
     this->neighborsDistance=neighborsDistance;
 
 }
-void Region::clear(){
+void RegionGrowing::clear(){
     this->points.clear();
 }
 
-void Region::add(PointGL point)
+void RegionGrowing::add(PointGL point)
 {
     if(this->isdead)throw Erreur("adding in a dead region");
     // add the rail
@@ -63,7 +63,7 @@ void Region::add(PointGL point)
     //        this->points.remove(0);
     //    }
 }
-bool Region::growing(PointGL point){
+bool RegionGrowing::growing(PointGL point){
     if(this->isdead)return false;
     //if the region have not a point
     if(this->size()==0){
@@ -81,39 +81,39 @@ bool Region::growing(PointGL point){
             return false;
     }
 }
-QVector<PointGL> Region::getPoints() const
+QVector<PointGL> RegionGrowing::getPoints() const
 {
     return points;
 }
 
-void Region::setPoints(const QVector<PointGL> &value)
+void RegionGrowing::setPoints(const QVector<PointGL> &value)
 {
     points = value;
 }
-double Region::getIsdead() const
+double RegionGrowing::getIsdead() const
 {
     return isdead;
 }
 
-void Region::setIsdead(double value)
+void RegionGrowing::setIsdead(double value)
 {
     isdead = value;
 }
-double Region::getNeighborsDistance() const
+double RegionGrowing::getNeighborsDistance() const
 {
     return neighborsDistance;
 }
 
-void Region::setNeighborsDistance(double value)
+void RegionGrowing::setNeighborsDistance(double value)
 {
     neighborsDistance = value;
 }
-int Region::getMaxSize() const
+int RegionGrowing::getMaxSize() const
 {
     return maxSize;
 }
 
-void Region::setMaxSize(int value)
+void RegionGrowing::setMaxSize(int value)
 {
     maxSize = value;
 }
@@ -122,15 +122,15 @@ void Region::setMaxSize(int value)
 
 
 
-int Region::getID() const
+int RegionGrowing::getID() const
 {
     return ID;
 }
-int Region::size()const{
+int RegionGrowing::size()const{
     return this->points.size();
 }
 
-bool Region::isIn(PointGL pt,double distanceMax)const
+bool RegionGrowing::isIn(PointGL pt,double distanceMax)const
 {
     if(this->isdead)return false;
     //for each point of the region
@@ -143,7 +143,7 @@ bool Region::isIn(PointGL pt,double distanceMax)const
     return false;
 
 }
-bool Region::isIn(PointGL pt)const
+bool RegionGrowing::isIn(PointGL pt)const
 {
     if(this->isdead)return false;
     //for each point of the region
@@ -157,7 +157,7 @@ bool Region::isIn(PointGL pt)const
 
 }
 
-bool Region::check(double widthMax)const
+bool RegionGrowing::check(double widthMax)const
 {
     //search the extremum of the x coordinates in the region
     //search the extremum of the x coordinates in the region
@@ -174,12 +174,12 @@ bool Region::check(double widthMax)const
     return (xmax-xmin)<widthMax;
 }
 
-Region::~Region()
+RegionGrowing::~RegionGrowing()
 {
     this->points.clear();
 }
 
-bool Region::operator==(const Region &r)
+bool RegionGrowing::operator==(const RegionGrowing &r)
 {
     return r.getID()==this->getID();
 }

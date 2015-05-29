@@ -46,7 +46,7 @@ RegionsManager::~RegionsManager()
 
 void RegionsManager::addInNewRegion(PointGL point){
     //create a new region for add the point
-    Region r1( this->generatingID(),this->maxSize,this->neighborsDistance);
+    RegionGrowing r1( this->generatingID(),this->maxSize,this->neighborsDistance);
     r1.growing(point);
     this->regions.push_back(r1);
 }
@@ -92,7 +92,7 @@ bool RegionsManager::checkRegion(double widthmax){
     return ok;
 }
 void RegionsManager::add(int ID,PointGL point){
-    Region r(ID,this->maxSize,this->neighborsDistance);
+    RegionGrowing r(ID,this->maxSize,this->neighborsDistance);
     //test if the region is known
     if(this->regions.contains(r)){
         // add the point into the region
@@ -105,8 +105,8 @@ void RegionsManager::add(int ID,PointGL point){
     else throw Erreur(" The region is not known");
 }
 
-Region RegionsManager::getRegion(int ID){
-    Region r(ID,this->maxSize,this->neighborsDistance);
+RegionGrowing RegionsManager::getRegion(int ID){
+    RegionGrowing r(ID,this->maxSize,this->neighborsDistance);
     //test if the region is known
     if(this->regions.contains(r))
         // return the region
@@ -120,7 +120,7 @@ void RegionsManager::clear(){
 }
 
 void RegionsManager::remove(int ID){
-    Region r(ID,this->maxSize,this->neighborsDistance);
+    RegionGrowing r(ID,this->maxSize,this->neighborsDistance);
     //test if the region is known
     if(this->regions.contains(r)){
         // return the region
@@ -159,12 +159,12 @@ int RegionsManager::generatingID(){
     this->nbregions++;
     return nbregions;
 }
-QVector<Region> RegionsManager::getRegions() const
+QVector<RegionGrowing> RegionsManager::getRegions() const
 {
     return regions;
 }
 
-void RegionsManager::setRegions(const QVector<Region> &value)
+void RegionsManager::setRegions(const QVector<RegionGrowing> &value)
 {
     regions = value;
 }
@@ -172,8 +172,8 @@ void RegionsManager::setRegions(const QVector<Region> &value)
 bool RegionsManager::split(int regionID)
 {
     //split the region
-    QVector<Region> newRegions;
-    Region r1( this->generatingID(),this->maxSize,this->neighborsDistance);
+    QVector<RegionGrowing> newRegions;
+    RegionGrowing r1( this->generatingID(),this->maxSize,this->neighborsDistance);
     newRegions.push_back(r1);
     //for all point of the region to be splited
     QVector<PointGL>pointsRegion=this->getRegion(regionID).getPoints();
@@ -192,7 +192,7 @@ bool RegionsManager::split(int regionID)
         //if the point does not added
         if(!added){
             //create a new region and add it
-            Region r2( this->generatingID(),this->maxSize,this->neighborsDistance);
+            RegionGrowing r2( this->generatingID(),this->maxSize,this->neighborsDistance);
             r2.growing(pt);
             newRegions.push_back(r2);
         }
