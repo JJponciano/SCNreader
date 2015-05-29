@@ -53,12 +53,13 @@ void RegionsManager::addInNewRegion(PointGL point){
 
 bool RegionsManager::addPoint(PointGL point)
 {
+
     bool ok=true;
     // get all region that the point could be added
     QVector<int> idRegions=this->intoRegions(point);
 
     // if the point not belong to any region
-    if(idRegions.size()==0){
+    if(idRegions.isEmpty()){
         this->addInNewRegion(point);
     }else
         // if the point belong to only one region
@@ -69,10 +70,11 @@ bool RegionsManager::addPoint(PointGL point)
             // the point belong to more than one regions
             // remove region having merged and test if this merge wasn't too small
             // if is too small, the merge is not importante
-            ok=(this->removeRegions(idRegions));
+          // ok=(this->removeRegions(idRegions));
             //add it in a new region
-            this->addInNewRegion(point);
+           // this->addInNewRegion(point);
         }
+     std::cout<<this->regions.size()<<std::endl;
     return ok;
 }
 bool RegionsManager::checkRegion(double widthmax){

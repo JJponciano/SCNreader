@@ -57,6 +57,8 @@ void RegionGrowing::add(PointGL point)
     if(this->isdead)throw Erreur("adding in a dead region");
     // add the rail
     this->points.push_back(point);
+    //---sort by z then by x then by y
+    //std::sort(this->points.begin(),this->points.end());
     //test if the size is too big
     //    if(this->points.size()>=this->maxSize)
     //    {

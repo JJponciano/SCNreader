@@ -100,9 +100,11 @@ void ListeRail::initialization(QVector <PointGL > cloud){
     }
 }
 void ListeRail::initRegions(){
-    double regionMaxSize= (double)(this->maxSize)*100000;//*0.2f;
+    this->regions.clear();
+    double regionMaxSize= (double)(this->maxSize)*0.2f;
     double minsize= (double)(this->maxSize)*0.05f;
-    RegionsManager rm(minsize,this->lesRails.at(0).getWidthDistance(),regionMaxSize);
+    double neighborsDistance=this->lesRails.at(0).getWidthDistance()*2;
+    RegionsManager rm(minsize,neighborsDistance,regionMaxSize);
     this->regions=rm;
 }
 
@@ -144,7 +146,6 @@ bool ListeRail::growingRegions(RailCluster rail)
     for(int i=0;i<rail.getPoints().size();i++){
         PointGL currentPoint=rail.getPoints().at(i);
         // add the point in a region and test if the addition did not require a merger
-        std::cout<<currentPoint.getZ()<<std::endl;
         if(!this->regions.addPoint(currentPoint)){
             //if the addition needed a merger, a switch is detected
             switchDetected=true;
