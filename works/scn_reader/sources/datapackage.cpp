@@ -71,7 +71,6 @@ void Datapackage::readData(QByteArray datas,int start){
         this->end=datas.size();
     }
     else{
-        // ===================================================================
         quint8 byte0;
         quint8 byte1;
         quint8 byte2;
@@ -103,7 +102,6 @@ void Datapackage::readData(QByteArray datas,int start){
         }
         this->originHor =(unknownbytes2[33] << 8) + unknownbytes2[32];
         this->originVert =(unknownbytes2[35] << 8) + unknownbytes2[34];
-        //  ---------- end try
 
         for(int i=0;i<this->pointCount;i++){
             ds >> byte1 >> byte0;

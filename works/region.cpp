@@ -25,12 +25,21 @@
 
 Region::Region()
 {
-     this->isdead=false;
+    this->isdead=false;
     this->maxSize=500;
     this->ID=0;
     this->neighborsDistance=0.4f;
 
 }
+Region::Region(const Region &orig){
+    this->ID=orig.getID();
+    this->isdead=orig.getIsdead();
+    for(int i=0;i<orig.getPoints().size();i++)
+        this->points.push_back(orig.getPoints().at(i));
+    this->neighborsDistance=this->getNeighborsDistance();
+    this->maxSize=orig.getMaxSize();
+}
+
 Region::Region(int ID, int maxSize, double neighborsDistance)
 {
     this->isdead=false;
@@ -49,10 +58,10 @@ void Region::add(PointGL point)
     // add the rail
     this->points.push_back(point);
     //test if the size is too big
-//    if(this->points.size()>=this->maxSize)
-//    {
-//        this->points.remove(0);
-//    }
+    //    if(this->points.size()>=this->maxSize)
+    //    {
+    //        this->points.remove(0);
+    //    }
 }
 bool Region::growing(PointGL point){
     if(this->isdead)return false;
@@ -90,6 +99,26 @@ void Region::setIsdead(double value)
 {
     isdead = value;
 }
+double Region::getNeighborsDistance() const
+{
+    return neighborsDistance;
+}
+
+void Region::setNeighborsDistance(double value)
+{
+    neighborsDistance = value;
+}
+int Region::getMaxSize() const
+{
+    return maxSize;
+}
+
+void Region::setMaxSize(int value)
+{
+    maxSize = value;
+}
+
+
 
 
 
