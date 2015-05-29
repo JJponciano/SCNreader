@@ -927,8 +927,7 @@ void scnreader_model::cleanNoise(int f){
             i--;
         }
     }
-    ListeRail lr(this->getCloudInVectpoint(this->resultRANSAC),workWindows);
-    this->lesRailsOptimize=lr;
+    this->lesRails.initialization(lespoints);
 }
 
 double * scnreader_model::distanceMinMax(QVector<PointGL> lspts)

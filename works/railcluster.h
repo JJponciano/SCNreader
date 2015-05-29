@@ -25,7 +25,7 @@
 #ifndef RAILCLUSTER_H
 #define RAILCLUSTER_H
 
-#include "../modules/openGL/tools_models/Point.h"
+#include "../modules/openGL/tools_models/pointgL.h"
 #include <pcl/point_types.h>
 #include <QVector>
 /**
@@ -99,7 +99,7 @@ public:
      *  between two railways rail. So, if it is inside, it is added .
      * @param pts list of point to test and add
      */
-    void add(const QVector<PointGL> pts);
+    void add(QVector<PointGL> pts);
 
     /**
      * @brief remove remove a point of the list
@@ -185,6 +185,7 @@ public:
     double getWidthDistance() const;
     int compare(const RailCluster *a, const RailCluster *b);
     bool operator <(const RailCluster &r);
+    bool operator ==(const RailCluster &r);
 private:
 double gap(QVector <PointGL> reg) const;
     int footpulse;

@@ -25,7 +25,7 @@
 #define REGIONGROWING_H
 #include <QVector>
 #include "../modules/exceptions/erreur.h"
-#include "../modules/openGL/tools_models/Point.h"
+#include "../modules/openGL/tools_models/pointgL.h"
 class RegionGrowing
 {
 public:

@@ -35,11 +35,11 @@ SOURCES += main.cpp\
     works/vueparetape.cpp \
     works/railcluster.cpp \
     works/listerail.cpp \
-    modules/openGL/tools_models/Point.cpp \
     works/regionsmanager.cpp \
     works/colorsmanager.cpp \
     works/regiongrowing.cpp\
-    works/imageprocessing.cpp
+    works/imageprocessing.cpp \
+    modules/openGL/tools_models/pointgL.cpp
 # if you use openGL
 opengl {
     SOURCES+=modules/openGL/ground/controller/controller_ground_gl.cpp \
@@ -73,11 +73,11 @@ HEADERS  += mainwindow.h \
     works/vueparetape.h \
     works/railcluster.h \
     works/listerail.h \
-    modules/openGL/tools_models/Point.h \
     works/regionsmanager.h \
     works/colorsmanager.h \
     works/regiongrowing.h\
-    works/imageprocessing.h
+    works/imageprocessing.h \
+    modules/openGL/tools_models/pointgL.h
 
 # if you use openGL
 opengl {
