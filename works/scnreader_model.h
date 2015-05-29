@@ -28,9 +28,11 @@
 #include "scn_reader/sources/scndata.h"
 #include "railcluster.h"
 #include "listerail.h"
+#include "imageprocessing.h"
 #include <QVector>
 #include <QHash>
 #include <QDataStream>
+
 
 /**
  * @class scnreader_model
@@ -74,7 +76,9 @@ class scnreader_model: public ToolsPCL
 public:
     scnreader_model();
     ~scnreader_model();
-
+    /**
+     * @brief clear clean all pointers to avoid memory leaks
+     */
     void clear();
     /**
      * @brief scnreader_model::loadCloudFromTXT create and add data from file
@@ -106,13 +110,13 @@ public:
     * @brief acces to QHash
     * @return the Qhash which contains all points footpulse by footpulse
     */
-    QHash <int, QVector<pcl::PointXYZ *> *> getNuage();
+    QHash <int, QVector<PointGL *> *> getNuage();
 
     /**
      * @brief acces to QHash
      * @return the Qhash which contains all points of segmentations of a cloud's part
      */
-    QHash <QString, QVector<pcl::PointXYZ*>*> getSegmentation();
+    QHash <QString, QVector<PointGL*>*> getSegmentation();
 
     /**
        * @brief createRail fills lesrails for all footpulse which were in the uploaded file
@@ -124,7 +128,7 @@ public:
        * @param vecteur is the vector which we will transform
        * @return the cloud corresponding to the vector
        */
-    pcl::PointCloud<pcl::PointXYZ>::Ptr getVectInCloud(QVector<pcl::PointXYZ *> vecteur);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr getVectInCloud(QVector<PointGL *> vecteur);
     /**
        * @brief getVectInCloud transform a vector of point in a cloud
        * @param vecteur is the vector which we will transform
@@ -137,7 +141,7 @@ public:
        * @param cloud is the cloud which we will transform
        * @return the vector corresponding to the cloud
        */
-    QVector<pcl::PointXYZ *> getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
+    QVector<PointGL *> getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 
 
     //Access in reading and writing of variables
@@ -165,9 +169,6 @@ public:
     void setFtpd(int d);
     void setFtpf(int f);
 
-    ScnData getData(int i) const;
-    void setDatas(const QVector<ScnData> &value);
-
     //      /**
     //       * @brief acces to QHash TODO OR NOT
     //       * @return the Qhash which contains all points of exractions of a cloud's part
@@ -181,12 +182,15 @@ public:
        void setRegions(const QVector<QVector<PointGL> > &value);
 
 private:
-       int capacity;
-       int workWindows;
-       QVector <ScnData> datas;
-       int ftpd;
-       int ftpf;
-       ListeRail lesRails;
+    int capacity;
+    int workWindows;
+    int ftpd;
+    int ftpf;
+    /**
+      * @brief lesRails contains tracks for each footpulse
+      *
+      */
+    ListeRail lesRails;
     ListeRail lesRailsOptimize;
    QVector< QVector<PointGL> >regions;
     pcl::PointCloud<pcl::PointXYZ>::Ptr resultRANSAC;
@@ -194,13 +198,19 @@ private:
     QString nomFile;
     bool RansacVide;
     bool cfs;
+
+    /**
+     * @brief ftpMinMax search footpulses min and max
+     * @return int the first position of a table the min and in the second, the max
+     */
+    int * ftpMinMax();
     /**
        * @brief samePoint watch if two points are the same or not
        * @param ptP the point which is contained in QHash
        * @param pt the point which is contained in cloud
        * @return if they are the same
        */
-    bool samePoint( pcl::PointXYZ* point2, pcl::PointXYZ *ptP);
+    bool samePoint( PointGL* point2, PointGL *ptP);
     /**
      * @brief readData read a data byte by byte
      * @param bytePosition posision of the data
@@ -236,7 +246,7 @@ private:
      * @param cloudTemp is the cloud which we will transform
      * @return the vector of points corresponding
      */
-    QVector<pcl::PointXYZ *> * getCloudInVect2(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp);
+    QVector<PointGL *> * getCloudInVect2(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp);
 
     /**
      * @brief scnreader_model::getPtWithInd take the points correponding to indices which are given
@@ -245,31 +255,47 @@ private:
      * @param ind is the vector of indices
      * @return the vector of points corresponding to indices
      */
-    QVector<pcl::PointXYZ*>* getPtWithInd(int d, int f, std::vector<int> indices, QVector<int>* tailles);
+    QVector<PointGL*>* getPtWithInd(int d, int f, std::vector<int> indices, QVector<int>* tailles);
 
     /**
      * @brief the Qhash which contains all points footpulse by footpulse
      *
      */
-    QHash <int, QVector<pcl::PointXYZ *> *> nuage;
+    QHash <int, QVector<PointGL *> *> nuage;
     /**
      * @brief the Qhash which contains all points of segmentations of a cloud's part
      *
      */
-    QHash <QString, QVector<pcl::PointXYZ*>*> segmentation;
+    QHash <QString, QVector<PointGL*>*> segmentation;
     /**
       * @brief the Qhash which contains all points of extractions of a cloud's part
       *
       */
-    QHash <QString, QVector<pcl::PointXYZ *>*> extraction;
+    QHash <QString, QVector<PointGL *>*> extraction;
     /**
-      * @brief lesRails contains tracks for each footpulse
-      *
-      */
+     * @brief optimization optimize the search of tracks
+     */
     void optimization();
+    /**
+     * @brief enregistre record footpulse corresponding to a switch in a file
+     * @param noms is name of file
+     */
     void enregistre(QString noms);
+    /**
+     * @brief VideEtEnregistre record and remove footpulse corresponding to a switch in a file
+     * @param noms is name of file
+     */
     void VideEtEnregistre(QString noms);
-
+    /**
+     * @brief cleanNoise remove points which don't belong to tracks
+     */
+    void cleanNoise(int f);
+    /**
+     * @brief distanceMinMax search xmin and xmax
+     * @param lspts is the part where we search the distance
+     * @return a table with xmin in first place and xmax in second place
+     */
+    double *distanceMinMax(QVector<PointGL> lspts);
 };
 
 #endif // SCNREADER_MODULE_H

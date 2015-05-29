@@ -66,16 +66,7 @@ void VueParEtape::paintGL()
     //call the superclass function
     groundGLWidget::paintGL();
 
-    //------------------------------------------------------------------
-    // definition size dot
-    //    glPointSize(4);
-    //    glPushMatrix();
-    //        glBegin(GL_POINTS);
-    //        glColor3f(1.0,1.0,1.0);
-    //           for(int i=-100; i<100; i++)
-    //          glVertex3f(mirx,i*0.01, 0);
-    //        glEnd();
-    //    glPopMatrix();
+
 
     glPointSize(1);
     glPushMatrix();
@@ -154,7 +145,7 @@ void VueParEtape::affichageSwitch()
         {
             if(this->scnreaderFond.getNuage().contains(j))
             {
-                QVector <pcl::PointXYZ*>* v=this->scnreaderFond.getNuage().value(j);
+                QVector <PointGL*>* v=this->scnreaderFond.getNuage().value(j);
                 if(j==this->numS)
                     glColor3f(1.0,0.0,0.0);
                 else
@@ -164,9 +155,9 @@ void VueParEtape::affichageSwitch()
                 {
                     glPointSize(1);
                     //keep coordinates of points to draw them
-                    double x=(* (v->at(i))).x;
-                    double y=(* (v->at(i))).y;
-                    double z=((* (v->at(i))).z-this->numS)*0.1;
+                    double x=(* (v->at(i))).getX();
+                    double y=(* (v->at(i))).getY();
+                    double z=((* (v->at(i))).getZ()-this->numS)*0.1;
                     glVertex3f(x,y,z);
                 }
 
@@ -207,17 +198,18 @@ void VueParEtape::affichageCloud()
         if(this->scnreaderFond.getNuage().contains(j))
         {
 
-            QVector <pcl::PointXYZ*>* v=this->scnreaderFond.getNuage().value(j);
+            QVector <PointGL*>* v=this->scnreaderFond.getNuage().value(j);
             for(int i=0; i<v->size(); i++)
             {
                 glPointSize(1);
 
                 //normalizes points with model->max of cordinates previously finded
-                double x=(* (v->at(i))).x;//scnreaderFond.getMaxX()*10;
-                double y=(* (v->at(i))).y;//scnreaderFond.getMaxY()*10;
-                double z=((* (v->at(i))).z-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
+                double x=(* (v->at(i))).getX();//scnreaderFond.getMaxX()*10;
+                double y=(* (v->at(i))).getY();//scnreaderFond.getMaxY()*10;
+                double z=((* (v->at(i))).getZ()-this->ftpDI)*0.1;//scnreaderFond.getMaxZ()*10;
+
                 //                                glVertex3f(x,int(y*1000)/100,z);
-                if(SwitchContenu((* (v->at(i))).z))
+                if(SwitchContenu((* (v->at(i))).getZ()))
                     glColor3f(1.0,0.0,0.0);
                 else
                     glColor3f(1.0,1.0,1.0);
@@ -238,7 +230,7 @@ void VueParEtape::affichageSegm()
     ss << "S_" << this->ftpDI <<"_" << this->ftpFI;
     QString chaine=QString::fromStdString (ss.str());
 
-    QHash<QString, QVector<pcl::PointXYZ*>*> h=this->scnreaderFond.getSegmentation();
+    QHash<QString, QVector<PointGL*>*> h=this->scnreaderFond.getSegmentation();
 
     if(!h.contains(chaine))
     {
@@ -248,12 +240,12 @@ void VueParEtape::affichageSegm()
             QMessageBox::critical(0, "Error", e.what());
         }
     }
-    QVector <pcl::PointXYZ*>* vect=this->scnreaderFond.getSegmentation().value(QString::fromStdString (ss.str()));
+    QVector <PointGL*>* vect=this->scnreaderFond.getSegmentation().value(QString::fromStdString (ss.str()));
     glBegin(GL_POINTS);
     for(int j=0;j<vect->size();j++)
     {
         glColor3f(0.0,0.0,1.0);
-        glVertex3f((* (vect->at(j))).x,(*(vect->at(j))).y,((* (vect->at(j))).z-this->ftpDI)*0.1);
+        glVertex3f((* (vect->at(j))).getX(),(*(vect->at(j))).getY(),((* (vect->at(j))).getZ()-this->ftpDI)*0.1);
     }
     glEnd();
 
@@ -632,29 +624,32 @@ void VueParEtape::LectureSw(QString nameF)
     QString noms=nameF;
     noms.push_back("_switch.txt");
     QFile fichier(noms);
-    if(fichier.open(QIODevice::ReadOnly | QIODevice::Text)){
-        //if you can, initialize flu and line
-        QTextStream flux(&fichier);
-        QString ligne;
-        QVector<int> vect;
-        while(!flux.atEnd())
-        {
-            ligne= flux.readLine();
-            vect.push_back(ligne.toInt());
-
-
-            if(vect.size()>=this->scnreaderFond.getCapacity()-1)
+    if(fichier.exists())
+    {
+        if(fichier.open(QIODevice::ReadOnly | QIODevice::Text)){
+            //if you can, initialize flu and line
+            QTextStream flux(&fichier);
+            QString ligne;
+            QVector<int> vect;
+            while(!flux.atEnd())
             {
-                this->SwitchDetected.push_back(vect);
-                QVector<int> vect2;
-                vect=vect2;
-            }
+                ligne= flux.readLine();
+                vect.push_back(ligne.toInt());
 
+
+                if(vect.size()>=this->scnreaderFond.getCapacity()-1)
+                {
+                    this->SwitchDetected.push_back(vect);
+                    QVector<int> vect2;
+                    vect=vect2;
+                }
+
+            }
+            this->SwitchDetected.push_back(vect);
+            fichier.close();
+            if(!this->SwitchDetected.isEmpty())
+                this->numS=this->SwitchDetected.at(0).at(0);
         }
-        this->SwitchDetected.push_back(vect);
-        fichier.close();
-        if(!this->SwitchDetected.isEmpty())
-            this->numS=this->SwitchDetected.at(0).at(0);
+        else throw Erreur(" The file of switch can not be openned, check the write permission!");
     }
-    else throw Erreur(" The file of switch can not be openned, check the write permission!");
 }

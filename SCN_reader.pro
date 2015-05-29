@@ -19,7 +19,7 @@ OTHER_FILES += \
 
 # ---------- CONFIG
 CONFIG += opengl
-#CONFIG += opencv
+CONFIG += opencv
 CONFIG += pcl
 # ---------- end CONFIG
 
@@ -38,8 +38,8 @@ SOURCES += main.cpp\
     modules/openGL/tools_models/Point.cpp \
     works/regionsmanager.cpp \
     works/colorsmanager.cpp \
-    works/regiongrowing.cpp
-
+    works/regiongrowing.cpp\
+    works/imageprocessing.cpp
 # if you use openGL
 opengl {
     SOURCES+=modules/openGL/ground/controller/controller_ground_gl.cpp \
@@ -76,7 +76,8 @@ HEADERS  += mainwindow.h \
     modules/openGL/tools_models/Point.h \
     works/regionsmanager.h \
     works/colorsmanager.h \
-    works/regiongrowing.h
+    works/regiongrowing.h\
+    works/imageprocessing.h
 
 # if you use openGL
 opengl {

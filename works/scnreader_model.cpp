@@ -42,47 +42,63 @@ scnreader_model::~scnreader_model()
     this->segmentation.clear();
     this->extraction.clear();
 }
-/*
-pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getRails(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud){
-
-}*/
-
-QString scnreader_model::readData(int bytePosition, int length,std::string pathname,bool isnumber){
-    std::ifstream ouverture(pathname.c_str(),std::ios::in);
-    //the data to load
-    QString temp;
-    int intemp=0;
-    //byte
-    char offset0;
-    //test if file is open
-    if(ouverture)
-    {
-        //go to the start data
-        ouverture.seekg(bytePosition,std::ios::beg);
-        for(int i=0;i<length;i++){
-            //read byte
-            ouverture.get(offset0);
-            //go to next byte
-            ouverture.seekg(i,std::ios::beg);
-            //add byte into data
-            temp.append(offset0);
-            if(isnumber)
-                intemp<<offset0;
-        }
-    }
-    ouverture.close();
-    if(isnumber)
-        temp=QString::number(intemp);
-    return temp;
-}
-
 
 void scnreader_model::loadFromSCN(std::string pathname){
     //create scn data
     ScnData data;
     //load data from file
     data.loadFromSCN(pathname);
+    //keep coordinates of points
+    QVector<double> lesX=data.getX();
+    QVector<double> lesY=data.getY();
+    QVector<double> lesZ=data.getZ();
 
+    //add them in Hashtable
+    PointGL * p;
+    int ftpcourant=-1;
+    QVector<PointGL *>* v;
+    for(int i=0; i<lesX.size(); i++)
+    {
+        p=new PointGL(lesX.at(i),lesY.at(i),lesZ.at(i));
+
+        //if the footpulse is not initialized
+        if(ftpcourant==-1)
+        {
+            //we update footpulse
+            ftpcourant=(int) p->getZ();
+            //we create a new vector
+            v= new QVector<PointGL *>();
+            //which we add to the hashtable
+            nuage.insert(ftpcourant, v);
+            //then we add the new point
+            v->push_back(p);
+        }
+        else
+        {
+            //we update footpulse
+            ftpcourant=(int) p->getZ();
+            //if a vector with this footpulse exists
+            if(nuage.contains(ftpcourant))
+            {
+                //we the vector which corresponding to point's footpulse
+                v= nuage.value(ftpcourant);
+                //then we add the new point
+                v->push_back(p);
+            }
+            else
+            {
+                    //we create a new vector
+                    v= new QVector<PointGL *>();
+                    //which we add to the hashtable
+                    nuage.insert(ftpcourant, v);
+                    //then we add the new point
+                    v->push_back(p);
+            }
+        }
+    }
+    int * t=ftpMinMax();
+    this->ftpd=t[0];
+    this->ftpf=t[1];
 }
 
 
@@ -99,8 +115,6 @@ void scnreader_model::addCloudFromTXT(std::string pathname){
 void scnreader_model::loadCloudFromTXT2(std::string pathname){
 
     int footpulse=IsFootpulse(pathname);
-    bool premier=true;
-
     QFile fichier( QString(pathname.c_str()) );
     if(fichier.open(QIODevice::ReadOnly | QIODevice::Text)) // ce  si le fichier n'est pas ouvert
     {
@@ -114,9 +128,9 @@ void scnreader_model::loadCloudFromTXT2(std::string pathname){
         //said that the window is modal
         progress.setWindowModality(Qt::WindowModal);
 
-        pcl::PointXYZ * p;
+        PointGL * p;
         int ftpcourant=-1;
-        QVector<pcl::PointXYZ *>* v;
+        QVector<PointGL *>* v;
 
         while(!flux.atEnd())
         {  //Increment the counter
@@ -141,44 +155,60 @@ void scnreader_model::loadCloudFromTXT2(std::string pathname){
                     QString z=result.at(2);
                     if(footpulse==0)
                     {
-                        p=new pcl::PointXYZ(z.toDouble(),y.toDouble(),x.toDouble());
+                        p=new PointGL(z.toDouble(),y.toDouble(),x.toDouble());
                     }
                     else if(footpulse==1)
                     {
-                        p=new pcl::PointXYZ(x.toDouble(),z.toDouble(),y.toDouble());
+                        p=new PointGL(x.toDouble(),z.toDouble(),y.toDouble());
                     }
                     else
                     {
-                        p=new pcl::PointXYZ(x.toDouble(),y.toDouble(),z.toDouble());
+                        p=new PointGL(x.toDouble(),y.toDouble(),z.toDouble());
                     }
 
-                    //if the footpulse is not initialized or if he is different of the previous
-                    if(ftpcourant==-1 || ftpcourant!=(int) p->z)
+                    if(ftpcourant==-1)
                     {
                         //we update footpulse
-                        ftpcourant=(int) p->z;
+                        ftpcourant=(int) p->getZ();
                         //we create a new vector
-                        v= new QVector<pcl::PointXYZ *>();
+                        v= new QVector<PointGL *>();
                         //which we add to the hashtable
                         nuage.insert(ftpcourant, v);
                         //then we add the new point
                         v->push_back(p);
                     }
                     else
-                        v->push_back(p);//else we add the new point
-
-                    if(premier){
-                        this->ftpd=p->z;
-                        premier=false;
+                    {
+                        //we update footpulse
+                        ftpcourant=(int) p->getZ();
+                        //if a vector with this footpulse exists
+                        if(nuage.contains(ftpcourant))
+                        {
+                            //we the vector which corresponding to point's footpulse
+                            v= nuage.value(ftpcourant);
+                            //then we add the new point
+                            v->push_back(p);
+                        }
+                        else
+                        {
+                                //we create a new vector
+                                v= new QVector<PointGL *>();
+                                //which we add to the hashtable
+                                nuage.insert(ftpcourant, v);
+                                //then we add the new point
+                                v->push_back(p);
+                        }
                     }
-                    this->ftpf=p->z;
                 }
-
 
             //if user want to stop loading, the reading is finished
             if (progress.wasCanceled())
                 break;
         }
+
+        int * t=ftpMinMax();
+        this->ftpd=t[0];
+        this->ftpf=t[1];
         //close automatically the progress dialog
         progress.setValue(nline);
 
@@ -314,195 +344,6 @@ int scnreader_model::IsFootpulse(std::string pathname){
 }
 
 
-//void scnreader_model::extractionCloud(int d, int f) {
-//    /*
-//    if(nuage.contains(d) && nuage.contains(f))
-//    {
-//        //---------------------Create the cluster to do the extraction-------------------
-//        //vector wich contains the count of point by footpulse
-//        QVector<int> tailles;
-//        //temporarly cloud to do the segmentation
-//        pcl::PointCloud<pcl::PointXYZ>::Ptr CloudTemp(new pcl::PointCloud<pcl::PointXYZ>);
-//        //Fill the cloud and the vector tailles
-//        int i=d;
-//        while(i<=f)
-//        {
-//            if(nuage.contains(i))
-//            {
-//                QVector <pcl::PointXYZ*> * v=nuage.value(i);
-//                tailles.push_back(v->size());
-//                for(int j=0; j<v->size(); j++)
-//                {
-//                    pcl::PointXYZ* p=v->at(j);
-//                    CloudTemp->points.push_back(* p);
-//                }
-//                i++;
-//            }
-//            else throw Erreur("Interval de footpulses discontinu dans la segmentation");
-//        }
-//        CloudTemp->width = CloudTemp->points.size();
-//        CloudTemp->height = 1;
-//        CloudTemp->is_dense = false;
-//        CloudTemp->points.resize (CloudTemp->width * CloudTemp->height);
-////------------------------------------Extraction---------------------------------------------------
-//        QStringList clusterCreates;
-//        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
-//        // Create the filtering object: downsample the dataset using a leaf size of 1cm
-//        pcl::VoxelGrid<pcl::PointXYZ> vg;
-//        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>);
-//        vg.setInputCloud (CloudTemp);
-//        vg.setLeafSize (0.01f, 0.01f, 0.01f);
-//        vg.filter (*cloud_filtered);
-
-//        // Create the segmentation object for the planar model and set all the parameters
-//        pcl::SACSegmentation<pcl::PointXYZ> seg;
-//        pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
-//        pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
-//        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ> ());
-//        pcl::PCDWriter writer;
-//        seg.setOptimizeCoefficients (true);
-//        seg.setModelType (pcl::SACMODEL_PLANE);
-//        seg.setMethodType (pcl::SAC_RANSAC);
-//        seg.setMaxIterations (100);
-//        seg.setDistanceThreshold (0.02);
-
-//        int  nr_points = (int) cloud_filtered->points.size ();
-//        while (cloud_filtered->points.size () > 0.3 * nr_points)
-//        {
-//            // Segment the largest planar component from the remaining cloud
-//            seg.setInputCloud (cloud_filtered);
-//            seg.segment (*inliers, *coefficients);
-//            if (inliers->indices.size () == 0)
-//            {
-//                break;
-//            }
-
-//            // Extract the planar inliers from the input cloud
-//            pcl::ExtractIndices<pcl::PointXYZ> extract;
-//            extract.setInputCloud (cloud_filtered);
-//            extract.setIndices (inliers);
-//            extract.setNegative (false);
-
-//            // Get the points associated with the planar surface
-//            extract.filter (*cloud_plane);
-
-//            // Remove the planar inliers, extract the rest
-//            extract.setNegative (true);
-//            extract.filter (*cloud_f);
-//            *cloud_filtered = *cloud_f;
-//        }
-
-//        // Creating the KdTree object for the search method of the extraction
-//        pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
-//        tree->setInputCloud (cloud_filtered);
-
-//        std::vector<pcl::PointIndices> cluster_indices;
-//        pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
-//        ec.setClusterTolerance (0.02); // 2cm
-//        ec.setMinClusterSize (100);
-//        ec.setMaxClusterSize (25000);
-//        ec.setSearchMethod (tree);
-//        ec.setInputCloud (cloud_filtered);
-//        ec.extract (cluster_indices);
-
-//        int j = 0;
-//        for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
-//        {
-//            pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
-
-//            for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); ++pit)
-//                cloud_cluster->points.push_back (cloud_filtered->points[*pit]); //
-
-//            cloud_cluster->width = cloud_cluster->points.size ();
-//            cloud_cluster->height = 1;
-//            cloud_cluster->is_dense = true;
-
-//            std::stringstream ss;
-//            ss << "cloud_cluster_" << j << ".pcd";
-//            writer.write<pcl::PointXYZ> (ss.str(), *cloud_cluster, false); //
-//            clusterCreates << ss.str().c_str();
-//            j++;
-
-//             *  //create new cloud
-//            QVector<pcl::PointXYZ*>* v= new QVector<pcl::PointXYZ*>();
-//            // Fill in the cloud data
-
-//            // Generate the data
-//            for (size_t i = 0; i < inliers->indices.size (); ++i)
-//            {
-//                //vector which contains points corresponding to a footpulse
-//                QVector<pcl::PointXYZ*>* vec;
-//                //indice of point which is contained in segmentation
-//                int indiceC=inliers->indices[i];
-//                //indice to know what vector to use
-//                int ind=0;
-//                int nb;
-//                //sum of size of previous vectors
-//                if(ind<tailles.size())
-//                {
-//                    nb=tailles.at(ind);
-//                }
-//                else
-//                {
-//                    std::stringstream ss;
-//                    ss << "Erreur dans TAILLE pas initialise, pour l'emplacement "<<ind<< " car vecteur de taille: "<<tailles.size();
-//                    std::string message=ss.str();
-//                    throw Erreur(message);
-//                }
-//                //int nb=tailles.at(ind);
-//                //we grow up the ind to find the good vector where the point find
-//                while(ind<(f-d) && indiceC>=nb)
-//                {
-//                    ind++;
-//                    if(ind<tailles.size())
-//                    {
-//                        nb+=tailles.at(ind);
-//                    }
-//                    else
-//                    {
-//                        std::stringstream ss;
-//                        ss << "Erreur dans TAILLE pour l'emplacement "<<ind<< " car vecteur de taille: "<<tailles.size();
-//                        std::string message=ss.str();
-//                        throw Erreur(message);
-//                    }
-//                   // nb+=tailles.at(ind);
-//                }
-//                //we keep the vector corresponding
-//                vec=nuage.value(d+ind);
-//                //we add the pointer of the corresponding point
-//                if(ind>0)
-//                {
-
-//                    int num=indiceC-nb+tailles.at(ind);
-//                    std::cout<<indiceC<<","<<nb<< "," << num<<std::endl;
-//                    if(num<vec->size())
-//                    {
-//                        v->push_back(vec->at(num));
-//                    }
-//                    else
-//                    {
-//                        std::stringstream ss;
-//                        ss << "Erreur dans VEC pour l'emplacement "<<num<< " car vecteur de taille: "<<vec->size();
-//                        std::string message=ss.str();
-//                        throw Erreur(message);
-//                    }
-//                }
-//                else
-//                    v->push_back(vec->at(indiceC));
-//c
-//            }
-//            //add the segmentation to the hashtable
-//            std::stringstream ss;
-//            ss << "S_" << d <<"_" << f;
-//            segmentation.insert(QString::fromStdString (ss.str()), v);
-//        }
-//        }
-//        //return clusterCreates;
-//    }
-//    else throw Erreur("Interval de footpulses incorrect pour effectuer l'extraction");*/
-//}
-
-
 
 void scnreader_model::planar_segmentation( int d, int f){
     if(nuage.contains(d) && nuage.contains(f))
@@ -536,7 +377,7 @@ void scnreader_model::planar_segmentation( int d, int f){
         }else{
 
             //create new cloud
-            QVector<pcl::PointXYZ*>* v= getPtWithInd(d, f,inliers->indices, tailles);
+            QVector<PointGL*>* v= getPtWithInd(d, f,inliers->indices, tailles);
 
             //add the segmentation to the hashtable
             std::stringstream ss;
@@ -547,18 +388,13 @@ void scnreader_model::planar_segmentation( int d, int f){
     else throw Erreur("Interval de footpulses incorrect pour effectuer la segmentation");
 }
 
-QHash <int, QVector<pcl::PointXYZ *> *> scnreader_model::getNuage(){
+QHash <int, QVector<PointGL *> *> scnreader_model::getNuage(){
     return this->nuage;
 }
 
-QHash <QString, QVector<pcl::PointXYZ*>*> scnreader_model::getSegmentation(){
+QHash <QString, QVector<PointGL*>*> scnreader_model::getSegmentation(){
     return this->segmentation;
 }
-
-
-//QHash <QString, QVector<pcl::PointXYZ *>*> scnreader_model::getExtraction(){
-//    return this->extraction;
-//}
 
 void scnreader_model::setFtpd(int d){
     this->ftpd=d;
@@ -587,7 +423,6 @@ void scnreader_model::clear()
     this->RansacVide=true;
     this->lesRailsOptimize.clear();
     this->clouds.clear();
-    this->datas.clear();
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f, QVector<int>* tailles)
@@ -599,12 +434,12 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f
     {
         if(nuage.contains(i))
         {
-            QVector <pcl::PointXYZ*> * v=nuage.value(i);
+            QVector <PointGL*> * v=nuage.value(i);
             tailles->push_back(v->size());
             for(int j=0; j<v->size(); j++)
             {
-                pcl::PointXYZ* p=v->at(j);
-                CloudTemp->points.push_back(* p);
+                pcl::PointXYZ p(v->at(j)->getX(),v->at(j)->getY(),v->at(j)->getZ());
+                CloudTemp->points.push_back(p);
             }
             i++;
         }
@@ -617,13 +452,16 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getPartInCloud(int d, int f
     return CloudTemp;
 }
 
-pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<pcl::PointXYZ *> vecteur)
+pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<PointGL *> vecteur)
 {
     pcl::PointCloud<pcl::PointXYZ>::Ptr CloudTemp(new pcl::PointCloud<pcl::PointXYZ>);
     //Fill the cloud with the points which are in the vector
     for(int i=0; i< vecteur.size(); i++)
     {
-        pcl::PointXYZ p=*( vecteur.at(i));
+        double x=vecteur.at(i)->getX();
+        double y=vecteur.at(i)->getY();
+        double z=vecteur.at(i)->getZ();
+        pcl::PointXYZ p(x,y,z);
         CloudTemp->points.push_back(p);
     }
     //update of cloud
@@ -654,16 +492,16 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr scnreader_model::getVectInCloud(QVector<Poin
 }
 
 
-QVector<pcl::PointXYZ *> scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+QVector<PointGL *> scnreader_model::getCloudInVect(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {
-    QVector<pcl::PointXYZ *> vecteur;
+    QVector<PointGL *> vecteur;
     //Fill the vector with the points which are in the cloud
     for(int i=0; i< cloud->points.size(); i++)
     {
         double x=cloud->points.at(i).x;
         double y=cloud->points.at(i).y;
         double z=cloud->points.at(i).z;
-        pcl::PointXYZ *p=new pcl::PointXYZ(x,y,z);
+        PointGL *p=new PointGL(x,y,z);
         vecteur.push_back(p);
     }
 
@@ -685,17 +523,17 @@ QVector<PointGL> scnreader_model::getCloudInVectpoint(pcl::PointCloud<pcl::Point
     return vecteur;
 }
 
-QVector<pcl::PointXYZ *>* scnreader_model::getPtWithInd(int d, int f, std::vector<int> indices, QVector<int>* tailles)
+QVector<PointGL *>* scnreader_model::getPtWithInd(int d, int f, std::vector<int> indices, QVector<int>* tailles)
 {
     //create new cloud
-    QVector<pcl::PointXYZ*>* v= new QVector<pcl::PointXYZ*>();
+    QVector<PointGL*>* v= new QVector<PointGL*>();
     // Fill in the cloud data
 
     // Generate the data
     for (size_t i = 0; i < indices.size (); ++i)
     {
         //vector which contains points corresponding to a footpulse
-        QVector<pcl::PointXYZ*>* vec;
+        QVector<PointGL*>* vec;
         //indice of point which is contained in segmentation
         int indiceC=indices[i];
         //indice to know what vector to use
@@ -809,7 +647,7 @@ ListeRail scnreader_model::getLesRails() const
 
 
 
-QVector<pcl::PointXYZ *> * scnreader_model::getCloudInVect2(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp)
+QVector<PointGL *> *scnreader_model::getCloudInVect2(pcl::PointCloud<pcl::PointXYZ>::Ptr cloudTemp)
 {
     /*QVector<pcl::PointXYZ *> * v;
     //TODO
@@ -817,17 +655,17 @@ QVector<pcl::PointXYZ *> * scnreader_model::getCloudInVect2(pcl::PointCloud<pcl:
     throw Erreur("NOT YET IMPLEMENT, SORRY!");
 }
 
-bool scnreader_model::samePoint(pcl::PointXYZ *point2, pcl::PointXYZ * ptP)
+bool scnreader_model::samePoint(PointGL *point2, PointGL *ptP)
 {
     //we take the coordinates of ptP
-    double x1=ptP->x;
-    double y1=ptP->y;
-    double z1=ptP->z;
+    double x1=ptP->getX();
+    double y1=ptP->getY();
+    double z1=ptP->getZ();
 
     //we take the coordinates of pt
-    double x2=point2->x;
-    double y2=point2->y;
-    double z2=point2->z;
+    double x2=point2->getX();
+    double y2=point2->getY();
+    double z2=point2->getZ();
 
     return (x1==x2) && (y1==y2) && (z1==z2);
 }
@@ -869,64 +707,65 @@ void scnreader_model::createRail()
                 rc=r2;
                 this->lesRails.addRail(r2);
             }
-            this->optimization();
-            //we keep detected switch in this window
-            int nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
-            for(int i=0; i<nbswitch;i++)
-            {
-                int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
-                if(!this->LesSwitchs.contains(ftp))
-                {
-                    this->LesSwitchs.push_back(ftp);
-                }
-            }
-            //we reinit lesRailsOptimize et resultRansac
-            this->lesRailsOptimize.clear();
-            this->resultRANSAC->clear();
+            cleanNoise(fw);
+//            this->optimization();
+//            //we keep detected switch in this window
+//            int nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
+//            for(int i=0; i<nbswitch;i++)
+//            {
+//                int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
+//                if(!this->LesSwitchs.contains(ftp))
+//                {
+//                    this->LesSwitchs.push_back(ftp);
+//                }
+//            }
+//            //we reinit lesRailsOptimize et resultRansac
+//                                    this->lesRailsOptimize.clear();
+//                                    this->resultRANSAC->clear();
 
-            //we continue to cover all the cloud with a window which we move footpulse by footpulse
-            while(fw<=this->ftpf)
-            {
-                //we add a new track and remove the first in track in window
-                RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(fw)), rc);
-                rc=r2;
-                this->lesRails.addRail(r2);
+//                                    //we continue to cover all the cloud with a window which we move footpulse by footpulse
+//                                    while(fw<=this->ftpf)
+//                                    {
+//                                        //we add a new track and remove the first in track in window
+//                                        RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(fw)), rc);
+//                                        rc=r2;
+//                                        this->lesRails.addRail(r2);
 
-                //we do the treatment to detect switchs in this window
-                this->optimization();
-                //we keep detected switch in this window
-                nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
-                for(int i=0; i<nbswitch;i++)
-                {
-                    int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
-                    //we verify that the size of vector doesn't exceed the cvector's capacity
-                    if(this->LesSwitchs.size()<this->capacity)
-                    {
-                        if(!this->LesSwitchs.contains(ftp))
-                            this->LesSwitchs.push_back(ftp);
-                    }
-                    //if it exceeds
-                    else
-                    {
-                        //----------------we write footpulses in a text file
+//                                        //we do the treatment to detect switchs in this window
+//                                        this->optimization();
+//                                        //we keep detected switch in this window
+//                                        nbswitch=this->lesRailsOptimize.getSwitchDetected().size();
+//                                        for(int i=0; i<nbswitch;i++)
+//                                        {
+//                                            int ftp=this->lesRailsOptimize.getSwitchDetected().at(i);
+//                                            //we verify that the size of vector doesn't exceed the cvector's capacity
+//                                            if(this->LesSwitchs.size()<this->capacity)
+//                                            {
+//                                                if(!this->LesSwitchs.contains(ftp))
+//                                                    this->LesSwitchs.push_back(ftp);
+//                                            }
+//                                            //if it exceeds
+//                                            else
+//                                            {
+//                                                //----------------we write footpulses in a text file
 
-                        VideEtEnregistre(noms);
-                    }
+//                                                    VideEtEnregistre(noms);
+//                                            }
 
-                }
+//                                        }
 
-                //we reinit lesRailsOptimize et resultRansac
-                //this->lesRailsOptimize.clear();
-                //this->resultRANSAC->clear();
+//                                        //we reinit lesRailsOptimize et resultRansac
+//                                        //this->lesRailsOptimize.clear();
+//                                        //this->resultRANSAC->clear();
 
-                //we move the window
-                dw++;
-                fw++;
-            }
+//                                        //we move the window
+//                                        dw++;
+//                                        fw++;
+//                                    }
 
-            //----------------we write footpulses of switch in a text file
-            this->enregistre(noms);
-        }
+//            //----------------we write footpulses of switch in a text file
+//            this->enregistre(noms);
+       }
     }
     else throw Erreur("Les rails n'ont pas pu etre crees car le nuage de points est vide.");
 }
@@ -1017,11 +856,11 @@ void scnreader_model::SavePartInTxt(int d, int f, QString pathname)
         for(int i=d;i<=f; i++){
             if(this->nuage.contains(i))
             {
-                QVector<pcl::PointXYZ *> * vec=this->nuage.value(i);
+                QVector<PointGL *> * vec=this->nuage.value(i);
                 for(int j=0;j<vec->size(); j++){
-                    flux << QString::number(vec->at(j)->x) << "\t"
-                         << QString::number(vec->at(j)->y) << "\t"
-                         << QString::number(vec->at(j)->z) << "\t" << endl;
+                    flux << QString::number(vec->at(j)->getX()) << "\t"
+                         << QString::number(vec->at(j)->getY()) << "\t"
+                         << QString::number(vec->at(j)->getZ()) << "\t" << endl;
                 }
             }
         }
@@ -1029,6 +868,7 @@ void scnreader_model::SavePartInTxt(int d, int f, QString pathname)
         file.close();
     }else throw Erreur(MesErreur.toStdString());
 }
+
 QVector<QVector<PointGL> > scnreader_model::getRegions() const
 {
     return regions;
@@ -1039,3 +879,103 @@ void scnreader_model::setRegions(const QVector<QVector<PointGL> > &value)
     regions = value;
 }
 
+//For each part of cloud:
+void scnreader_model::cleanNoise(int f){
+    //we fix the width of 1 pixel
+    double dense=0.04;
+    //we keep the cloud which we must clean
+    QVector<PointGL> lespoints=this->lesRails.getCloud();
+    //we keep distance between xmin and xmax
+    double* val=distanceMinMax(lespoints);
+    double dist=val[1]-val[0];
+    double xmin=val[0];
+    int zmin=val[2];
+    //calculate width of image
+    int width=(int)(dist/dense);
+    //initialize the image
+    ImageProcessing im(width+1, (f-this->ftpd));
+    //For each point of this part:
+    for(int i=0; i<lespoints.size(); i++)
+    {
+        //we calculate the coordinate corresponding to it
+        int c=(int) ((lespoints.at(i).getX()-xmin)/dense);
+        int l=(int) lespoints.at(i).getZ()-zmin;
+        std::cout<<"l: "<<l<<" et c: "<<c<< std::endl;
+        //we increase this position
+        im.increase(l,c);
+    }
+    //we do a calibration of gray level between 0 and 255
+    im.calibration();
+
+    //we do a thresholding with threshold=125 => binarization
+    im.thresholding(50);
+    im.enregistre(this->nomFile);
+    //For each point of this part:
+    for(int i=0; i<lespoints.size(); i++)
+    {
+        //we calculate the coordinate corresponding to it
+        int c=(int) ((lespoints.at(i).getX()-xmin)/dense);
+        int l=(int) lespoints.at(i).getZ()-zmin;
+        //if the value of position equals 0, we remove this point
+        if(im.getValue(l,c)==0)
+        {
+            lespoints.removeAt(i);
+            //update after remove
+            i--;
+        }
+    }
+    this->lesRails.initialization(lespoints);
+}
+
+double * scnreader_model::distanceMinMax(QVector<PointGL> lspts)
+{
+    //initialization if xmin and xmax
+    double xmin=lspts.at(0).getX();
+    double xmax=lspts.at(0).getX();
+    double zmin=lspts.at(0).getZ();
+    //we cover the vector to search xmin and max
+    for(int i=1; i<lspts.size(); i++)
+    {
+        if(xmin>lspts.at(i).getX())
+            xmin=lspts.at(i).getX();
+        if(xmax<lspts.at(i).getX())
+            xmax=lspts.at(i).getX();
+        if(zmin>lspts.at(i).getZ())
+            zmin=lspts.at(i).getZ();
+    }
+    //we calculate the distance between them
+    double * t;
+    t= new double[3];
+    t[0]=xmin;
+    t[1]=xmax;
+    t[2]=zmin;
+    return t;
+}
+
+int * scnreader_model::ftpMinMax()
+{
+    if(!nuage.isEmpty())
+    {
+        //keep values of key in nuage
+        QList<int> cle=nuage.keys();
+        //initialization of min and max
+        double min=cle.at(0);
+        double max=cle.at(0);
+
+        //we cover the vector to search xmin and max
+        for(int i=1; i<cle.size(); i++)
+        {
+            if(min>cle.at(i))
+                min=cle.at(i);
+            if(max<cle.at(i))
+                max=cle.at(i);
+        }
+        //we calculate the distance between them
+        int * t;
+        t= new int[2];
+        t[0]=min;
+        t[1]=max;
+        return t;
+    }
+    else Erreur("Le nuage de point est vide, nous ne pouvons determiner les footpulses de debut et de fin!");
+}

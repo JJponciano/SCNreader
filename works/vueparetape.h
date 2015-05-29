@@ -94,64 +94,50 @@ public:
     /**
      * @brief saveClouds  Opens a window allowing the user to select destination to save all clouds in "pcd" format file and save it
      */
-   void saveClouds();
+    void saveClouds();
 
 
-   void loadFromSCN();
+    void loadFromSCN();
 
 
-   //accesseur en lecture et en écriture
-   int getFtpD();
-   int getFtpF();
-   int getFtpDI();
-   int getFtpFI();
+    //accesseur en lecture et en écriture
+    int getFtpD();
+    int getFtpF();
+    int getFtpDI();
+    int getFtpFI();
 
-   std::string getNomF();
+    std::string getNomF();
 
-   int getTaille();
-   //void setFtpD(int d);
-   //void setFtpF(int f);
-   void setFtpDI(int di);
-   void setFtpFI(int fi);
-   void setaffS(bool b);
-   void setaffE(bool b);
-   void setaffC(bool b);
-   void setaffR(bool b);
-  void setaffReg(bool b);
-   bool getAffswitch() const;
-   void setAffswitch(bool value);
+    int getTaille();
+    //void setFtpD(int d);
+    //void setFtpF(int f);
+    void setFtpDI(int di);
+    void setFtpFI(int fi);
+    void setaffS(bool b);
+    void setaffE(bool b);
+    void setaffC(bool b);
+    void setaffR(bool b);
+    void setaffReg(bool b);
+    bool getAffswitch() const;
+    void setAffswitch(bool value);
 
-   int getNumS();
-   void setNumS(int value);
+    int getNumS();
+    void setNumS(int value);
 
-   int getPosSwitch() const;
-   void IncreasePosSwitch();
-   void DecreasePosSwitch();
-   void calculNumWithPos();
+    int getPosSwitch() const;
+    void IncreasePosSwitch();
+    void DecreasePosSwitch();
+    void calculNumWithPos();
 
 
 private:
 
-   void affichageCloud();
-   void affichageSegm();
-   void affichageSwitch();
-  ColorsManager colors;
-  scnreader_model scnreaderFond;
-  //int ftpdeDepart;
-  //int ftpCourant;
-  //QVector<int> pPrec;
-  //int pCourant;
-  //int pSuiv;
-  //int step;
-  //bool avance;
-
-  //footpulse de début et de fin du cloud entier
-    //int ftpD;
-   // int ftpF;
-  //footpulse de début et de fin de l'intervalle de travail
+    ColorsManager colors;
+    scnreader_model scnreaderFond;
+    //footpulse de début et de fin de l'intervalle de travail
     int ftpDI;
     int ftpFI;
-  //boolean permettant de gérer l'affichage
+    //boolean permettant de gérer l'affichage
     bool affs;
     bool affswitch;
     bool affe;
@@ -165,19 +151,25 @@ private:
     std::string nomFichier;
     double mirx;
     int sizeCloud;
-    QString KeepName(QString fileName);
-
     //numero of switch
     int numS;
     //position of switch
     int posSwitch;
     //all switch which are detected
     QVector < QVector <int> > SwitchDetected;
+
+
+
+    QString KeepName(QString fileName);
     int sizeAllSwitch();
     void LectureSw(QString nameF);
     bool AucunSwitch();
     bool SwitchContenu(int ftp);
     void affichageReg();
+    void affichageMir();
+    void affichageCloud();
+    void affichageSegm();
+    void affichageSwitch();
 };
 
 #endif // VUEPARETAPE_H
