@@ -124,17 +124,13 @@ bool PointGL::distanceY(const PointGL point,double distance)const
 // Surcharge de l'opérateur <
    bool PointGL::operator<( PointGL const &rhs)
   {
-       bool inf;
-       //test if the points have same X
-       int roundX=int(this->x*epsilon) ;
-        int aX=int(rhs.getX()*epsilon );
-        bool equals=roundX== aX;
-      if(equals){
-          //compare z
-          inf=(this->getZ() < rhs.getZ());
-      }else // compare x
-         inf=(this->getX() < rhs.getX());
-      return inf;
+       if(rhs.getZ()!=this->getZ()){
+           return rhs.getZ()<this->getZ()
+       }else if(rhs.getX()!=this->getX()){
+           return rhs.getX()<this->getX()
+       }else {
+           return rhs.getY()<this->getY()
+       } 
    }
 
 //   bool PointGL::operator <(const PointGL &rhs1, const PointGL &rhs)
