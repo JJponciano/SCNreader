@@ -138,6 +138,7 @@ public:
      */
     bool equals2D(const PointGL a) const;
     bool distanceY(const PointGL point, double distance) const;
+    bool operator <(const PointGL &r);
 private:
     double rad;
     double x;

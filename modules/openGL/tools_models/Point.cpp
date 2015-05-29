@@ -44,6 +44,22 @@ PointGL::PointGL(const PointGL& orig) {
     this->z = orig.z;
     this->epsilon=1000;
 }
+bool PointGL::operator<(const PointGL &r)
+{
+    //sort by Z
+    if(this->getZ()!=r.getZ()){
+        return this->getZ()<r.getZ();
+    }else{
+        //sort by X
+        if(this->getX()!=r.getX()){
+            return this->getX()<r.getX();
+        }else{
+            //sort by Y
+            return this->getY()<r.getY();
+        }
+    }
+}
+
 double PointGL::truncation(int trunc, double f){
     int ftrunc=(int)(f*trunc);
     double f2=((double)ftrunc)/((double)trunc);
