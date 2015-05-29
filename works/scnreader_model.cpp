@@ -683,6 +683,7 @@ void scnreader_model::createRail()
         if(this->cfs || !file.exists())
         {
             //---------------JJ
+            if(ftpf>this->ftpd+500)
             ftpf=this->ftpd+500;
             //-----------------
 
@@ -782,6 +783,7 @@ void scnreader_model::optimization()
     ListeRail lr(this->getCloudInVectpoint(this->resultRANSAC),workWindows);
     this->lesRailsOptimize=lr;
     //fill regions vector
+     this->regions.clear();
     for(int i=0;i<  this->lesRailsOptimize.getRegions().getRegions().size();i++){
         this->regions.push_back(this->lesRailsOptimize.getRegions().getRegions().at(i).getPoints());
     }
@@ -925,7 +927,8 @@ void scnreader_model::cleanNoise(int f){
             i--;
         }
     }
-    this->lesRails.initialization(lespoints);
+    ListeRail lr(this->getCloudInVectpoint(this->resultRANSAC),workWindows);
+    this->lesRailsOptimize=lr;
 }
 
 double * scnreader_model::distanceMinMax(QVector<PointGL> lspts)

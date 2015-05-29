@@ -70,12 +70,13 @@ public:
      * @brief clear reinit ListeRail
      */
     void clear();
-    void initialization(QVector<PointGL> cloud);
+
 
     RegionsManager getRegions() const;
     void setRegions(const RegionsManager &value);
 
 private:
+    void initialization(QVector<PointGL> cloud);
     int maxSize;
     int epsilon;// degres of precision
     QVector <int>switchDetected;///< list of the footpulste with switch
