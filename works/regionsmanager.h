@@ -33,7 +33,7 @@ public:
      * @brief RegionsManager
      * @param minsize minimum size of a region for detect a merge
      * @param neighborsDistance distance between neighbors
-     * @param maxSize maximum number of points that a region may contain
+     * @param maxSize  maximum number of footpulse closer to news point added
      * @param widthMax maximum width of a region
      */
     RegionsManager(int minsize, double neighborsDistance, int maxSize,double widthMax);

@@ -26,7 +26,6 @@
 RegionGrowing::RegionGrowing()
 {
     this->isdead=false;
-    this->maxSize=500;
     this->ID=0;
     this->neighborsDistance=0.4;
     this->ok=false;
@@ -39,19 +38,17 @@ RegionGrowing::RegionGrowing(const RegionGrowing &orig){
     for(int i=0;i<orig.getPoints().size();i++)
         this->points.push_back(orig.getPoints().at(i));
     this->neighborsDistance=orig.getNeighborsDistance();
-    this->maxSize=orig.getMaxSize();
     this->ok=orig.isOk();
     this->spans=orig.getSpans();
 }
 
-RegionGrowing::RegionGrowing(int ID, int maxSize, double neighborsDistance)
+RegionGrowing::RegionGrowing(int ID, int spans, double neighborsDistance)
 {
     this->isdead=false;
-    this->maxSize=maxSize;
     this->ID=ID;
     this->neighborsDistance=neighborsDistance;
     this->ok=false;
-    this->spans=10;
+    this->spans=spans;
 
 }
 void RegionGrowing::clear(){
@@ -115,14 +112,6 @@ double RegionGrowing::getNeighborsDistance() const
 void RegionGrowing::setNeighborsDistance(double value)
 {
     neighborsDistance = value;
-}
-int RegionGrowing::getMaxSize() const
-{
-    return maxSize;
-}
-void RegionGrowing::setMaxSize(int value)
-{
-    maxSize = value;
 }
 bool RegionGrowing::isOk() const
 {

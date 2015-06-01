@@ -38,10 +38,10 @@ public:
     /**
       * @brief Region
       * @param ID identifier of the region
-      * @param maxSize maximum number of points that the region may contain
+      * @param spans maximum number of footpulse closer to news point added
       * @param neighborsDistance distance between neighbors
       */
-     RegionGrowing(int ID,int maxSize,double neighborsDistance);
+     RegionGrowing(int ID, int spans, double neighborsDistance);
        RegionGrowing(const RegionGrowing &orig);
      ~RegionGrowing();
       bool operator==(RegionGrowing const& r);
@@ -95,9 +95,6 @@ public:
      double getNeighborsDistance() const;
      void setNeighborsDistance(double value);
 
-     int getMaxSize() const;
-     void setMaxSize(int value);
-
      bool isOk() const;
      void setIsOk(bool value);
 
@@ -111,7 +108,6 @@ private:
      double neighborsDistance;
      int ID;
      QVector <PointGL>points;
-     int maxSize;
      double averageX();
 };
 
