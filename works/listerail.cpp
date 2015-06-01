@@ -104,7 +104,6 @@ void ListeRail::initRegions(){
     double regionMaxSize= (double)(this->maxSize)*0.2f;
     double minsize= (double)(this->maxSize)*0.05f;
     double neighborsDistance=this->lesRails.at(0).getWidthDistance()*2;
-    std::cout<<"D: "<<neighborsDistance<<std::endl;
     RegionsManager rm(minsize,neighborsDistance,regionMaxSize);
     this->regions=rm;
 }
@@ -132,7 +131,7 @@ bool ListeRail::addRail(RailCluster rail)
 
 void ListeRail::run()
 {
-    for(int i=0;i<this->lesRails.size();i++)
+    for(int i=this->lesRails.size()-1;i>0;i--)
         // test if the rail contain a switch
         if(growingRegions(this->lesRails.at(i))){
             // add the footpulse to the liste of the switch
