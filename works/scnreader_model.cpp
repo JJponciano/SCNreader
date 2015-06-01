@@ -726,7 +726,7 @@ void scnreader_model::createRail()
                                     this->resultRANSAC->clear();
 
                                     //we continue to cover all the cloud with a window which we move footpulse by footpulse
-                                    while(fw<=this->ftpf)
+                                    while(fw<=this->ftpd+3)//this->ftpf
                                     {
                                         //we add a new track and remove the first in track in window
                                         RailCluster r2(0.18,0.08,1.5,* (this->nuage.value(fw)), rc);
