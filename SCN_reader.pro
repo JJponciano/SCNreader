@@ -39,7 +39,7 @@ SOURCES += main.cpp\
     works/colorsmanager.cpp \
     works/regiongrowing.cpp\
     works/imageprocessing.cpp \
-    modules/openGL/tools_models/pointgL.cpp
+    modules/openGL/tools_models/pointgl.cpp
 # if you use openGL
 opengl {
     SOURCES+=modules/openGL/ground/controller/controller_ground_gl.cpp \
@@ -77,7 +77,7 @@ HEADERS  += mainwindow.h \
     works/colorsmanager.h \
     works/regiongrowing.h\
     works/imageprocessing.h \
-    modules/openGL/tools_models/pointgL.h
+    modules/openGL/tools_models/pointgl.h
 
 # if you use openGL
 opengl {

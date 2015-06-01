@@ -25,7 +25,7 @@
 #ifndef RAILCLUSTER_H
 #define RAILCLUSTER_H
 
-#include "../modules/openGL/tools_models/pointgL.h"
+#include "../modules/openGL/tools_models/pointgl.h"
 #include <pcl/point_types.h>
 #include <QVector>
 /**
