@@ -53,19 +53,21 @@ void RegionsManager::addInNewRegion(PointGL point){
 
 bool RegionsManager::addPoint(PointGL point)
 {
-
+   // std::cout<<" Point: "<<point.getX()<<" , "<<point.getZ()<<std::endl;
     bool ok=true;
     // get all region that the point could be added
     QVector<int> idRegions=this->intoRegions(point);
 
     // if the point not belong to any region
     if(idRegions.isEmpty()){
+     //   std::cout<<" addd new"<<std::endl;
         this->addInNewRegion(point);
     }else
         // if the point belong to only one region
         if(idRegions.size()==1){
             //it is simply added
             this->add(idRegions.at(0),point);
+           // std::cout<<" addd in: "<<idRegions.at(0)<<std::endl;
         }else{
             // the point belong to more than one regions
             // remove region having merged and test if this merge wasn't too small
@@ -74,7 +76,7 @@ bool RegionsManager::addPoint(PointGL point)
             //add it in a new region
            // this->addInNewRegion(point);
         }
-     std::cout<<this->regions.size()<<std::endl;
+    // std::cout<<this->regions.size()<<std::endl;
     return ok;
 }
 bool RegionsManager::checkRegion(double widthmax){
@@ -153,8 +155,9 @@ QVector<int> RegionsManager::intoRegions(PointGL point)const{
     QVector<int> countRegions;
     // test if the point belongs to regions, and counts the number of regions
     for(int j=0;j<this->regions.size();j++)
-        if(this->regions.at(j).isIn(point))
+        if(this->regions.at(j).isIn(point)){
             countRegions.push_back(this->regions.at(j).getID());//add the identifier of the regions
+        }
     return countRegions;
 }
 int RegionsManager::generatingID(){
