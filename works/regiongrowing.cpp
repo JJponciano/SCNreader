@@ -29,6 +29,7 @@ RegionGrowing::RegionGrowing()
     this->maxSize=500;
     this->ID=0;
     this->neighborsDistance=0.4;
+    this->ok=false;
 
 }
 RegionGrowing::RegionGrowing(const RegionGrowing &orig){
@@ -38,6 +39,7 @@ RegionGrowing::RegionGrowing(const RegionGrowing &orig){
         this->points.push_back(orig.getPoints().at(i));
     this->neighborsDistance=orig.getNeighborsDistance();
     this->maxSize=orig.getMaxSize();
+    this->ok=orig.isOk();
 }
 
 RegionGrowing::RegionGrowing(int ID, int maxSize, double neighborsDistance)
@@ -46,6 +48,7 @@ RegionGrowing::RegionGrowing(int ID, int maxSize, double neighborsDistance)
     this->maxSize=maxSize;
     this->ID=ID;
     this->neighborsDistance=neighborsDistance;
+    this->ok=false;
 
 }
 void RegionGrowing::clear(){
@@ -119,9 +122,15 @@ void RegionGrowing::setMaxSize(int value)
 {
     maxSize = value;
 }
+bool RegionGrowing::isOk() const
+{
+    return ok;
+}
 
-
-
+void RegionGrowing::setIsOk(bool value)
+{
+    ok = value;
+}
 
 
 int RegionGrowing::getID() const
@@ -159,9 +168,11 @@ bool RegionGrowing::isIn(PointGL pt)const
 
 }
 
-bool RegionGrowing::check(double widthMax)const
+bool RegionGrowing::check(double widthMax)
 {
-    //search the extremum of the x coordinates in the region
+    // if the region is dead, return the last check
+if(this->isdead)return this->ok;
+        //search the extremum of the x coordinates in the region
     //search the extremum of the x coordinates in the region
     double xmin=this->points.at(0).getX();
     double xmax=this->points.at(0).getX();
@@ -172,8 +183,10 @@ bool RegionGrowing::check(double widthMax)const
         else    if(this->points.at(i).getX()>xmax)
             xmax=this->points.at(i).getX();
     }
+     std::cout<<xmax-xmin<<" : "<<widthMax<<std::endl;
     //compare the distance between the extremums with the maximum authorized.
-    return (xmax-xmin)<widthMax;
+    this->ok=(xmax-xmin)<widthMax;
+    return this->ok;
 }
 
 RegionGrowing::~RegionGrowing()

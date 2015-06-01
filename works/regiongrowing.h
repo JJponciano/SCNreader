@@ -73,7 +73,7 @@ public:
       * @param widthMax  max width of the region
       * @return true if the regions is not too big
       */
-     bool check(double widthMax) const;
+     bool check(double widthMax);
      /**
       * @brief growing add point using the distance criterion between neighbors
       * @param point point to be added
@@ -93,7 +93,11 @@ public:
      int getMaxSize() const;
      void setMaxSize(int value);
 
+     bool isOk() const;
+     void setIsOk(bool value);
+
 private:
+     bool ok;
      double isdead;
      double neighborsDistance;
      int ID;

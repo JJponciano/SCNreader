@@ -103,8 +103,9 @@ void ListeRail::initRegions(){
     this->regions.clear();
     double regionMaxSize= (double)(this->maxSize)*0.2f;
     double minsize= (double)(this->maxSize)*0.05f;
-    double neighborsDistance=this->lesRails.at(0).getWidthDistance()*2;
-    RegionsManager rm(minsize,neighborsDistance,regionMaxSize);
+    double neighborsDistance=this->lesRails.at(0).getLm()*2;
+    double widthMax=this->lesRails.at(0).getEm()*0.5;
+    RegionsManager rm(minsize,neighborsDistance,regionMaxSize,widthMax);
     this->regions=rm;
 }
 
@@ -133,10 +134,18 @@ void ListeRail::run()
 {
     for(int i=this->lesRails.size()-1;i>0;i--)
         // test if the rail contain a switch
-        if(growingRegions(this->lesRails.at(i))){
-            // add the footpulse to the liste of the switch
-            this->switchDetected.push_back(this->lesRails.at(i).getFootpulse());
-        }
+        this->growingRegions(this->lesRails.at(i));
+//        if(){
+//            // add the footpulse to the liste of the switch
+//           // this->switchDetected.push_back(this->lesRails.at(i).getFootpulse());
+//        }
+    // get the merged points
+    QVector<PointGL>merged=this->regions.getPointsMerged();
+    // get all switch detected
+    for (int i = 0; i < merged.size(); ++i) {
+          this->switchDetected.push_back(merged.at(i).getZ());
+    }
+
 }
 
 bool ListeRail::growingRegions(RailCluster rail)
@@ -146,18 +155,12 @@ bool ListeRail::growingRegions(RailCluster rail)
     for(int i=0;i<rail.getPoints().size();i++){
         PointGL currentPoint=rail.getPoints().at(i);
         // add the point in a region and test if the addition did not require a merger
-        if(!this->regions.addPoint(currentPoint)){
-            //if the addition needed a merger, a switch is detected
-            switchDetected=true;
-        }
+//        if(!this->regions.addPoint(currentPoint)){
+//            //if the addition needed a merger, a switch is detected
+//            switchDetected=true;
+//        }
+        this->regions.growing(currentPoint);
     }
-    // max width to check all regions.
-    double widthMax=this->lesRails.at(0).getLm();
-    // if a region is not ok
-//    if(!this->regions.checkRegion(widthMax)) {
-//        //a switch is detected
-//        switchDetected=true;
-//    }
     return switchDetected;
 }
 
