@@ -29,7 +29,7 @@
 
 /**
  * @brief The RegionGrowing class regions contained points
- * The points are save in descending order of footpulse
+ * The points are save in ascending order of footpulse
  */
 class RegionGrowing
 {

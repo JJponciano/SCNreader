@@ -64,9 +64,11 @@ void RegionGrowing::add(PointGL point)
 
     if(this->isdead)throw Erreur("adding in a dead region");
     // add the rail
-    this->points.append(point);
+    this->points.push_back(point);
     //---sort by z then by x then by y
     std::sort(this->points.begin(),this->points.end());
+
+ //   std::cout<<this->ID<<"          P0:"<<this->points.at(0).getZ()<<std::endl;
     //test if the size is too big
     //    if(this->points.size()>=this->maxSize)
     //    {
@@ -162,12 +164,12 @@ bool RegionGrowing::isIn(PointGL pt,double distanceMax)const
     //for each point of the region having a footpulse close to the point
     int count=0;
     int currentFP=this->points.at(0).getZ();
-    int i=0;
-    while(i<this->points.size()&&count<this->spans){
+    int i=this->points.size()-1;
+    while(i>=0&&count<this->spans){
         //test if the points avec the same width and height the point to be tested
         if(pt.distanceX(this->points.at(i),distanceMax))
             return true;
-        i++;
+        i--;
         if(currentFP!=this->points.at(i).getZ()){
             currentFP=this->points.at(i).getZ();
             count++;
@@ -193,18 +195,18 @@ bool RegionGrowing::check(double widthMax)
     double averageError=0;
     int count=0;
     int currentFP=this->points.at(0).getZ();
-    int i=0;
-    while(i<this->points.size()&&count<this->spans){
+    int i=this->points.size()-1;
+    while(i>=0&&count<this->spans){
         if(i<0)i=0;
         double dist=this->points.at(i).getX()-average;
         if(dist<0)dist*=-1;
         averageError+=dist;
-        i++;
+        i--;
         if(currentFP!=this->points.at(i).getZ()){
             currentFP=this->points.at(i).getZ();
             count++;
         }
-    }averageError/=double(i);
+    }averageError/=double(this->points.size()-1-i);
     //compare the distance between the extremums with the maximum authorized.
     this->ok=(averageError)<widthMax;
     return this->ok;
@@ -214,16 +216,16 @@ double RegionGrowing::averageX(){
     double average=0;
     int count=0;
     int currentFP=this->points.at(0).getZ();
-    int i=0;
-    while(i<this->points.size()&&count<this->spans){
+    int i=this->points.size()-1;
+    while(i>=0&&count<this->spans){
         average+=this->points.at(i).getX();
-        i++;
+        i--;
         if(currentFP!=this->points.at(i).getZ()){
             currentFP=this->points.at(i).getZ();
             count++;
         }
     }
-    average/=double(i);
+    average/=double(this->points.size()-1-i);
     return average;
 }
 

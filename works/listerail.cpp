@@ -104,7 +104,7 @@ void ListeRail::initRegions(){
     double regionMaxSize= (double)(this->maxSize)*0.05f;
     double minsize= (double)(this->maxSize)*0.05f;
     double neighborsDistance=this->lesRails.at(0).getLm()*2;
-    double widthMax=this->lesRails.at(0).getEm()*0.5;
+    double widthMax=this->lesRails.at(0).getEm()*0.3;
     RegionsManager rm(minsize,neighborsDistance,regionMaxSize,widthMax);
     this->regions=rm;
 }
@@ -132,9 +132,13 @@ bool ListeRail::addRail(RailCluster rail)
 
 void ListeRail::run()
 {
-    for(int i=this->lesRails.size()-1;i>0;i--)
+    std::cout<<"Last footpulse:"<<this->lesRails.at(0).getFootpulse()<<std::endl;
+
+    for(int i=0;i<this->lesRails.size();i++){
         // test if the rail contain a switch
         this->growingRegions(this->lesRails.at(i));
+        // std::cout<<"F:"<<this->lesRails.at(i).getFootpulse()<<std::endl;
+    }
 //        if(){
 //            // add the footpulse to the liste of the switch
 //           // this->switchDetected.push_back(this->lesRails.at(i).getFootpulse());
@@ -154,6 +158,7 @@ bool ListeRail::growingRegions(RailCluster rail)
     //for each point of the rail
     for(int i=0;i<rail.getPoints().size();i++){
         PointGL currentPoint=rail.getPoints().at(i);
+
         // add the point in a region and test if the addition did not require a merger
 //        if(!this->regions.addPoint(currentPoint)){
 //            //if the addition needed a merger, a switch is detected

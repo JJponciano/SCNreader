@@ -88,7 +88,7 @@ int RailCluster::compare (RailCluster const *a, RailCluster const *b)
 }
 bool RailCluster::operator<(const RailCluster &r)
 {
-    return r.getFootpulse()<this->getFootpulse();
+    return this->getFootpulse()<r.getFootpulse();
 }
 bool RailCluster::operator==(const RailCluster &r)
 {

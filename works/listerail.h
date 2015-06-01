@@ -28,6 +28,10 @@
 #include "railcluster.h"
 #include "regionsmanager.h"
 #include <QHash>
+/**
+ * @brief The ListeRail class
+ * The tracks are save in ascending order of footpulse
+ */
 class ListeRail
 {
 public:
