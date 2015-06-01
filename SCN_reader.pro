@@ -28,7 +28,6 @@ CONFIG += pcl
 SOURCES += main.cpp\
     mainwindow.cpp \
     modules/exceptions/erreur.cpp \
-    works/scnreader_view.cpp \
     works/scnreader_model.cpp \
     works/scn_reader/sources/scndata.cpp \
     works/scn_reader/sources/datapackage.cpp \
@@ -66,7 +65,6 @@ pcl {
 
 HEADERS  += mainwindow.h \
     modules/exceptions/erreur.h \
-    works/scnreader_view.h \
     works/scnreader_model.h \
     works/scn_reader/sources/scndata.h \
     works/scn_reader/sources/datapackage.h \
