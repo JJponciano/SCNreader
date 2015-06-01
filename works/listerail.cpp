@@ -101,7 +101,7 @@ void ListeRail::initialization(QVector <PointGL > cloud){
 }
 void ListeRail::initRegions(){
     this->regions.clear();
-    double regionMaxSize= (double)(this->maxSize)*0.05f;
+    int regionMaxSize= 10;
     double minsize= (double)(this->maxSize)*0.05f;
     double neighborsDistance=this->lesRails.at(0).getLm()*2;
     double widthMax=this->lesRails.at(0).getEm()*0.3;
