@@ -33,7 +33,7 @@ RegionsManager::RegionsManager(int minsize, double neighborsDistance, int maxSiz
 RegionsManager::RegionsManager()
 {
     this->minSize=10;
-    this->neighborsDistance=0.4;
+    this->neighborsDistance=0.1;
     this->nbregions=0;
     this->maxSize=500;
 }
@@ -72,9 +72,9 @@ bool RegionsManager::addPoint(PointGL point)
             // the point belong to more than one regions
             // remove region having merged and test if this merge wasn't too small
             // if is too small, the merge is not importante
-          // ok=(this->removeRegions(idRegions));
+           ok=(this->removeRegions(idRegions));
             //add it in a new region
-           // this->addInNewRegion(point);
+            this->addInNewRegion(point);
         }
     // std::cout<<this->regions.size()<<std::endl;
     return ok;
