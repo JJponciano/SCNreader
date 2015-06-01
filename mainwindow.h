@@ -25,7 +25,6 @@
 #include <QMainWindow>
 #include "modules/pcl/view/view_pcl.h"
 #include <QMessageBox>
-#include "works/scnreader_view.h"
 #include "works/vueparetape.h"
 
 namespace Ui {

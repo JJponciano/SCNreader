@@ -140,22 +140,6 @@ bool PointGL::distanceY(const PointGL point,double distance)const
             pv=-1.0*pv;
         return pv<distance;
 }
-
-//   bool PointGL::operator <(const PointGL &rhs1, const PointGL &rhs)
-//   {
-
-//       bool inf;
-//       //test if the points have same X
-//       int roundX=rhs1.getX()*epsilon ;
-//        int aX=rhs.getX()*epsilon ;
-//        bool equals=roundX== aX;
-//      if(equals){
-//          //compare z
-//          inf=(rhs1.getZ() < rhs.getZ());
-//      }else // compare x
-//         inf=(rhs1.getX() < rhs.getX());
-//      return inf;
-//   }
 bool PointGL::equals2D(const PointGL a)const{
     //rounded to the thousandth
     int roundX=int(this->x*epsilon );
