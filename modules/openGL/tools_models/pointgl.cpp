@@ -19,7 +19,7 @@
 * Contact: ponciano.jeanjacques@gmail.com
 * @version 0.1
 */
-#include "Point.h"
+#include "pointgl.h"
 
 PointGL::PointGL() {
     rad=(double)3.14159265/(double)180.0;
@@ -44,6 +44,8 @@ PointGL::PointGL(const PointGL& orig) {
     this->z = orig.z;
     this->epsilon=1000;
 }
+
+
 double PointGL::truncation(int trunc, double f){
     int ftrunc=(int)(f*trunc);
     double f2=((double)ftrunc)/((double)trunc);
@@ -61,7 +63,7 @@ void PointGL::setEpsilon(int value)
 }
 
 
-bool PointGL::operator==(const PointGL &a)
+bool PointGL::operator==(const PointGL &a)const
 {
     //rounded to the thousandth
     int roundX=int(this->x*epsilon );
@@ -76,6 +78,21 @@ bool PointGL::operator==(const PointGL &a)
 
 }
 
+bool PointGL::operator<(const PointGL &r)const
+{
+    //sort by Z
+    if(this->getZ()!=r.getZ()){
+        return this->getZ()<r.getZ();
+    }else{
+        //sort by X
+        if(this->getX()!=r.getX()){
+            return this->getX()<r.getX();
+        }else{
+            //sort by Y
+            return this->getY()<r.getY();
+        }
+    }
+}
 bool PointGL::operator!=(const PointGL &a)
 {
     //rounded to the thousandth
@@ -104,10 +121,12 @@ bool PointGL::distanceX(const PointGL point,double distance)const
         //get distance between p1 and p2 - average spacing between 2 tracks
         double x1=this->getX();
         double x2=point.getX();
-        double pv=x1-x2;
+        double pv= x1-x2;
         if(pv<0.0)
             pv=-1.0*pv;
+          //std::cout<<" Point: "<<point.getX()<<" , "<<this->getX()<<" | "<<distance<<"->"<<(pv<distance)<<std::endl;
         return pv<distance;
+
 }
 bool PointGL::distanceY(const PointGL point,double distance)const
 {
@@ -121,37 +140,6 @@ bool PointGL::distanceY(const PointGL point,double distance)const
             pv=-1.0*pv;
         return pv<distance;
 }
-// Surcharge de l'opérateur <
-   bool PointGL::operator<( PointGL const &rhs)
-  {
-       bool inf;
-       //test if the points have same X
-       int roundX=int(this->x*epsilon) ;
-        int aX=int(rhs.getX()*epsilon );
-        bool equals=roundX== aX;
-      if(equals){
-          //compare z
-          inf=(this->getZ() < rhs.getZ());
-      }else // compare x
-         inf=(this->getX() < rhs.getX());
-      return inf;
-   }
-
-//   bool PointGL::operator <(const PointGL &rhs1, const PointGL &rhs)
-//   {
-
-//       bool inf;
-//       //test if the points have same X
-//       int roundX=rhs1.getX()*epsilon ;
-//        int aX=rhs.getX()*epsilon ;
-//        bool equals=roundX== aX;
-//      if(equals){
-//          //compare z
-//          inf=(rhs1.getZ() < rhs.getZ());
-//      }else // compare x
-//         inf=(rhs1.getX() < rhs.getX());
-//      return inf;
-//   }
 bool PointGL::equals2D(const PointGL a)const{
     //rounded to the thousandth
     int roundX=int(this->x*epsilon );

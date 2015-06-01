@@ -25,7 +25,12 @@
 #define REGIONGROWING_H
 #include <QVector>
 #include "../modules/exceptions/erreur.h"
-#include "../modules/openGL/tools_models/Point.h"
+#include "../modules/openGL/tools_models/pointgL.h"
+
+/**
+ * @brief The RegionGrowing class regions contained points
+ * The points are save in ascending order of footpulse
+ */
 class RegionGrowing
 {
 public:
@@ -33,10 +38,10 @@ public:
     /**
       * @brief Region
       * @param ID identifier of the region
-      * @param maxSize maximum number of points that the region may contain
+      * @param spans maximum number of footpulse closer to news point added
       * @param neighborsDistance distance between neighbors
       */
-     RegionGrowing(int ID,int maxSize,double neighborsDistance);
+     RegionGrowing(int ID, int spans, double neighborsDistance);
        RegionGrowing(const RegionGrowing &orig);
      ~RegionGrowing();
       bool operator==(RegionGrowing const& r);
@@ -73,7 +78,7 @@ public:
       * @param widthMax  max width of the region
       * @return true if the regions is not too big
       */
-     bool check(double widthMax) const;
+     bool check(double widthMax);
      /**
       * @brief growing add point using the distance criterion between neighbors
       * @param point point to be added
@@ -90,15 +95,20 @@ public:
      double getNeighborsDistance() const;
      void setNeighborsDistance(double value);
 
-     int getMaxSize() const;
-     void setMaxSize(int value);
+     bool isOk() const;
+     void setIsOk(bool value);
+
+     int getSpans() const;
+     void setSpans(int value);
 
 private:
+     int spans;
+     bool ok;
      double isdead;
      double neighborsDistance;
      int ID;
      QVector <PointGL>points;
-     int maxSize;
+     double averageX();
 };
 
 #endif // REGIONGROWING_H

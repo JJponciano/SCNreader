@@ -28,6 +28,10 @@
 #include "railcluster.h"
 #include "regionsmanager.h"
 #include <QHash>
+/**
+ * @brief The ListeRail class
+ * The tracks are save in ascending order of footpulse
+ */
 class ListeRail
 {
 public:
@@ -48,7 +52,7 @@ public:
      * @param rail rail added to growing regions
      * @return true if a swtich is detected
      */
-    bool growingRegions(RailCluster rail);
+    void growingRegions(RailCluster rail);
 
 
 
@@ -77,7 +81,6 @@ public:
     void initialization(QVector<PointGL> cloud);
 
 private:
-
     int maxSize;
     int epsilon;// degres of precision
     QVector <int>switchDetected;///< list of the footpulste with switch
@@ -87,26 +90,6 @@ private:
      * @brief run is the treatment to detect switchs
      */
     void run();
-
-//    /**
-//     * @brief isInRegion test  if the point belongs to the region
-//     * @param reg regions to be tested
-//     * @param pt pt to be tested if is in reg.
-//     * @return true if the point belongs to the region
-//     */
-//    bool isInRegion(const QVector<PointGL> reg, PointGL  pt) const;
-//    /**
-//     * @brief growingOk test if the region is not too big after this adding.
-//     * @param reg region to be tested
-//     * @return true if the regions is not too big
-//     */
-//    bool growingOk(const QVector<PointGL> reg) const;
-//    /**
-//     * @brief split split a region in two regions
-//     * @param regindex index of the region to be splited
-//     */
-//    void split(int regindex);
-
 
 
 //    bool emptyRegion(QVector<int> countRegions);

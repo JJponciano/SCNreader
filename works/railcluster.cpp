@@ -80,6 +80,21 @@ RailCluster::RailCluster(double height, double width, double spacing,  const QVe
     //remove temporary vector
     okfoot.clear();
 }
+int RailCluster::compare (RailCluster const *a, RailCluster const *b)
+{
+
+   /* evaluer et retourner l'etat de l'evaluation (tri croissant) */
+   return a->getFootpulse() - b->getFootpulse();
+}
+bool RailCluster::operator<(const RailCluster &r)
+{
+    return this->getFootpulse()<r.getFootpulse();
+}
+bool RailCluster::operator==(const RailCluster &r)
+{
+    return r.getFootpulse()==this->getFootpulse();
+}
+
 RailCluster::RailCluster(double height, double width, double spacing, const QVector<PointGL *> footpulse)
 {
     this->hm = height;
@@ -92,9 +107,11 @@ RailCluster::RailCluster(double height, double width, double spacing, const QVec
         PointGL point(*footpulse.at(i));
         okfoot.push_back(point);
     }
+
     //1) For each footpulse we search a sequence of points which have the same heught and the width of this sequence
     this->add(okfoot);
     this->match(okfoot);
+
 }
 
 RailCluster::RailCluster(double height, double width, double spacing,  const QVector<PointGL *> footpulse,  const RailCluster rail)
@@ -116,11 +133,6 @@ RailCluster::RailCluster(double height, double width, double spacing,  const QVe
     // this->growing(rail,footpulse);
 
     this->match(okfoot);
-
-    //segmentation again
-  /*  QVector <PointGL> ptemp=this->points;
-    this->points.clear();
-    this->add(ptemp);*/
 
 }
 
@@ -147,8 +159,11 @@ bool RailCluster::addPoint(PointGL p)
             PointGL newpoint(p);
             //add the point
             this->points.push_back(newpoint);
+            //---sort by z then by x then by y
+            std::sort(this->points.begin(),this->points.end());
             return true;
         }
+
     return false;
 }
 
@@ -279,8 +294,11 @@ void RailCluster::addByMountain(const QVector<PointGL> pts)
     }
 }
 
-void RailCluster::add(const QVector<PointGL> pts)
+void RailCluster::add( QVector<PointGL> pts)
 {
+    //---sort by z then by x then by y
+    std::sort(pts.begin(),pts.end());
+
     //Selecting points following with a similar height to create a sequence
     QVector <PointGL> seq;
     bool again=true;
@@ -381,6 +399,8 @@ bool RailCluster::match(QVector<PointGL> pts)
                 pointadded=true;
             }
     }
+    //---sort by z then by x then by y
+    std::sort(this->points.begin(),this->points.end());
     return pointadded;
 }
 int RailCluster::searchCorresponding(PointGL currentPoint,QVector<PointGL> *pts){

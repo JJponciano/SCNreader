@@ -33,9 +33,10 @@ public:
      * @brief RegionsManager
      * @param minsize minimum size of a region for detect a merge
      * @param neighborsDistance distance between neighbors
-     * @param maxSize maximum number of points that a region may contain
+     * @param maxSize  maximum number of footpulse closer to news point added
+     * @param widthMax maximum width of a region
      */
-    RegionsManager(int minsize, double neighborsDistance, int maxSize);
+    RegionsManager(int minsize, double neighborsDistance, int maxSize,double widthMax);
     ~RegionsManager();
     /**
      * @brief addPoint add a point into a correct region
@@ -83,15 +84,27 @@ public:
     QVector<RegionGrowing> getRegions() const;
     void setRegions(const QVector<RegionGrowing> &value);
 
+    void growing(PointGL point);
+    QVector<PointGL> getPointsMerged() const;
+    void setPointsMerged(const QVector<PointGL> &value);
+
+    double getWidthMax() const;
+    void setWidthMax(double value);
+
 private:
+    QVector<PointGL>pointsMerged;
     int generatingID();
     QVector<RegionGrowing>regions;
     int nbregions;
     int maxSize;
-int minSize;
-double neighborsDistance;
-void addInNewRegion(PointGL point);
-void add(int ID, PointGL point);
+    int minSize;
+    double neighborsDistance;
+    double widthMax;
+    void addInNewRegion(PointGL point);
+    void add(int ID, PointGL point);
+    void checkRegion(int idRegions);
+    void remove(int ID, bool forced);
+    void growing(PointGL point, bool check);
 };
 
 #endif // REGIONSMANAGER_H

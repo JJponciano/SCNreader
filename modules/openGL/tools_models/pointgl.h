@@ -19,8 +19,8 @@
 * Contact: ponciano.jeanjacques@gmail.com
 * @version 0.1
 */
-#ifndef POINT_H
-#define	POINT_H
+#ifndef POINTGL_H
+#define	POINTGL_H
 #include <vector>
 #include <cmath>
 #include <iostream>
@@ -40,9 +40,8 @@ public:
      */
     PointGL(double x, double y,double z);
     PointGL(const PointGL& orig);
-    bool operator<( PointGL const &rhs);
-    //bool operator <( const PointGL &rhs1, const PointGL &rhs);
-    bool operator==(PointGL const& a);
+    bool operator==(PointGL const& a)const;
+    bool operator<(const PointGL &r)const;
     bool operator!=(PointGL const& a);
     void operator-(PointGL const& a);
     bool distanceX(PointGL const point, double distance) const;
@@ -138,6 +137,7 @@ public:
      */
     bool equals2D(const PointGL a) const;
     bool distanceY(const PointGL point, double distance) const;
+
 private:
     double rad;
     double x;

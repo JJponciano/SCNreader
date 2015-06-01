@@ -28,18 +28,17 @@ CONFIG += pcl
 SOURCES += main.cpp\
     mainwindow.cpp \
     modules/exceptions/erreur.cpp \
-    works/scnreader_view.cpp \
     works/scnreader_model.cpp \
     works/scn_reader/sources/scndata.cpp \
     works/scn_reader/sources/datapackage.cpp \
     works/vueparetape.cpp \
     works/railcluster.cpp \
     works/listerail.cpp \
-    modules/openGL/tools_models/Point.cpp \
     works/regionsmanager.cpp \
     works/colorsmanager.cpp \
     works/regiongrowing.cpp\
-    works/imageprocessing.cpp
+    works/imageprocessing.cpp \
+    modules/openGL/tools_models/pointgl.cpp
 # if you use openGL
 opengl {
     SOURCES+=modules/openGL/ground/controller/controller_ground_gl.cpp \
@@ -66,18 +65,17 @@ pcl {
 
 HEADERS  += mainwindow.h \
     modules/exceptions/erreur.h \
-    works/scnreader_view.h \
     works/scnreader_model.h \
     works/scn_reader/sources/scndata.h \
     works/scn_reader/sources/datapackage.h \
     works/vueparetape.h \
     works/railcluster.h \
     works/listerail.h \
-    modules/openGL/tools_models/Point.h \
     works/regionsmanager.h \
     works/colorsmanager.h \
     works/regiongrowing.h\
-    works/imageprocessing.h
+    works/imageprocessing.h \
+    modules/openGL/tools_models/pointgl.h
 
 # if you use openGL
 opengl {

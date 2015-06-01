@@ -23,19 +23,21 @@
  */
 #include "regionsmanager.h"
 
-RegionsManager::RegionsManager(int minsize, double neighborsDistance, int maxSize)
+RegionsManager::RegionsManager(int minsize, double neighborsDistance, int maxSize,double widthMax)
 {
     this->minSize=minsize;
     this->neighborsDistance=neighborsDistance;
     this->nbregions=0;
     this->maxSize=maxSize;
+    this->widthMax=widthMax;
 }
 RegionsManager::RegionsManager()
 {
     this->minSize=10;
-    this->neighborsDistance=0.4f;
+    this->neighborsDistance=0.08;
     this->nbregions=0;
-    this->maxSize=500;
+    this->maxSize=10;
+    this->widthMax=10.0*this->neighborsDistance;
 }
 
 RegionsManager::~RegionsManager()
@@ -53,18 +55,21 @@ void RegionsManager::addInNewRegion(PointGL point){
 
 bool RegionsManager::addPoint(PointGL point)
 {
+    // std::cout<<" Point: "<<point.getX()<<" , "<<point.getZ()<<std::endl;
     bool ok=true;
     // get all region that the point could be added
     QVector<int> idRegions=this->intoRegions(point);
 
     // if the point not belong to any region
-    if(idRegions.size()==0){
+    if(idRegions.isEmpty()){
+        //   std::cout<<" addd new"<<std::endl;
         this->addInNewRegion(point);
     }else
         // if the point belong to only one region
         if(idRegions.size()==1){
             //it is simply added
             this->add(idRegions.at(0),point);
+            // std::cout<<" addd in: "<<idRegions.at(0)<<std::endl;
         }else{
             // the point belong to more than one regions
             // remove region having merged and test if this merge wasn't too small
@@ -73,6 +78,7 @@ bool RegionsManager::addPoint(PointGL point)
             //add it in a new region
             this->addInNewRegion(point);
         }
+    // std::cout<<this->regions.size()<<std::endl;
     return ok;
 }
 bool RegionsManager::checkRegion(double widthmax){
@@ -81,7 +87,7 @@ bool RegionsManager::checkRegion(double widthmax){
     //for each region
     for(int j=0;j<this->regions.size();j++)
         //test if the region is not ok
-        if(!this->regions.at(j).check(widthmax)){
+        if(!this->regions[j].check(widthmax)){
             ok=false;
             //if a region is too large, split it
             if(this->split(this->regions.at(j).getID())){
@@ -91,6 +97,68 @@ bool RegionsManager::checkRegion(double widthmax){
         }
     return ok;
 }
+void RegionsManager::checkRegion(int idRegions){
+
+
+    RegionGrowing rg=this->getRegion(idRegions);
+    //test if the region is not too large
+    if(!rg.getIsdead()&&!rg.check(this->widthMax)){
+        //-----if a region is too large, split it------
+        //truly remove this region definitely
+        this->remove(idRegions,true);
+        // add all point of the regions in a news regions but in reverse
+        for (int i = rg.size()-1; i >=0; i--) {
+            this->growing(rg.getPoints().at(i),false);
+        }
+    }
+
+}
+void RegionsManager::growing(PointGL point,bool check)
+{
+    bool merge=false;
+    // get all region that the point could be added
+    QVector<int> idRegions=this->intoRegions(point);
+
+    // if the point not belong to any region
+    if(idRegions.isEmpty()){
+        //   std::cout<<" addd new"<<std::endl;
+        this->addInNewRegion(point);
+    }else
+        // if the point belong to only one region
+        if(idRegions.size()==1){
+            //it is simply added
+            this->add(idRegions.at(0),point);
+            //check the region after added if it is required
+            if(check)
+            this->checkRegion(idRegions.at(0));
+        }else{
+            // the point belong to more than one regions
+            // remove region having merged and test if this merge wasn't too small
+            // if is too small, the merge is not importante
+            merge=!(this->removeRegions(idRegions));
+            //add it in a new region
+            this->addInNewRegion(point);
+        }
+    // if regions has merged
+    if(merge){
+        // add the point in the  points merged list
+        this->pointsMerged.push_back(point);
+    }
+}
+void RegionsManager::growing(PointGL point)
+{
+    this->growing(point,true);
+}
+QVector<PointGL> RegionsManager::getPointsMerged() const
+{
+    return pointsMerged;
+}
+
+void RegionsManager::setPointsMerged(const QVector<PointGL> &value)
+{
+    pointsMerged = value;
+}
+
 void RegionsManager::add(int ID,PointGL point){
     RegionGrowing r(ID,this->maxSize,this->neighborsDistance);
     //test if the region is known
@@ -120,17 +188,23 @@ void RegionsManager::clear(){
 }
 
 void RegionsManager::remove(int ID){
+   this->remove(ID,false);
+}
+void RegionsManager::remove(int ID,bool forced){
     RegionGrowing r(ID,this->maxSize,this->neighborsDistance);
     //test if the region is known
     if(this->regions.contains(r)){
-        // return the region
+        // get the index of the region
         int index=this->regions.lastIndexOf(r);
-      // this->regions.remove(index);
-         this->regions[index].setIsdead(true);
+        // this->regions.remove(index);
+        if(forced)this->regions.remove(index);
+        else
+            this->regions[index].setIsdead(true);
     }
 
     else throw Erreur(" The region is not known");
 }
+
 
 bool RegionsManager::removeRegions(QVector<int> RegionsID){
     int smallestSize=this->getRegion(RegionsID.at(0)).size();
@@ -151,14 +225,25 @@ QVector<int> RegionsManager::intoRegions(PointGL point)const{
     QVector<int> countRegions;
     // test if the point belongs to regions, and counts the number of regions
     for(int j=0;j<this->regions.size();j++)
-        if(this->regions.at(j).isIn(point))
+        if(this->regions.at(j).isIn(point)){
             countRegions.push_back(this->regions.at(j).getID());//add the identifier of the regions
+        }
     return countRegions;
 }
 int RegionsManager::generatingID(){
     this->nbregions++;
     return nbregions;
 }
+double RegionsManager::getWidthMax() const
+{
+    return widthMax;
+}
+
+void RegionsManager::setWidthMax(double value)
+{
+    widthMax = value;
+}
+
 QVector<RegionGrowing> RegionsManager::getRegions() const
 {
     return regions;
