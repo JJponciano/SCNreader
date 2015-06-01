@@ -170,6 +170,7 @@ private:
     void affichageCloud();
     void affichageSegm();
     void affichageSwitch();
+    void affichageIm();
 };
 
 #endif // VUEPARETAPE_H

@@ -86,12 +86,111 @@ cv::Mat ImageProcessing::closing(cv::Mat src,int closing_size)
     return dst;
 }
 
+void ImageProcessing::fermeture()
+{
+    cv::Mat imf=cv::Mat::zeros(this->height,this->width,CV_32F);
+    for(int i=0; i<this->height; i++)
+    {
+        for(int j=0; j<this->width; j++)
+        {
+            if(this->image.at<int>(i,j)>0)
+                imf.at<float>(i,j)=this->image.at<int>(i,j)/255.0;
+        }
+    }
+    imf=closing(imf,5);
+    for(int i=0; i<this->height; i++)
+    {
+        for(int j=0; j<this->width; j++)
+        {
+            if(imf.at<float>(i,j)>0.0)
+                this->image.at<int>(i,j)=imf.at<float>(i,j)*255;
+        }
+    }
+}
 void ImageProcessing::enregistre(QString nom)
 {
     QString titre=nom;
-    titre.push_back("Transfo.jpg");
-    imwrite( titre.toStdString(), this->image );
+    titre.push_back("Transfo.png");
+    //imwrite( titre.toStdString(), this->image );
+
+    QImage imaE(this->width,this->height,QImage::Format_RGB888);
+    for(int i=0; i<this->height; i++)
+    {
+        for(int j=0; j<this->width; j++)
+        {
+            QRgb rgb;
+            if(this->image.at<int>(i,j)==0)
+                rgb=QColor(0,0,0).rgb();
+            else
+                rgb=cm.getQrgb(this->image.at<int>(i,j));
+            imaE.setPixel(j,i,rgb);
+        }
+    }
+    imaE.save(titre,"PNG");
 }
+
+//void ImageProcessing::enregistreRGB(QString nom)
+//{
+//    QString titre=nom;
+//    titre.push_back("Transfo.ppm");
+
+//    //open the file
+//    QFile file(titre);
+
+//    //If there is an error
+//    QString MesErreur=" The file";
+//    MesErreur.push_back(titre);
+//    MesErreur.push_back("have not been saved, check the write permission!");
+
+//    //Test if you can write into the file
+//    if(file.open(QIODevice::WriteOnly )){
+//        //if you can, initialize flu and line
+//        QTextStream flux(&file);
+//        //defines the codec of file
+//        flux.setCodec("UTF-8");
+//        //writing
+//        flux << "P3" << endl;
+//        flux << QString::number(this->width) << endl;
+//        flux << QString::number(this->height) << endl;
+//        flux << "# comment" << endl;
+//        flux << QString::number(255) << endl;
+//        QString ligne="";
+//        for(int i=0; i<this->height; i++)
+//        {
+//             for(int j=0; j<this->width; j++)
+//             {
+//                 QVector<double> rgb=cm.getColor(this->image.at<int>(i,j));
+//                 int r=rgb[0]*255;
+//                 int g=rgb[1]*255;
+//                 int b=rgb[2]*255;
+
+//                 if(ligne.size()<58)
+//                 {
+//                    ligne.push_back(QString::number(r));
+//                    ligne.push_back(" ");
+//                    ligne.push_back(QString::number(g));
+//                    ligne.push_back(" ");
+//                    ligne.push_back(QString::number(b));
+//                    ligne.push_back("\t");
+//                 }
+//                 else
+//                 {
+//                     flux << ligne << endl;
+//                     ligne="";
+//                     ligne.push_back(QString::number(r));
+//                     ligne.push_back(" ");
+//                     ligne.push_back(QString::number(g));
+//                     ligne.push_back(" ");
+//                     ligne.push_back(QString::number(b));
+//                     ligne.push_back("\t");
+//                 }
+//             }
+//         }
+
+//        file.close();
+//    }else throw Erreur(MesErreur.toStdString());
+//}
+
 void ImageProcessing::increase(int r, int c)
 {
     int val=this->image.at<int>(r,c);
@@ -303,9 +402,10 @@ void ImageProcessing::growingRegion()
         }
     }
 
-
     //mise en evidence des differentes regions
-    recoloration(im, nbr);
+    this->image=im;
+    //recoloration(im, nbr);
+
 }
 
 cv::Mat ImageProcessing::fusionne(cv::Mat im, int l, int c, int nouvelleV, int ancienneV)
@@ -355,9 +455,47 @@ void ImageProcessing::recoloration(cv::Mat im, int nbr){
 void ImageProcessing::Harris()
 {
     cv::Mat im;
-    cv::cornerHarris(this->image,im,3,3,0.04);
-    imwrite( "testHarris", im);
+    cv::Mat imf=cv::Mat::zeros(this->height,this->width,CV_32F);
+    for(int i=0; i<this->height; i++)
+    {
+        for(int j=0; j<this->width; j++)
+        {
+            if(this->image.at<int>(i,j)>0)
+                imf.at<float>(i,j)=this->image.at<int>(i,j)/255.0;
+        }
+    }
+    cv::cornerHarris(imf,im,3,3,0.04);
+    cv::Mat imR=cv::Mat::zeros(this->height,this->width,CV_32S);
+    for(int i=0; i<this->height; i++)
+    {
+        for(int j=0; j<this->width; j++)
+        {
+            if(im.at<float>(i,j)>0.0)
+                imR.at<int>(i,j)=im.at<float>(i,j)*255;
+        }
+    }
+    imwrite( "testHarris.jpg", imR);
 }
+int ImageProcessing::getWidth() const
+{
+    return width;
+}
+
+void ImageProcessing::setWidth(int value)
+{
+    width = value;
+}
+int ImageProcessing::getHeight() const
+{
+    return height;
+}
+
+void ImageProcessing::setHeight(int value)
+{
+    height = value;
+}
+
+
 //VERSION INT [][]
 //ImageProcessing::ImageProcessing(const int w, const int h)
 //{

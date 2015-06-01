@@ -4,6 +4,8 @@
 #include <math.h>
 #include "opencv/cv.h"
 #include "opencv/highgui.h"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/highgui/highgui.hpp"
 #include "opencv/cvaux.h"
 #include "opencv2/core/types_c.h"
 #include "opencv/cxcore.h"
@@ -63,9 +65,20 @@ public:
     //--------Access in reading and writing for private variables-------
     cv::Mat getImage() const;
     void setImage(cv::Mat &value);
+
+    int getWidth() const;
+    void setWidth(int value);
+
+    int getHeight() const;
+    void setHeight(int value);
     //------------------------------------------------------------------
 
     void Harris();
+
+
+
+    void fermeture();
+
 private:
     //-------------------Private Attributes--------------
     cv::Mat image;

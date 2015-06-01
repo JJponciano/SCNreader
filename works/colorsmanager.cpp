@@ -50,3 +50,10 @@ QVector<double> ColorsManager::getColor(int key)
        return c;
     }
 }
+
+QRgb ColorsManager::getQrgb(int k)
+{
+    QVector<double> coul=this->getColor(k);
+    QColor rgb(coul[0]*255, coul[1]*255,coul[2]*255);
+    return rgb.rgb();
+}

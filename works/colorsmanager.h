@@ -26,12 +26,15 @@
 #include <time.h>
 #include <QVector>
 #include <QHash>
+#include <QRgb>
+#include <QColor>
 class ColorsManager
 {
 public:
     ColorsManager();
     ~ColorsManager();
-     QVector< double> getColor(int key);
+    QVector< double> getColor(int key);
+    QRgb getQrgb(int k);
 private:
     QHash<int,QVector< double> > colors;
 

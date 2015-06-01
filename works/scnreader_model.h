@@ -181,11 +181,15 @@ public:
        QVector<QVector<PointGL> > getRegions() const;
        void setRegions(const QVector<QVector<PointGL> > &value);
 
+       ImageProcessing getIm() const;
+       void setIm(const ImageProcessing &value);
+
 private:
-    int capacity;
-    int workWindows;
-    int ftpd;
-    int ftpf;
+
+       int capacity;
+       int workWindows;
+       int ftpd;
+       int ftpf;
     /**
       * @brief lesRails contains tracks for each footpulse
       *
@@ -199,6 +203,7 @@ private:
     bool RansacVide;
     bool cfs;
 
+    ImageProcessing im;
     /**
      * @brief ftpMinMax search footpulses min and max
      * @return int the first position of a table the min and in the second, the max

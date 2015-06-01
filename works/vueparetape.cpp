@@ -86,6 +86,7 @@ void VueParEtape::paintGL()
     if(this->affReg)
     {
         this->affichageReg();
+        //this->affichageIm();
     }
     if(affe)
     {
@@ -166,10 +167,36 @@ void VueParEtape::affichageSwitch()
         glEnd();
     }
 }
+void VueParEtape::affichageIm()
+{
+    glBegin(GL_POINTS);
+    int w=this->scnreaderFond.getIm().getWidth();
+    int h=this->scnreaderFond.getIm().getHeight();
+    if(w!=0 && h!=0)
+    {
+        for(int i=0; i<h; i++)
+        {
+                for(int j=0; j<w; j++){
+                    if(this->scnreaderFond.getIm().getValue(i,j)>0)
+                    {
+                        QVector<double> coul=colors.getColor(this->scnreaderFond.getIm().getValue(i,j));
+                        glColor3f(coul.at(0),coul.at(1),coul.at(2));
+                        glPointSize(1);
+                        //normalizes points with model->max of cordinates previously finded
+                        double x=j*0.1-(0.1*w/2.0);
+                        double y=0;
+                        double z=i*0.1;
+                        glVertex3f(x,y,z);
+                    }
+                }
+        }
+    }
+    glEnd();
+}
+
 void VueParEtape::affichageReg()
 {
     glBegin(GL_POINTS);
-
     QVector< QVector<PointGL> >regions=this->scnreaderFond.getRegions();
 
     for(int i=0; i<regions.size(); i++)
