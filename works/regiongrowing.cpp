@@ -30,6 +30,7 @@ RegionGrowing::RegionGrowing()
     this->ID=0;
     this->neighborsDistance=0.4;
     this->ok=false;
+    this->spans=10;
 
 }
 RegionGrowing::RegionGrowing(const RegionGrowing &orig){
@@ -40,6 +41,7 @@ RegionGrowing::RegionGrowing(const RegionGrowing &orig){
     this->neighborsDistance=orig.getNeighborsDistance();
     this->maxSize=orig.getMaxSize();
     this->ok=orig.isOk();
+    this->spans=orig.getSpans();
 }
 
 RegionGrowing::RegionGrowing(int ID, int maxSize, double neighborsDistance)
@@ -49,6 +51,7 @@ RegionGrowing::RegionGrowing(int ID, int maxSize, double neighborsDistance)
     this->ID=ID;
     this->neighborsDistance=neighborsDistance;
     this->ok=false;
+    this->spans=10;
 
 }
 void RegionGrowing::clear(){
@@ -57,11 +60,13 @@ void RegionGrowing::clear(){
 
 void RegionGrowing::add(PointGL point)
 {
+    // the most recent point has the 0 index
+
     if(this->isdead)throw Erreur("adding in a dead region");
     // add the rail
-    this->points.push_back(point);
+    this->points.append(point);
     //---sort by z then by x then by y
-    //std::sort(this->points.begin(),this->points.end());
+    std::sort(this->points.begin(),this->points.end());
     //test if the size is too big
     //    if(this->points.size()>=this->maxSize)
     //    {
@@ -131,6 +136,16 @@ void RegionGrowing::setIsOk(bool value)
 {
     ok = value;
 }
+int RegionGrowing::getSpans() const
+{
+    return spans;
+}
+
+void RegionGrowing::setSpans(int value)
+{
+    spans = value;
+}
+
 
 
 int RegionGrowing::getID() const
@@ -144,48 +159,72 @@ int RegionGrowing::size()const{
 bool RegionGrowing::isIn(PointGL pt,double distanceMax)const
 {
     if(this->isdead)return false;
-    //for each point of the region
-    for(int i=points.size()-this->maxSize;i<points.size();i++){
-        if(i<0)i=0;
-        //test if the points avec the same width with and height the point to be tested
+    //for each point of the region having a footpulse close to the point
+    int count=0;
+    int currentFP=this->points.at(0).getZ();
+    int i=0;
+    while(i<this->points.size()&&count<this->spans){
+        //test if the points avec the same width and height the point to be tested
         if(pt.distanceX(this->points.at(i),distanceMax))
             return true;
+        i++;
+        if(currentFP!=this->points.at(i).getZ()){
+            currentFP=this->points.at(i).getZ();
+            count++;
+        }
     }
     return false;
 
 }
-bool RegionGrowing::isIn(PointGL pt)const
+bool RegionGrowing::isIn(PointGL pt) const
 {
-    if(this->isdead)return false;
-    //for each point of the region
-    for(int i=points.size()-this->maxSize;i<points.size();i++){
-        if(i<0)i=0;
-        //test if the points avec the same width with and height the point to be tested
-        if(pt.distanceX(this->points.at(i),this->neighborsDistance))
-            return true;
-    }
-    return false;
-
+    return this->isIn(pt,this->neighborsDistance);
 }
 
 bool RegionGrowing::check(double widthMax)
 {
     // if the region is dead, return the last check
-if(this->isdead)return this->ok;
-        //search the extremum of the x coordinates in the region
+    if(this->isdead)return this->ok;
     //search the extremum of the x coordinates in the region
-    double xmin=this->points.at(0).getX();
-    double xmax=this->points.at(0).getX();
-    for(int i=points.size()-this->maxSize;i<points.size();i++){
+
+    // calcule the avarage X
+    double average=this->averageX();
+    //calcul the error distance beetween all point and the average point
+    double averageError=0;
+    int count=0;
+    int currentFP=this->points.at(0).getZ();
+    int i=0;
+    while(i<this->points.size()&&count<this->spans){
         if(i<0)i=0;
-        if(this->points.at(i).getX()<xmin)
-            xmin=this->points.at(i).getX();
-        else    if(this->points.at(i).getX()>xmax)
-            xmax=this->points.at(i).getX();
-    }
+        double dist=this->points.at(i).getX()-average;
+        if(dist<0)dist*=-1;
+        averageError+=dist;
+        i++;
+        if(currentFP!=this->points.at(i).getZ()){
+            currentFP=this->points.at(i).getZ();
+            count++;
+        }
+    }averageError/=double(i);
     //compare the distance between the extremums with the maximum authorized.
-    this->ok=(xmax-xmin)<widthMax;
+    this->ok=(averageError)<widthMax;
     return this->ok;
+}
+
+double RegionGrowing::averageX(){
+    double average=0;
+    int count=0;
+    int currentFP=this->points.at(0).getZ();
+    int i=0;
+    while(i<this->points.size()&&count<this->spans){
+        average+=this->points.at(i).getX();
+        i++;
+        if(currentFP!=this->points.at(i).getZ()){
+            currentFP=this->points.at(i).getZ();
+            count++;
+        }
+    }
+    average/=double(i);
+    return average;
 }
 
 RegionGrowing::~RegionGrowing()

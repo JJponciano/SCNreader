@@ -26,6 +26,11 @@
 #include <QVector>
 #include "../modules/exceptions/erreur.h"
 #include "../modules/openGL/tools_models/pointgL.h"
+
+/**
+ * @brief The RegionGrowing class regions contained points
+ * The points are save in descending order of footpulse
+ */
 class RegionGrowing
 {
 public:
@@ -96,13 +101,18 @@ public:
      bool isOk() const;
      void setIsOk(bool value);
 
+     int getSpans() const;
+     void setSpans(int value);
+
 private:
+     int spans;
      bool ok;
      double isdead;
      double neighborsDistance;
      int ID;
      QVector <PointGL>points;
      int maxSize;
+     double averageX();
 };
 
 #endif // REGIONGROWING_H
