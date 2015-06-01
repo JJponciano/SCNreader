@@ -105,15 +105,15 @@ void RegionsManager::checkRegion(int idRegions){
     if(!rg.getIsdead()&&!rg.check(this->widthMax)){
         //-----if a region is too large, split it------
         //truly remove this region definitely
-        this->remove(idRegions);
+        this->remove(idRegions,true);
         // add all point of the regions in a news regions but in reverse
         for (int i = rg.size()-1; i >=0; i--) {
-            //this->growing(rg.getPoints().at(i));
+            this->growing(rg.getPoints().at(i),false);
         }
     }
 
 }
-void RegionsManager::growing(PointGL point)
+void RegionsManager::growing(PointGL point,bool check)
 {
     bool merge=false;
     // get all region that the point could be added
@@ -128,7 +128,8 @@ void RegionsManager::growing(PointGL point)
         if(idRegions.size()==1){
             //it is simply added
             this->add(idRegions.at(0),point);
-            //check the region after added
+            //check the region after added if it is required
+            if(check)
             this->checkRegion(idRegions.at(0));
         }else{
             // the point belong to more than one regions
@@ -143,6 +144,10 @@ void RegionsManager::growing(PointGL point)
         // add the point in the  points merged list
         this->pointsMerged.push_back(point);
     }
+}
+void RegionsManager::growing(PointGL point)
+{
+    this->growing(point,true);
 }
 QVector<PointGL> RegionsManager::getPointsMerged() const
 {
@@ -183,15 +188,7 @@ void RegionsManager::clear(){
 }
 
 void RegionsManager::remove(int ID){
-    RegionGrowing r(ID,this->maxSize,this->neighborsDistance);
-    //test if the region is known
-    if(this->regions.contains(r)){
-        // get the index of the region
-        int index=this->regions.lastIndexOf(r);
-        // this->regions.remove(index);
-        this->regions[index].setIsdead(true);
-    }
-    else throw Erreur(" The region is not known");
+   this->remove(ID,false);
 }
 void RegionsManager::remove(int ID,bool forced){
     RegionGrowing r(ID,this->maxSize,this->neighborsDistance);

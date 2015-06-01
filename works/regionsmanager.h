@@ -104,6 +104,7 @@ private:
     void add(int ID, PointGL point);
     void checkRegion(int idRegions);
     void remove(int ID, bool forced);
+    void growing(PointGL point, bool check);
 };
 
 #endif // REGIONSMANAGER_H

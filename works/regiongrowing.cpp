@@ -183,7 +183,6 @@ if(this->isdead)return this->ok;
         else    if(this->points.at(i).getX()>xmax)
             xmax=this->points.at(i).getX();
     }
-     std::cout<<xmax-xmin<<" : "<<widthMax<<std::endl;
     //compare the distance between the extremums with the maximum authorized.
     this->ok=(xmax-xmin)<widthMax;
     return this->ok;
