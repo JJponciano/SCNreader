@@ -103,7 +103,6 @@ double RegionGrowing::getIsdead() const
 {
     return isdead;
 }
-
 void RegionGrowing::setIsdead(double value)
 {
     isdead = value;
@@ -121,7 +120,6 @@ int RegionGrowing::getMaxSize() const
 {
     return maxSize;
 }
-
 void RegionGrowing::setMaxSize(int value)
 {
     maxSize = value;
@@ -144,9 +142,6 @@ void RegionGrowing::setSpans(int value)
 {
     spans = value;
 }
-
-
-
 int RegionGrowing::getID() const
 {
     return ID;

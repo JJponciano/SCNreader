@@ -52,7 +52,7 @@ public:
      * @param rail rail added to growing regions
      * @return true if a swtich is detected
      */
-    bool growingRegions(RailCluster rail);
+    void growingRegions(RailCluster rail);
 
 
 
