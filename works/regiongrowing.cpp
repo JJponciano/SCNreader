@@ -60,20 +60,17 @@ void RegionGrowing::clear(){
 
 void RegionGrowing::add(PointGL point)
 {
-    // the most recent point has the 0 index
-
     if(this->isdead)throw Erreur("adding in a dead region");
-    // add the rail
-    this->points.push_back(point);
-    //---sort by z then by x then by y
-    std::sort(this->points.begin(),this->points.end());
-
- //   std::cout<<this->ID<<"          P0:"<<this->points.at(0).getZ()<<std::endl;
-    //test if the size is too big
-    //    if(this->points.size()>=this->maxSize)
-    //    {
-    //        this->points.remove(0);
-    //    }
+    // if the last point have a footpulse bigger than the point
+    if(this->points.last().getZ()>point.getZ()){
+        // add the rail
+        this->points.push_back(point);
+        // and sort by z then by x then by y
+        std::sort(this->points.begin(),this->points.end());
+    }else{
+        // juste add it
+        this->points.push_back(point);
+    }
 }
 bool RegionGrowing::growing(PointGL point){
     if(this->isdead)return false;
