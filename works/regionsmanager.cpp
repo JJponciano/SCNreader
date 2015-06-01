@@ -33,7 +33,7 @@ RegionsManager::RegionsManager(int minsize, double neighborsDistance, int maxSiz
 RegionsManager::RegionsManager()
 {
     this->minSize=10;
-    this->neighborsDistance=0.4f;
+    this->neighborsDistance=0.4;
     this->nbregions=0;
     this->maxSize=500;
 }

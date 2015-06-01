@@ -104,6 +104,7 @@ void ListeRail::initRegions(){
     double regionMaxSize= (double)(this->maxSize)*0.2f;
     double minsize= (double)(this->maxSize)*0.05f;
     double neighborsDistance=this->lesRails.at(0).getWidthDistance()*2;
+    std::cout<<"D: "<<neighborsDistance<<std::endl;
     RegionsManager rm(minsize,neighborsDistance,regionMaxSize);
     this->regions=rm;
 }

@@ -28,7 +28,7 @@ RegionGrowing::RegionGrowing()
     this->isdead=false;
     this->maxSize=500;
     this->ID=0;
-    this->neighborsDistance=0.4f;
+    this->neighborsDistance=0.4;
 
 }
 RegionGrowing::RegionGrowing(const RegionGrowing &orig){
@@ -36,7 +36,7 @@ RegionGrowing::RegionGrowing(const RegionGrowing &orig){
     this->isdead=orig.getIsdead();
     for(int i=0;i<orig.getPoints().size();i++)
         this->points.push_back(orig.getPoints().at(i));
-    this->neighborsDistance=this->getNeighborsDistance();
+    this->neighborsDistance=orig.getNeighborsDistance();
     this->maxSize=orig.getMaxSize();
 }
 
